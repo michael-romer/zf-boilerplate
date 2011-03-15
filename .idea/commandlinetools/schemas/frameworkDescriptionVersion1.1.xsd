@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="framework" type="frameworkType"/>
+  <xs:complexType name="commandType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="name" minOccurs="1" maxOccurs="1"/>
+      <xs:element type="xs:string" name="params" minOccurs="0" maxOccurs="1"/>
+      <xs:element type="xs:string" name="help" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="frameworkType">
+    <xs:sequence>
+      <xs:element type="commandType" name="command" maxOccurs="unbounded" minOccurs="0"/>
+      <xs:element type="xs:string" name="help" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="name" use="required"/>
+    <xs:attribute type="xs:string" name="invoke" use="required"/>
+    <xs:attribute type="xs:string" name="alias" use="required"/>
+    <xs:attribute type="xs:boolean" name="enabled" use="required"/>
+    <xs:attribute type="xs:integer" name="version" use="required"/>
+  </xs:complexType>
+</xs:schema>
