@@ -14,7 +14,10 @@ set_include_path(implode(PATH_SEPARATOR, array(
     get_include_path(),
 )));
 
-/** Zend_Application */
+include "Zend/Loader/Autoloader.php";
+$l = Zend_Loader_Autoloader::getInstance();
+$l->registerNamespace('Ctrlr_');
+
 require_once 'Zend/Application.php';
 
 // Creating application

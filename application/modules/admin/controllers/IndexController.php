@@ -10,7 +10,7 @@ class Admin_IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        throw new Exception(); // action body
+        // action body
     }
 
     public function headerAction()
