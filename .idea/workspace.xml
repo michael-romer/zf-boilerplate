@@ -2,15 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a255e768-ea16-428a-82da-5ede5d76f9d8" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Vagrantfile" />
+      <change type="DELETED" beforePath="C:\xampp\htdocs\zf-boilerplate\application\modules\site\Bootstrap.php" afterPath="" />
+      <change type="DELETED" beforePath="C:\xampp\htdocs\zf-boilerplate\bin\doctrine" afterPath="" />
+      <change type="DELETED" beforePath="C:\xampp\htdocs\zf-boilerplate\bin\doctrine.bat" afterPath="" />
+      <change type="DELETED" beforePath="C:\xampp\htdocs\zf-boilerplate\data\cookbooks\vagrant_main\default.rb" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/configs/application.ini" afterPath="$PROJECT_DIR$/application/configs/application.ini" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/modules/site/controllers/IndexController.php" afterPath="$PROJECT_DIR$/application/modules/site/controllers/IndexController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/modules/site/layouts/scripts/site.phtml" afterPath="$PROJECT_DIR$/application/modules/site/layouts/scripts/site.phtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/modules/site/views/scripts/index/footer.phtml" afterPath="$PROJECT_DIR$/application/modules/site/views/scripts/index/footer.phtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/modules/site/views/scripts/index/header.phtml" afterPath="$PROJECT_DIR$/application/modules/site/views/scripts/index/header.phtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/modules/site/views/scripts/index/index.phtml" afterPath="$PROJECT_DIR$/application/modules/site/views/scripts/index/index.phtml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/style.css" afterPath="$PROJECT_DIR$/public/css/style.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/create-db-load-fixtures.php" afterPath="$PROJECT_DIR$/bin/create-db-load-fixtures.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/create-db.php" afterPath="$PROJECT_DIR$/bin/create-db.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/cookbooks/vagrant_main/recipes/default.rb" afterPath="$PROJECT_DIR$/data/cookbooks/vagrant_main/recipes/default.rb" />
     </list>
     <ignored path="zf-boilerplate.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,19 +32,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="IndexController.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/modules/site/controllers/IndexController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="50" column="36" selection-start="1100" selection-end="1100" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="site.phtml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/modules/site/layouts/scripts/site.phtml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="46" selection-start="1596" selection-end="1596" vertical-scroll-proportion="0.0">
+            <state line="40" column="46" selection-start="1596" selection-end="1596" vertical-scroll-proportion="-0.7692308">
               <folding />
             </state>
           </provider>
@@ -78,19 +68,28 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="create-db.php" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="create-db.php" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bin/create-db.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="53" selection-start="160" selection-end="160" vertical-scroll-proportion="0.0">
+            <state line="3" column="62" selection-start="169" selection-end="169" vertical-scroll-proportion="0.09448819">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="default.rb" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/data/cookbooks/vagrant_main/default.rb">
+      <file leaf-file-name="default.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data/cookbooks/vagrant_main/recipes/default.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="10" column="1" selection-start="229" selection-end="229" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="create-db-load-fixtures.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bin/create-db-load-fixtures.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="6" column="55" selection-start="332" selection-end="332" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -137,12 +136,9 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/application/Bootstrap.php" />
-        <option value="$PROJECT_DIR$/bin/bootstrap.php" />
         <option value="$PROJECT_DIR$/bin/build.xml" />
         <option value="$PROJECT_DIR$/bin/doctrine.php" />
         <option value="$PROJECT_DIR$/data/fixtures/fixtures.php" />
-        <option value="$PROJECT_DIR$/bin/create-db.php" />
         <option value="$PROJECT_DIR$/README" />
         <option value="$PROJECT_DIR$/README.markdown" />
         <option value="$PROJECT_DIR$/application/modules/site/views/scripts/index/footer.phtml" />
@@ -153,6 +149,9 @@
         <option value="$PROJECT_DIR$/application/modules/site/controllers/IndexController.php" />
         <option value="$PROJECT_DIR$/application/configs/application.ini" />
         <option value="$PROJECT_DIR$/data/cookbooks/vagrant_main/default.rb" />
+        <option value="$PROJECT_DIR$/data/cookbooks/vagrant_main/recipes/default.rb" />
+        <option value="$PROJECT_DIR$/bin/create-db-load-fixtures.php" />
+        <option value="$PROJECT_DIR$/bin/create-db.php" />
       </list>
     </option>
   </component>
@@ -257,6 +256,76 @@
               <option name="myItemId" value="cookbooks" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vagrant_main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="templates" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="default" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zf-boilerplate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zf-boilerplate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="data" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cookbooks" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="vagrant_main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="recipes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zf-boilerplate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zf-boilerplate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="data" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="cookbooks" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zf-boilerplate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zf-boilerplate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bin" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
@@ -320,14 +389,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1696" height="1020" extended-state="6" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1296" height="770" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20654762" sideWeight="0.0" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3296875" sideWeight="0.0" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -377,11 +446,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/bin/create-db-load-fixtures.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="25" selection-start="349" selection-end="349" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/phpunit.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
@@ -404,21 +468,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/modules/site/views/scripts/index/header.phtml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="0" selection-start="84" selection-end="84" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="2" column="0" selection-start="84" selection-end="84" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/application/modules/site/controllers/IndexController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="36" selection-start="1100" selection-end="1100" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="50" column="36" selection-start="1100" selection-end="1100" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/application/modules/site/layouts/scripts/site.phtml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="46" selection-start="1596" selection-end="1596" vertical-scroll-proportion="0.0" />
+        <state line="40" column="46" selection-start="1596" selection-end="1596" vertical-scroll-proportion="-0.7692308">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/css/style.css">
@@ -429,6 +491,11 @@
     <entry file="file://$PROJECT_DIR$/application/modules/site/views/scripts/index/footer.phtml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="13" column="31" selection-start="656" selection-end="656" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/configs/application.ini">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="70" column="70" selection-start="3392" selection-end="3392" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/library/Ctrlr/Service/Reverser.php">
@@ -446,23 +513,23 @@
         <state line="13" column="1" selection-start="309" selection-end="309" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/configs/application.ini">
+    <entry file="file://$PROJECT_DIR$/data/cookbooks/vagrant_main/recipes/default.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="70" column="70" selection-start="3392" selection-end="3392" vertical-scroll-proportion="0.0">
+        <state line="10" column="1" selection-start="229" selection-end="229" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bin/create-db-load-fixtures.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="55" selection-start="332" selection-end="332" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/bin/create-db.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="53" selection-start="160" selection-end="160" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/cookbooks/vagrant_main/default.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="3" column="62" selection-start="169" selection-end="169" vertical-scroll-proportion="0.09448819">
           <folding />
         </state>
       </provider>
