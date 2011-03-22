@@ -46,7 +46,11 @@ class Site_IndexController extends Zend_Controller_Action
 
     public function headerAction()
     {
-        // action body
+        $page = new Zend_Navigation_Page_Mvc(array(
+            'action'     => 'index',
+            'controller' => 'index',
+            'module'     => 'my'
+        ));
     }
 
     public function footerAction()

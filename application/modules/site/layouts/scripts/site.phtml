@@ -11,7 +11,7 @@
        Remove this if you use the .htaccess -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title></title>
+  <title>ZF-Boilerplate</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -34,17 +34,17 @@
 
 </head>
 
-<body>
+<body id="index" class="home">
 
   <div id="container">
     <header>
-        <?= $this->action('header', 'index', 'my');  ?>
+        <?= $this->action('header', 'index', 'site');  ?>
     </header>
     <div id="main" role="main">
        <?php echo $this->layout()->content; ?>
     </div>
     <footer>
-        <?= $this->action('footer', 'index', 'my');  ?>
+        <?= $this->action('footer', 'index', 'site');  ?>
     </footer>
   </div> <!--! end of #container -->
 
