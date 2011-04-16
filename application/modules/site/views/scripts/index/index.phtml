@@ -1,96 +1,21 @@
 <aside id="featured" class="body"><article>
-	<figure>
-		<img src="images/temp/sm-logo.gif" alt="Smashing Magazine" />
-	</figure>
 	<hgroup>
-
-		<h2>Featured Article</h2>
-		<h3><a href="#">HTML5 in Smashing Magazine!</a></h3>
+    	<h2>This is ZF Boilerplate.</h2>
+		<h3>Well done, it works!</h3>
 	</hgroup>
-	<p>Discover how to use Graceful Degradation and Progressive Enhancement techniques to achieve an outstanding, cross-browser <a href="http://dev.w3.org/html5/spec/Overview.html" rel="external">HTML5</a> and <a href="http://www.w3.org/TR/css3-roadmap/" rel="external">CSS3</a> website today!</p>
+	<p>ZF Boilerplate is a pre-packaged, pre-configured Zend Framework - based project blueprint for your enterprise grade PHP application. It combines state-of-the-art tools, frameworks and the best ideas to bootstrap your projects with nearly zero work. ZF Boilerplate ships with Doctrine 2, Symfony Dependency Injection, HTML 5 Boilerplate and a fully configured Virtual Machine that is managed by Vagrant and Chef - no need to install any deamons such as Apache or MySQL on your local box. And there is much more: Annotation based dependency injection, Module based Layouting, Scripts for creating the database and loading fixtures, Hudson/Jenkins Build Script and even more.</p>
 
 </article></aside><!-- /#featured -->
 
 <section id="content" class="body">
-	<ol id="posts-list" class="hfeed">
-		<li><article class="hentry">
-			<header>
-				<h2 class="entry-title"><a href="#" rel="bookmark" title="Permalink to this POST TITLE">This be the title</a></h2>
-
-			</header>
-
-			<footer class="post-info">
-				<abbr class="published" title="2005-10-10T14:07:00-07:00"><!-- YYYYMMDDThh:mm:ss+ZZZZ -->
-					10th October 2005
-				</abbr>
-
-				<address class="vcard author">
-
-					By <a class="url fn" href="#">Enrique Ramírez</a>
-				</address>
-			</footer><!-- /.post-info -->
-
-			<div class="entry-content">
-
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque venenatis nunc vitae libero iaculis elementum. Nullam et justo <a href="#">non sapien</a> dapibus blandit nec et leo. Ut ut malesuada tellus.</p>
-			</div><!-- /.entry-content -->
-		</article></li>
-
-		<li><article class="hentry">
-			...
-		</article></li>
-
-		<li><article class="hentry">
-			...
-		</article></li>
-
-	</ol><!-- /#posts-list -->
+    <h3>Database check</h3>
+	<ul>
+        <li>Database ... <?php if (!$this->databaseError) { ?><strong>test ok!</strong> With each page-load, a dummy record is added to the database. Below you find a list of all records added.<?php } else { ?><strong>error</strong>. Looks like you did not yet set up the sample database schema. Not a big deal but if you want to see the database connection in action, you shall  <?php } ?> </li>
+    </ul><!-- /#posts-list -->
+    <h3>Data available</h3>
+    <ul>
+	<?php foreach($this->data as $post) { ?>
+        <li><?php echo $post->getVorname(); ?></li>
+    <?php } ?>
+    </ul><!-- /#posts-list -->
 </section><!-- /#content -->
-
-<section id="extras" class="body">
-	<div class="blogroll">
-		<h2>blogroll</h2>
-
-		<ul>
-			<li><a href="#" rel="external">HTML5 Doctor</a></li>
-			<li><a href="#" rel="external">HTML5 Spec (working draft)</a></li>
-
-			<li><a href="#" rel="external">Smashing Magazine</a></li>
-			<li><a href="#" rel="external">W3C</a></li>
-			<li><a href="#" rel="external">Wordpress</a></li>
-
-			<li><a href="#" rel="external">Wikipedia</a></li>
-			<li><a href="#" rel="external">HTML5 Doctor</a></li>
-			<li><a href="#" rel="external">HTML5 Spec (working draft)</a></li>
-
-			<li><a href="#" rel="external">Smashing Magazine</a></li>
-			<li><a href="#" rel="external">W3C</a></li>
-			<li><a href="#" rel="external">Wordpress</a></li>
-
-			<li><a href="#" rel="external">Wikipedia</a></li>
-			<li><a href="#" rel="external">HTML5 Doctor</a></li>
-			<li><a href="#" rel="external">HTML5 Spec (working draft)</a></li>
-
-			<li><a href="#" rel="external">Smashing Magazine</a></li>
-			<li><a href="#" rel="external">W3C</a></li>
-			<li><a href="#" rel="external">Wordpress</a></li>
-
-			<li><a href="#" rel="external">Wikipedia</a></li>
-		</ul>
-	</div><!-- /.blogroll -->
-
-	<div class="social">
-
-		<h2>social</h2>
-		<ul>
-			<li><a href="http://delicious.com/enrique_ramirez" rel="me">delicious</a></li>
-			<li><a href="http://digg.com/users/enriqueramirez" rel="me">digg</a></li>
-
-			<li><a href="http://facebook.com/enrique.ramirez.velez" rel="me">facebook</a></li>
-			<li><a href="http://www.lastfm.es/user/enrique-ramirez" rel="me">last.fm</a></li>
-			<li><a href="http://website.com/feed/" rel="alternate">rss</a></li>
-
-			<li><a href="http://twitter.com/enrique_ramirez" rel="me">twitter</a></li>
-		</ul>
-	</div><!-- /.social -->
-</section><!-- /#extras -->

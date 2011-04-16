@@ -37,20 +37,49 @@ class Site_IndexController extends Zend_Controller_Action
         $randy->setGewicht(200);
         $randy->setVorname("Michael");
         $randy->setNachname("Romer");
-        $this->em->persist($randy);
-        $this->em->flush();
 
-        $persons = $this->em->getRepository("\Ctrlr\Entity\Person")->findAll();
-        echo $this->testservice->test();
+        try
+        {
+            $this->em->persist($randy);
+            $this->em->flush();
+        }
+        catch (Exception $e)
+        {
+            $this->view->databaseError = true;
+        }
+
+        try
+        {
+            $this->view->data = $this->em->getRepository("\Ctrlr\Entity\Person")->findAll();
+        }
+        catch (Exception $e)
+        {
+            $this->view->databaseError = true;
+        }
+
+       // echo $this->testservice->test();
     }
 
     public function headerAction()
     {
-        $page = new Zend_Navigation_Page_Mvc(array(
-            'action'     => 'index',
-            'controller' => 'index',
-            'module'     => 'my'
+        $container = new Zend_Navigation(array(
+            array(
+                'action'     => 'index',
+                'controller' => 'index',
+                'module'     => 'site',
+                'label'      => 'welcome'
+            ),
+            array(
+                'uri'        => 'http://www.zf-boilerplate.com/',
+                'label'      => 'project website'
+            ),
+            array(
+                'uri'        => 'https://github.com/michael-romer/zf-boilerplate',
+                'label'      => 'GitHub'
+            )
         ));
+
+        $this->view->navigation($container);
     }
 
     public function footerAction()
@@ -60,8 +89,3 @@ class Site_IndexController extends Zend_Controller_Action
 
 
 }
-
-
-
-
-

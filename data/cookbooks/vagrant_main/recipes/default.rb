@@ -10,7 +10,7 @@ ruby_block "Create database + execute grants" do
     Gem.clear_paths
     require 'mysql'
     m = Mysql.new("localhost", "root", "")
-    m.query("CREATE DATABASE app CHARACTER SET utf8")
+    m.query("CREATE DATABASE IF NOT EXISTS app CHARACTER SET utf8")
     m.reload
   end
 end
