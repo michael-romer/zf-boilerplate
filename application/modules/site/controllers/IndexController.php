@@ -18,12 +18,12 @@ class Site_IndexController extends Zend_Controller_Action
     protected $sc = null;
 
     /**
-     * @var \Ctrlr\Service\Testservice
+     * @var \App\Service\RandomStringGenerator
      * @InjectService
      * 
      * 
      */
-    protected $testservice = null;
+    protected $randomStringGenerator = null;
 
     public function init()
     {
@@ -31,16 +31,14 @@ class Site_IndexController extends Zend_Controller_Action
     }
 
     public function indexAction()
-    {
+    {   
         $this->em = Zend_Registry::get('doctrine')->getEntityManager();
-        $randy = new \Ctrlr\Entity\Person();
-        $randy->setGewicht(200);
-        $randy->setVorname("Michael");
-        $randy->setNachname("Romer");
+        $newPost = new \App\Entity\Post();
+        $newPost->setTitle($this->randomStringGenerator->createString());
 
         try
         {
-            $this->em->persist($randy);
+            $this->em->persist($newPost);
             $this->em->flush();
         }
         catch (Exception $e)
@@ -50,14 +48,12 @@ class Site_IndexController extends Zend_Controller_Action
 
         try
         {
-            $this->view->data = $this->em->getRepository("\Ctrlr\Entity\Person")->findAll();
+            $this->view->data = $this->em->getRepository("\App\Entity\Post")->findAll();
         }
         catch (Exception $e)
         {
             $this->view->databaseError = true;
         }
-
-       // echo $this->testservice->test();
     }
 
     public function headerAction()
@@ -82,10 +78,7 @@ class Site_IndexController extends Zend_Controller_Action
         $this->view->navigation($container);
     }
 
-    public function footerAction()
-    {
-        // action body
-    }
+    public function footerAction() {}
 
 
 }

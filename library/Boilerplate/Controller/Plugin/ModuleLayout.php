@@ -1,6 +1,6 @@
 <?php
 
-class Ctrlr_Controller_Plugin_ModuleLayout extends Zend_Controller_Plugin_Abstract
+class Boilerplate_Controller_Plugin_ModuleLayout extends Zend_Controller_Plugin_Abstract
 {
 	public function routeShutdown(Zend_Controller_Request_Abstract $request)
     {

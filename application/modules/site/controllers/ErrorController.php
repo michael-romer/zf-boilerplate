@@ -7,11 +7,15 @@ class Site_ErrorController extends Zend_Controller_Action
     {
         $errors = $this->_getParam('error_handler');
 
-       	echo "<pre>";
-       		var_dump($errors->exception->getMessage());
-       		var_dump($errors->exception->getTraceAsString());
-       	echo "</pre>";
-
+        if (APPLICATION_ENV == 'development')
+        {
+            echo "<pre>";
+                var_dump($errors->exception->getMessage());
+                var_dump($errors->exception->getTraceAsString());
+            echo "</pre>";
+            die();
+        }
+        
         switch ($errors->type) {
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ROUTE:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:
@@ -27,17 +31,17 @@ class Site_ErrorController extends Zend_Controller_Action
                 $this->view->message = 'Application error';
                 break;
         }
-        
+
         // Log exception, if logger available
         if ($log = $this->getLog()) {
             $log->crit($this->view->message, $errors->exception);
         }
-        
+
         // conditionally display exceptions
         if ($this->getInvokeArg('displayExceptions') == true) {
             $this->view->exception = $errors->exception;
         }
-        
+
         $this->view->request   = $errors->request;
     }
 

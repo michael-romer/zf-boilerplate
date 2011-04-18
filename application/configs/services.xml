@@ -1,11 +1,10 @@
 <?xml version="1.0" ?>
 <container xmlns="http://symfony-project.org/2.0/container">
   <services>
-    <service id="testservice" class="Ctrlr\Service\Testservice" shared="true">
-      <argument>horst</argument>
-      <argument type="service" id="reverser" />
+    <service id="randomStringGenerator" class="App\Service\RandomStringGenerator" shared="true">
+      <argument type="service" id="stringReverser" />
     </service>
-    <service id="reverser" class="Ctrlr\Service\Reverser" shared="true">
+    <service id="stringReverser" class="App\Service\StringReverser" shared="true">
     </service>
   </services>
 </container>

@@ -8,14 +8,27 @@
 </article></aside><!-- /#featured -->
 
 <section id="content" class="body">
-    <h3>Database check</h3>
+    <?php if (!$this->databaseError) { ?>
+    <h3>Database Sample Records</h3>
+    <p>With each page reload, a new record with random data is added to the database. The record title is randomly generated using a local service.</p>
 	<ul>
-        <li>Database ... <?php if (!$this->databaseError) { ?><strong>test ok!</strong> With each page-load, a dummy record is added to the database. Below you find a list of all records added.<?php } else { ?><strong>error</strong>. Looks like you did not yet set up the sample database schema. Not a big deal but if you want to see the database connection in action, you shall  <?php } ?> </li>
-    </ul><!-- /#posts-list -->
-    <h3>Data available</h3>
-    <ul>
 	<?php foreach($this->data as $post) { ?>
-        <li><?php echo $post->getVorname(); ?></li>
+        <li><?php echo $post; ?></li>
     <?php } ?>
     </ul><!-- /#posts-list -->
+    <?php } else { ?>
+    <h3>Database Setup</h3>
+	<p>It looks like that the sample database hasn't been initialized yet. If you want to see Doctrine 2 in action, you will want to run the database and fixture setup script.</p>
+    <ul>
+        <li>SSH into the virtual box.
+        <ul>
+            <li>When running on linux, just execute "vagrant ssh" within the project directory.</li>
+            <li>When on Windows, you will need to setup Putty first. For instructions please refer to <a href="http://vagrantup.com/docs/getting-started/setup/windows.html">Vagrant Windows Get Started Guide</a>.</li>
+        </ul>
+        </li>
+        <li>Change to /vagrant/bin</li>
+        <li>Run "php create-db-load-fixtures.php".</li>
+        <li>Refresh this page.</li>
+    </ul>
+    <?php } ?>
 </section><!-- /#content -->

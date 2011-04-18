@@ -16,7 +16,7 @@ set_include_path(implode(PATH_SEPARATOR, array(
 
 include "Zend/Loader/Autoloader.php";
 $l = Zend_Loader_Autoloader::getInstance();
-$l->registerNamespace('Ctrlr_');
+$l->registerNamespace('Boilerplate_');
 
 require_once 'Zend/Application.php';
 
