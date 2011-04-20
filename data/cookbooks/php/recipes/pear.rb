@@ -21,3 +21,38 @@
 package "php-pear" do
   action :install
 end
+
+php_pear_channel "pear.phpunit.de" do
+  action :discover
+end
+
+php_pear_channel "components.ez.no" do
+  action :discover
+end
+
+php_pear_channel "pear.symfony-project.com" do
+  action :discover
+end
+
+php_pear_channel "pear.phpmd.org" do
+  action :discover
+end
+
+php_pear_channel "pear.pdepend.org" do
+  action :discover
+end
+
+# using apt
+package "phpunit" do
+  action :install
+end
+
+php_pear "pdepend/PHP_Depend" do
+  action :install
+  options "alldeps"
+end
+
+php_pear "phpmd/PHP_PMD" do
+  action :install
+  options "alldeps"
+end

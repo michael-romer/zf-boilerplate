@@ -19,9 +19,9 @@
 #
 
 case node[:platform]
-  when "centos", "redhat", "fedora", "suse"
+  when "centos", "redhat", "fedora"
     #placeholder modify when available
-  when "debian", "ubuntu"
+  when "debian" "ubuntu"
     package "php5-fileinfo" do
       action :upgrade
     end

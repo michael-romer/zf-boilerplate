@@ -18,11 +18,7 @@
 # limitations under the License.
 #
 
-pack = value_for_platform(
-  [ "centos", "redhat", "fedora", "suse" ] => {
-    "default" => "php-ldap"},
-  "default" => "php5-ldap"
-)
+pack = value_for_platform([ "centos", "redhat", "fedora" ] => {"default" => "php-ldap"}, "default" => "php5-ldap")
 
 package pack do
   action :upgrade

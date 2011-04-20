@@ -19,10 +19,10 @@
 #
 
 case node[:platform]
-  when "centos", "redhat", "fedora", "suse"
+  when "centos", "redhat", "fedora"
     #centos php compiled with curl
-  when "debian", "ubuntu"
-    package "php5-curl" do
+  when "debian" "ubuntu"
+    package pack do
       action :upgrade
     end
 end
