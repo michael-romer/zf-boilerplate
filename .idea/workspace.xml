@@ -2,21 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a255e768-ea16-428a-82da-5ede5d76f9d8" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/bootstrap.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/library/App/Service/StringReverserTest.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/cookbooks/php/metadata.json" afterPath="$PROJECT_DIR$/data/cookbooks/php/metadata.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/cookbooks/php/metadata.rb" afterPath="$PROJECT_DIR$/data/cookbooks/php/metadata.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/cookbooks/php/recipes/default.rb" afterPath="$PROJECT_DIR$/data/cookbooks/php/recipes/default.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/cookbooks/php/recipes/module_apc.rb" afterPath="$PROJECT_DIR$/data/cookbooks/php/recipes/module_apc.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/cookbooks/php/recipes/module_curl.rb" afterPath="$PROJECT_DIR$/data/cookbooks/php/recipes/module_curl.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/cookbooks/php/recipes/module_fileinfo.rb" afterPath="$PROJECT_DIR$/data/cookbooks/php/recipes/module_fileinfo.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/cookbooks/php/recipes/module_fpdf.rb" afterPath="$PROJECT_DIR$/data/cookbooks/php/recipes/module_fpdf.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/cookbooks/php/recipes/module_gd.rb" afterPath="$PROJECT_DIR$/data/cookbooks/php/recipes/module_gd.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/cookbooks/php/recipes/module_ldap.rb" afterPath="$PROJECT_DIR$/data/cookbooks/php/recipes/module_ldap.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/cookbooks/php/recipes/module_memcache.rb" afterPath="$PROJECT_DIR$/data/cookbooks/php/recipes/module_memcache.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/cookbooks/php/recipes/module_mysql.rb" afterPath="$PROJECT_DIR$/data/cookbooks/php/recipes/module_mysql.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/cookbooks/php/recipes/module_pgsql.rb" afterPath="$PROJECT_DIR$/data/cookbooks/php/recipes/module_pgsql.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/cookbooks/php/recipes/module_sqlite3.rb" afterPath="$PROJECT_DIR$/data/cookbooks/php/recipes/module_sqlite3.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/cookbooks/php/recipes/pear.rb" afterPath="$PROJECT_DIR$/data/cookbooks/php/recipes/pear.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/cookbooks/vagrant_main/recipes/default.rb" afterPath="$PROJECT_DIR$/data/cookbooks/vagrant_main/recipes/default.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/phpunit.xml" afterPath="$PROJECT_DIR$/tests/phpunit.xml" />
     </list>
     <ignored path="zf-boilerplate.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -39,15 +29,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="index.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/index.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="9" selection-start="203" selection-end="218" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="application.ini" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/configs/application.ini">
           <provider selected="true" editor-type-id="text-editor">
@@ -57,26 +38,17 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="services.xml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="services.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/configs/services.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="18" selection-start="115" selection-end="115" vertical-scroll-proportion="0.09063444">
+            <state line="9" column="12" selection-start="387" selection-end="387" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RandomStringGenerator.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/library/App/Service/RandomStringGenerator.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="0" selection-start="316" selection-end="316" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StringReverser.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/library/App/Service/StringReverser.php">
+      <file leaf-file-name="IndexControllerTest.php" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/tests/application/controllers/IndexControllerTest.php">
           <provider selected="true" editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
@@ -84,37 +56,55 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Depinjector.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/library/Boilerplate/Resource/Depinjector.php">
+      <file leaf-file-name="bootstrap.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/application/bootstrap.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="5" selection-start="218" selection-end="218" vertical-scroll-proportion="0.0">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ErrorController.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/modules/site/controllers/ErrorController.php">
+      <file leaf-file-name="StringReverserTest.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/library/App/Service/StringReverserTest.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="32" selection-start="467" selection-end="467" vertical-scroll-proportion="0.0">
+            <state line="14" column="9" selection-start="300" selection-end="300" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Bootstrap.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/Bootstrap.php">
+      <file leaf-file-name="RandomStringGenratorTest.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/library/App/Service/RandomStringGenratorTest.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="5" selection-start="1528" selection-end="1528" vertical-scroll-proportion="0.0">
+            <state line="25" column="7" selection-start="676" selection-end="676" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="IndexController.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/modules/site/controllers/IndexController.php">
+      <file leaf-file-name="phpunit.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/phpunit.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="8" selection-start="534" selection-end="534" vertical-scroll-proportion="0.0">
+            <state line="3" column="19" selection-start="99" selection-end="99" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="bootstrap.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/bootstrap.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="25" column="25" selection-start="793" selection-end="793" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="default.rb" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data/cookbooks/vagrant_main/recipes/default.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="5" column="19" selection-start="154" selection-end="154" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -134,13 +124,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/application/Bootstrap.php" />
-        <option value="$PROJECT_DIR$/application/modules/site/views/scripts/index/index.phtml" />
-        <option value="$PROJECT_DIR$/library/App/Service/Testservice.php" />
-        <option value="$PROJECT_DIR$/library/App/Service/Reverser.php" />
-        <option value="$PROJECT_DIR$/library/App/Service/RandomStringGenerator.php" />
-        <option value="$PROJECT_DIR$/library/Boilerplate/Controller/Helper/DepInjector.php" />
-        <option value="$PROJECT_DIR$/library/Boilerplate/Controller/Helper/DependencyInjector.php" />
         <option value="$PROJECT_DIR$/bin/bootstrap.php" />
         <option value="$PROJECT_DIR$/library/Boilerplate/Resource/DepInjector.php" />
         <option value="$PROJECT_DIR$/library/Boilerplate/Resource/DependencyInjector.php" />
@@ -150,6 +133,13 @@
         <option value="$PROJECT_DIR$/public/index.php" />
         <option value="$PROJECT_DIR$/application/modules/site/controllers/ErrorController.php" />
         <option value="$PROJECT_DIR$/application/configs/services.xml" />
+        <option value="$PROJECT_DIR$/data/cookbooks/vagrant_main/recipes/default.rb" />
+        <option value="$PROJECT_DIR$/tests/library/App/Service/RandomStringGenrator.php" />
+        <option value="$PROJECT_DIR$/tests/library/App/Service/StringReverserTest.php" />
+        <option value="$PROJECT_DIR$/tests/library/App/Service/RandomStringGenratorTest.php" />
+        <option value="$PROJECT_DIR$/tests/phpunit.xml" />
+        <option value="$PROJECT_DIR$/tests/bootstrap.php" />
+        <option value="$PROJECT_DIR$/tests/application/controllers/IndexControllerTest.php" />
       </list>
     </option>
   </component>
@@ -204,7 +194,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -217,78 +206,19 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="zf-boilerplate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="zf-boilerplate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="public" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="zf-boilerplate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="zf-boilerplate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="data" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="zf-boilerplate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="zf-boilerplate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="application" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="zf-boilerplate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="zf-boilerplate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="application" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="configs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Favorites" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="reference.settingsdialog.IDE.editor.colors.Font" />
-    <property name="options.searchVisible" value="true" />
+    <property name="recentsLimit" value="5" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PublishConfig">
     <servers>
@@ -303,6 +233,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/tests" />
+      <recent name="$PROJECT_DIR$/tests/library/App/Service" />
       <recent name="C:\xampp\htdocs\zf-boilerplate\bin" />
       <recent name="C:\xampp\htdocs\zf-boilerplate\application\modules\site" />
       <recent name="C:\xampp\htdocs\zf-boilerplate\application\modules\admin" />
@@ -359,7 +291,6 @@
     <frame x="0" y="0" width="1280" height="776" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
@@ -372,6 +303,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32930845" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -417,67 +349,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/bin/bootstrap.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="0" selection-start="652" selection-end="652" vertical-scroll-proportion="0.6646526">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/modules/site/views/scripts/index/index.phtml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="30" selection-start="2014" selection-end="2014" vertical-scroll-proportion="0.7169811">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/library/Bisna/Application/Resource/Doctrine.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-1.5981873">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/library/Boilerplate/Controller/Plugin/ModuleLayout.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="17" selection-start="24" selection-end="24" vertical-scroll-proportion="0.06042296">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/library/Boilerplate/Controller/Helper/DependencyInjector.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="6" selection-start="13" selection-end="61" vertical-scroll-proportion="0.06042296">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/.htaccess">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-13.024169">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/library/App/Service/StringReverser.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/library/App/Service/RandomStringGenerator.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="0" selection-start="316" selection-end="316" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/Bootstrap.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="5" selection-start="1528" selection-end="1528" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/library/Boilerplate/Resource/Depinjector.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="11" column="5" selection-start="218" selection-end="218" vertical-scroll-proportion="0.0">
@@ -494,9 +365,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/modules/site/views/scripts/error/error.phtml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/application/modules/site/controllers/ErrorController.php">
@@ -522,7 +391,66 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/configs/services.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="18" selection-start="115" selection-end="115" vertical-scroll-proportion="0.09063444">
+        <state line="9" column="12" selection-start="387" selection-end="387" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/cookbooks/vagrant_main/recipes/default.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="19" selection-start="154" selection-end="154" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/library/App/Service/StringReverser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="27" selection-start="231" selection-end="238" vertical-scroll-proportion="0.17777778">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/library/App/Service/RandomStringGenerator.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="32" selection-start="380" selection-end="392" vertical-scroll-proportion="0.4148148">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/library/App/Service/RandomStringGenratorTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="7" selection-start="676" selection-end="676" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/library/App/Service/StringReverserTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="9" selection-start="300" selection-end="300" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/application/bootstrap.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/phpunit.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="19" selection-start="99" selection-end="99" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/bootstrap.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="25" selection-start="793" selection-end="793" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/application/controllers/IndexControllerTest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
