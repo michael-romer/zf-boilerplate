@@ -2,7 +2,8 @@
 ; XDebug ;
 ;;;;;;;;;;
 
-zend_extension=<%= %x[find / -name 'xdebug.so' 2> /dev/null] %>
+;hardcoded path needs to be fixed!
+zend_extension=/usr/lib/php5/20090626+lfs/xdebug.so
 xdebug.default_enable=1
 xdebug.remote_enable=1
 xdebug.remote_handler=dbgp
