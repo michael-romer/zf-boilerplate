@@ -12,7 +12,6 @@ class StringReverserTest extends \PHPUnit_Framework_TestCase {
 
     public function testReverse()
     {
-       // require_once "../../../../library/App/Service/StringReverser.php";
         $service = new StringReverser();
         $this->assertEquals('12345', $service->reverse('54321'));
     }

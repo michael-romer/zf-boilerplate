@@ -4,4 +4,14 @@
       <directory>./library</directory>
     </testsuite>
   </testsuites>
+  <filter>
+    <whitelist>
+        <directory suffix=".php">./library/App</directory>
+    </whitelist>
+  </filter>
+  <logging>
+    <log type="coverage-html" target="./reports" charset="UTF-8"
+         yui="true" highlight="false"
+         lowUpperBound="35" highLowerBound="70"/>
+  </logging>
 </phpunit>
