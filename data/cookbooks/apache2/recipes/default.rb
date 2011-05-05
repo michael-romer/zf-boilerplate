@@ -199,6 +199,7 @@ include_recipe "apache2::mod_dir"
 include_recipe "apache2::mod_env"
 include_recipe "apache2::mod_mime"
 include_recipe "apache2::mod_negotiation"
+include_recipe "apache2::mod_rewrite"
 include_recipe "apache2::mod_setenvif"
 include_recipe "apache2::mod_log_config" if platform?("centos", "redhat", "suse", "arch")
 
