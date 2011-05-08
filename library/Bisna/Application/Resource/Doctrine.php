@@ -50,6 +50,7 @@ class Bisna_Application_Resource_Doctrine extends \Zend_Application_Resource_Res
 
         // Add to Zend Registry
         \Zend_Registry::set('doctrine', $container);
+        \Zend_Registry::set('em', $container->getEntityManager());
 
         return $container;
     }

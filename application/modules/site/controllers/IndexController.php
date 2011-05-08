@@ -8,22 +8,22 @@ class Site_IndexController extends Zend_Controller_Action
      * 
      * 
      */
-    protected $em = null;
+    protected $_em = null;
 
     /**
      * @var \sfServiceContainer
      * 
      * 
      */
-    protected $sc = null;
+    protected $_sc = null;
 
     /**
      * @var \App\Service\RandomStringGenerator
-     * @InjectService
+     * @InjectService RandomStringGenerator
      * 
      * 
      */
-    protected $randomStringGenerator = null;
+    protected $_randomStringGenerator = null;
 
     public function init()
     {
@@ -32,14 +32,14 @@ class Site_IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {   
-        $this->em = Zend_Registry::get('doctrine')->getEntityManager();
+        $this->_em = Zend_Registry::get('em');
         $newPost = new \App\Entity\Post();
-        $newPost->setTitle($this->randomStringGenerator->createString());
+        $newPost->setTitle($this->_randomStringGenerator->createString());
 
         try
         {
-            $this->em->persist($newPost);
-            $this->em->flush();
+            $this->_em->persist($newPost);
+            $this->_em->flush();
         }
         catch (Exception $e)
         {
@@ -48,7 +48,8 @@ class Site_IndexController extends Zend_Controller_Action
 
         try
         {
-            $this->view->data = $this->em->getRepository("\App\Entity\Post")->findAll();
+            $data = $this->_em->getRepository("\App\Entity\Post")->findAll();
+            $this->view->data = $data;
         }
         catch (Exception $e)
         {
@@ -58,27 +59,33 @@ class Site_IndexController extends Zend_Controller_Action
 
     public function headerAction()
     {
-        $container = new Zend_Navigation(array(
+        $container = new Zend_Navigation(
             array(
-                'action'     => 'index',
-                'controller' => 'index',
-                'module'     => 'site',
-                'label'      => 'welcome'
-            ),
-            array(
-                'uri'        => 'http://www.zf-boilerplate.com/',
-                'label'      => 'project website'
-            ),
-            array(
-                'uri'        => 'https://github.com/michael-romer/zf-boilerplate',
-                'label'      => 'GitHub'
+                array(
+                    'action'     => 'index',
+                    'controller' => 'index',
+                    'module'     => 'site',
+                    'label'      => 'welcome'
+                ),
+                array(
+                    'uri'        => 'http://www.zf-boilerplate.com/',
+                    'label'      => 'project website'
+                ),
+                array(
+                    'uri'        => 'https://github.com/michael-romer/' .
+                                        'zf-boilerplate',
+                    'label'      => 'GitHub'
+                )
             )
-        ));
+        );
 
         $this->view->navigation($container);
     }
 
-    public function footerAction() {}
+    public function footerAction()
+    {
+        
+    }
 
 
 }

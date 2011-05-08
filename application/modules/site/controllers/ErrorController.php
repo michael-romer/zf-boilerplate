@@ -7,13 +7,11 @@ class Site_ErrorController extends Zend_Controller_Action
     {
         $errors = $this->_getParam('error_handler');
 
-        if (APPLICATION_ENV == 'development')
-        {
+        if (APPLICATION_ENV == 'development') {
             echo "<pre>";
                 var_dump($errors->exception->getMessage());
                 var_dump($errors->exception->getTraceAsString());
             echo "</pre>";
-            die();
         }
         
         switch ($errors->type) {

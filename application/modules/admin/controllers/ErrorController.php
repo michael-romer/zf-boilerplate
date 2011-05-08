@@ -7,10 +7,10 @@ class Admin_ErrorController extends Zend_Controller_Action
     {
         $errors = $this->_getParam('error_handler');
 
-       	echo "<pre>";
-       		var_dump($errors->exception->getMessage());
-       		var_dump($errors->exception->getTraceAsString());
-       	echo "</pre>";
+        echo "<pre>";
+            var_dump($errors->exception->getMessage());
+            var_dump($errors->exception->getTraceAsString());
+        echo "</pre>";
 
         switch ($errors->type) {
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ROUTE:
