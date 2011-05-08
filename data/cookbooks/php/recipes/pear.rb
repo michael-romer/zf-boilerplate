@@ -47,12 +47,18 @@ package "phpunit" do
   action :install
 end
 
-php_pear "pdepend/PHP_Depend" do
-  action :install
-  options "alldeps"
+execute "PEAR: upgrade all packages" do
+  command "pear upgrade-all"
 end
 
-php_pear "phpmd/PHP_PMD" do
-  action :install
-  options "alldeps"
+execute "PEAR: install phpmd/PHP_PMD" do
+  command "pear install -f phpmd/PHP_PMD"
+end
+
+execute "PEAR: install pdepend/PHP_Depend" do
+  command "pear install -f pdepend/PHP_Depend"
+end
+
+execute "PEAR: install PHP_CodeSniffer-1.3.0" do
+  command "pear install -f PHP_CodeSniffer-1.3.0"
 end
