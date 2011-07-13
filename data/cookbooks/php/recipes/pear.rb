@@ -42,6 +42,10 @@ php_pear_channel "pear.pdepend.org" do
   action :discover
 end
 
+php_pear_channel "pear.docblox-project.org" do
+  action :discover
+end
+
 # using apt
 package "phpunit" do
   action :install
