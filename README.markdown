@@ -1,5 +1,5 @@
-ZF-Boilerplate (Alpha!)
-=======================
+ZF-Boilerplate
+==============
 
 Zend Framework (ZF) Boilerplate is a pre-packaged, pre-configured Zend Framework - based blueprint for your
 enterprise grade PHP application. It combines state-of-the-art tools, frameworks and ideas to
