@@ -32,6 +32,19 @@ Features
 * Ant based build script
 * ... and much more!
 
+
+Installation
+------------
+
+Please refer to: https://sites.google.com/site/zfboilerplate/getting-started-guide
+
+
+Roadmap
+-------
+
+Please refer to: https://sites.google.com/site/zfboilerplate/roadmap
+
+
 License
 -------
 * Zend Framework: New BSD License (http://framework.zend.com/license)
@@ -71,5 +84,4 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 For more information, please refer to <http://unlicense.org/>
 
-Installation
-------------
+
