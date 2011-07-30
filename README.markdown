@@ -1,5 +1,5 @@
-ZF-Boilerplate
-==============
+ZF-Boilerplate (http://zf-boilerplate.com/)
+===========================================
 
 Zend Framework (ZF) Boilerplate is a pre-packaged, pre-configured Zend Framework - based blueprint for your
 enterprise grade PHP application. It combines state-of-the-art tools, frameworks and ideas to
@@ -36,13 +36,13 @@ Features
 Installation
 ------------
 
-Please refer to: https://sites.google.com/site/zfboilerplate/getting-started-guide
+Please refer to: http://zf-boilerplate.com/getting-started/
 
 
 Roadmap
 -------
 
-Please refer to: https://sites.google.com/site/zfboilerplate/roadmap
+Please refer to: http://zf-boilerplate.com/roadmap/
 
 
 License
