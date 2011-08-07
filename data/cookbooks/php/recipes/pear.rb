@@ -66,3 +66,7 @@ end
 execute "PEAR: install PHP_CodeSniffer-1.3.0" do
   command "pear install -f PHP_CodeSniffer-1.3.0"
 end
+
+execute "PEAR: install phploc-1.5.0" do
+  command "pear install -f phpunit/phploc"
+end

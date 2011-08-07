@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a255e768-ea16-428a-82da-5ede5d76f9d8" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/UNLICENSE" />
+    <list default="true" id="a255e768-ea16-428a-82da-5ede5d76f9d8" name="Default" comment="added unlicense">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/bin/codemetrics.php" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/Boilerplate/Controller/Helper/DepInjector.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/library/Boilerplate/Resource/DepInjector.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tests/library/App/Service/RandomStringGenrator.php" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.markdown" afterPath="$PROJECT_DIR$/README.markdown" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/cookbooks/php/recipes/pear.rb" afterPath="$PROJECT_DIR$/data/cookbooks/php/recipes/pear.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/reports/coverage/RandomStringGenratorTest.php.html" afterPath="$PROJECT_DIR$/tests/reports/coverage/RandomStringGenratorTest.php.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/reports/coverage/StringReverserTest.php.html" afterPath="$PROJECT_DIR$/tests/reports/coverage/StringReverserTest.php.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/reports/coverage/index.html" afterPath="$PROJECT_DIR$/tests/reports/coverage/index.html" />
     </list>
     <ignored path="zf-boilerplate.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,55 +33,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ErrorController.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/modules/admin/controllers/ErrorController.php">
+      <file leaf-file-name="phpunit.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/tests/phpunit.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="8" selection-start="311" selection-end="311" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DependencyInjector.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/library/Boilerplate/Controller/Helper/DependencyInjector.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="25" column="48" selection-start="855" selection-end="855" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ModuleLayout.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/library/Boilerplate/Controller/Plugin/ModuleLayout.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="8" selection-start="566" selection-end="566" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Depinjector.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/library/Boilerplate/Resource/Depinjector.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="8" selection-start="352" selection-end="352" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="default.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/cookbooks/php/recipes/default.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="54" selection-start="732" selection-end="732" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="php5.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/cookbooks/php/recipes/php5.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+            <state line="9" column="33" selection-start="255" selection-end="268" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -84,32 +45,32 @@
       <file leaf-file-name="pear.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data/cookbooks/php/recipes/pear.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="55" column="3" selection-start="1256" selection-end="1256" vertical-scroll-proportion="0.0">
+            <state line="70" column="41" selection-start="1612" selection-end="1612" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UNLICENSE" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/UNLICENSE">
+      <file leaf-file-name="checkstyle.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bin/checkstyle.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="23" column="61" selection-start="1210" selection-end="1210" vertical-scroll-proportion="0.0">
+            <state line="3" column="4" selection-start="92" selection-end="96" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.markdown" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/README.markdown">
+      <file leaf-file-name="codemetrics.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/bin/codemetrics.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="44" column="18" selection-start="2292" selection-end="2292" vertical-scroll-proportion="0.90950227">
+            <state line="9" column="21" selection-start="351" selection-end="351" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pear.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/cookbooks/php/providers/pear.rb">
+      <file leaf-file-name="testdox.txt" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/tests/reports/testdox/testdox.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
@@ -131,7 +92,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/library/App/Service/RandomStringGenerator.php" />
         <option value="$PROJECT_DIR$/library/Bisna/Application/Resource/Doctrine.php" />
         <option value="$PROJECT_DIR$/application/modules/site/controllers/ErrorController.php" />
         <option value="$PROJECT_DIR$/application/modules/site/controllers/IndexController.php" />
@@ -144,9 +104,10 @@
         <option value="$PROJECT_DIR$/library/Boilerplate/Controller/Plugin/ModuleLayout.php" />
         <option value="$PROJECT_DIR$/library/Boilerplate/Resource/Depinjector.php" />
         <option value="$PROJECT_DIR$/data/cookbooks/php/recipes/default.rb" />
-        <option value="$PROJECT_DIR$/data/cookbooks/php/recipes/pear.rb" />
         <option value="$PROJECT_DIR$/UNLICENSE" />
         <option value="$PROJECT_DIR$/README.markdown" />
+        <option value="$PROJECT_DIR$/data/cookbooks/php/recipes/pear.rb" />
+        <option value="$PROJECT_DIR$/bin/codemetrics.php" />
       </list>
     </option>
   </component>
@@ -193,7 +154,7 @@
       <flattenPackages />
       <showMembers />
       <showModules />
-      <showLibraryContents ProjectPane="false" />
+      <showLibraryContents ProjectPane="true" />
       <hideEmptyPackages />
       <abbreviatePackageNames />
       <autoscrollToSource />
@@ -201,7 +162,7 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Favorites" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -209,6 +170,12 @@
               <option name="myItemId" value="zf-boilerplate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zf-boilerplate" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="zf-boilerplate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
@@ -224,7 +191,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="library" />
+              <option name="myItemId" value="tests" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -238,22 +205,22 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="data" />
+              <option name="myItemId" value="bin" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Favorites" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="preferences.sourceCode.PHP" />
-    <property name="options.searchVisible" value="true" />
+    <property name="recentsLimit" value="5" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PublishConfig">
     <servers>
@@ -330,15 +297,15 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="0" width="1282" height="777" extended-state="6" />
+    <frame x="0" y="-5" width="1280" height="805" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Phing Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27734375" sideWeight="0.26742533" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2765625" sideWeight="0.29098362" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27734375" sideWeight="0.72119486" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2765625" sideWeight="0.69808745" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -377,7 +344,7 @@
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
     <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed vm pear integration" />
+    <option name="LAST_COMMIT_MESSAGE" value="added unlicense" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -402,36 +369,12 @@
     <MESSAGE value="fixed rewrite issues + set up routes test" />
     <MESSAGE value="added phpcs checkstyle script and fixed existing style violations" />
     <MESSAGE value="fixed vm pear integration" />
+    <MESSAGE value="added unlicense" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/library/App/Service/RandomStringGenerator.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="0" selection-start="217" selection-end="217" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/modules/site/controllers/IndexController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="40" selection-start="1810" selection-end="1810" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/Bootstrap.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="8" selection-start="468" selection-end="468" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/library/App/Entity/Post.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="47" column="20" selection-start="834" selection-end="834" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bin/checkstyle.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="43" selection-start="135" selection-end="135" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/modules/my/controllers/ErrorController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="12" column="8" selection-start="308" selection-end="308" vertical-scroll-proportion="0.0" />
@@ -467,28 +410,57 @@
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/cookbooks/php/providers/pear.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/cookbooks/php/recipes/pear.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="3" selection-start="1256" selection-end="1256" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/UNLICENSE">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="61" selection-start="1210" selection-end="1210" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="23" column="61" selection-start="1210" selection-end="1210" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.markdown">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="18" selection-start="2292" selection-end="2292" vertical-scroll-proportion="0.90950227">
+        <state line="44" column="18" selection-start="2292" selection-end="2292" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/cookbooks/php/recipes/module_xdebug.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="1" selection-start="826" selection-end="826" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/cookbooks/php/providers/pear.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-2.1975868" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/cookbooks/php/recipes/pear.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="70" column="41" selection-start="1612" selection-end="1612" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/phpunit.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="33" selection-start="255" selection-end="268" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bin/checkstyle.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="4" selection-start="92" selection-end="96" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bin/codemetrics.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="21" selection-start="351" selection-end="351" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/reports/testdox/testdox.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
