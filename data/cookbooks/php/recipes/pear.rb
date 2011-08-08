@@ -70,3 +70,7 @@ end
 execute "PEAR: install phploc-1.5.0" do
   command "pear install -f phpunit/phploc"
 end
+
+execute "PECL: install xdebug" do
+  command "pecl install xdebug"
+end

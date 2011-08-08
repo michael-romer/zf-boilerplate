@@ -31,7 +31,7 @@ class Site_IndexController extends Zend_Controller_Action
     }
 
     public function indexAction()
-    {   
+    {
         $this->_em = Zend_Registry::get('em');
         $newPost = new \App\Entity\Post();
         $newPost->setTitle($this->_randomStringGenerator->createString());

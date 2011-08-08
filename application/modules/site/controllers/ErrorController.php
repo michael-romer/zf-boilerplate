@@ -7,13 +7,6 @@ class Site_ErrorController extends Zend_Controller_Action
     {
         $errors = $this->_getParam('error_handler');
 
-        if (APPLICATION_ENV == 'development') {
-            echo "<pre>";
-                var_dump($errors->exception->getMessage());
-                var_dump($errors->exception->getTraceAsString());
-            echo "</pre>";
-        }
-        
         switch ($errors->type) {
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ROUTE:
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER:
@@ -25,6 +18,9 @@ class Site_ErrorController extends Zend_Controller_Action
                 break;
             default:
                 // application error
+                if (APPLICATION_ENV == 'development')
+                    throw $errors->exception;
+                   
                 $this->getResponse()->setHttpResponseCode(500);
                 $this->view->message = 'Application error';
                 break;
