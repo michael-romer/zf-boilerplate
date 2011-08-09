@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metrics generated="2011-08-09T13:55:14" pdepend="0.10.5" ahh="0.8" andc="0" calls="56" ccn="51" ccn2="51" cloc="61" clsa="0" clsc="10" eloc="311" fanout="20" leafs="8" lloc="163" loc="475" maxDIT="2" ncloc="414" noc="10" nof="0" noi="0" nom="30" nop="3" roots="2">
+  <files>
+    <file name="/vagrant/application/Bootstrap.php" cloc="0" eloc="42" lloc="22" loc="54" ncloc="54"/>
+    <file name="/vagrant/application/modules/admin/controllers/ErrorController.php" cloc="4" eloc="40" lloc="28" loc="57" ncloc="53"/>
+    <file name="/vagrant/application/modules/admin/controllers/IndexController.php" cloc="4" eloc="16" lloc="4" loc="33" ncloc="29"/>
+    <file name="/vagrant/application/modules/my/controllers/ErrorController.php" cloc="4" eloc="40" lloc="28" loc="57" ncloc="53"/>
+    <file name="/vagrant/application/modules/my/controllers/IndexController.php" cloc="4" eloc="16" lloc="4" loc="33" ncloc="29"/>
+    <file name="/vagrant/application/modules/site/controllers/ErrorController.php" cloc="4" eloc="38" lloc="26" loc="55" ncloc="51"/>
+    <file name="/vagrant/application/modules/site/controllers/IndexController.php" cloc="17" eloc="60" lloc="22" loc="91" ncloc="74"/>
+    <file name="/vagrant/library/App/Entity/Post.php" cloc="10" eloc="34" lloc="18" loc="50" ncloc="40"/>
+    <file name="/vagrant/library/App/Service/RandomStringGenerator.php" cloc="7" eloc="16" lloc="8" loc="27" ncloc="20"/>
+    <file name="/vagrant/library/App/Service/StringReverser.php" cloc="7" eloc="9" lloc="3" loc="18" ncloc="11"/>
+  </files>
+  <package name="+global" cr="0.15" noc="7" nof="0" noi="0" nom="21" rcr="0.15">
+    <class name="Bootstrap" ca="0" cbo="9" ce="9" cis="3" cloc="0" cr="0.15" csz="3" dit="2" eloc="35" impl="0" lloc="19" loc="52" ncloc="52" noam="3" nocc="0" nom="3" noom="0" npm="3" rcr="0.2775" vars="0" varsi="0" varsnp="0" wmc="3" wmci="3" wmcnp="3">
+      <file name="/vagrant/application/Bootstrap.php"/>
+      <method name="_initAutoloaderNamespaces" ccn="1" ccn2="1" cloc="0" eloc="20" lloc="10" loc="27" ncloc="27" npath="1"/>
+      <method name="_initModuleLayout" ccn="1" ccn2="1" cloc="0" eloc="9" lloc="5" loc="12" ncloc="12" npath="1"/>
+      <method name="_initServices" ccn="1" ccn2="1" cloc="0" eloc="6" lloc="4" loc="7" ncloc="7" npath="1"/>
+    </class>
+    <class name="Admin_ErrorController" ca="0" cbo="1" ce="1" cis="2" cloc="4" cr="0.15" csz="2" dit="2" eloc="34" impl="0" lloc="26" loc="53" ncloc="49" noam="2" nocc="0" nom="2" noom="0" npm="2" rcr="0.17125" vars="0" varsi="0" varsnp="0" wmc="8" wmci="8" wmcnp="8">
+      <file name="/vagrant/application/modules/admin/controllers/ErrorController.php"/>
+      <method name="errorAction" ccn="6" ccn2="6" cloc="4" eloc="26" lloc="21" loc="37" ncloc="33" npath="16"/>
+      <method name="getLog" ccn="2" ccn2="2" cloc="0" eloc="8" lloc="5" loc="9" ncloc="9" npath="2"/>
+    </class>
+    <class name="Admin_IndexController" ca="0" cbo="0" ce="0" cis="4" cloc="4" cr="0.15" csz="4" dit="2" eloc="8" impl="0" lloc="0" loc="25" ncloc="21" noam="4" nocc="0" nom="4" noom="0" npm="4" rcr="0.17125" vars="0" varsi="0" varsnp="0" wmc="4" wmci="4" wmcnp="4">
+      <file name="/vagrant/application/modules/admin/controllers/IndexController.php"/>
+      <method name="init" ccn="1" ccn2="1" cloc="1" eloc="2" lloc="0" loc="4" ncloc="3" npath="1"/>
+      <method name="indexAction" ccn="1" ccn2="1" cloc="1" eloc="2" lloc="0" loc="4" ncloc="3" npath="1"/>
+      <method name="headerAction" ccn="1" ccn2="1" cloc="1" eloc="2" lloc="0" loc="4" ncloc="3" npath="1"/>
+      <method name="footerAction" ccn="1" ccn2="1" cloc="1" eloc="2" lloc="0" loc="4" ncloc="3" npath="1"/>
+    </class>
+    <class name="My_ErrorController" ca="0" cbo="1" ce="1" cis="2" cloc="4" cr="0.15" csz="2" dit="2" eloc="34" impl="0" lloc="26" loc="53" ncloc="49" noam="2" nocc="0" nom="2" noom="0" npm="2" rcr="0.17125" vars="0" varsi="0" varsnp="0" wmc="8" wmci="8" wmcnp="8">
+      <file name="/vagrant/application/modules/my/controllers/ErrorController.php"/>
+      <method name="errorAction" ccn="6" ccn2="6" cloc="4" eloc="26" lloc="21" loc="37" ncloc="33" npath="16"/>
+      <method name="getLog" ccn="2" ccn2="2" cloc="0" eloc="8" lloc="5" loc="9" ncloc="9" npath="2"/>
+    </class>
+    <class name="My_IndexController" ca="0" cbo="0" ce="0" cis="4" cloc="4" cr="0.15" csz="4" dit="2" eloc="8" impl="0" lloc="0" loc="25" ncloc="21" noam="4" nocc="0" nom="4" noom="0" npm="4" rcr="0.17125" vars="0" varsi="0" varsnp="0" wmc="4" wmci="4" wmcnp="4">
+      <file name="/vagrant/application/modules/my/controllers/IndexController.php"/>
+      <method name="init" ccn="1" ccn2="1" cloc="1" eloc="2" lloc="0" loc="4" ncloc="3" npath="1"/>
+      <method name="indexAction" ccn="1" ccn2="1" cloc="1" eloc="2" lloc="0" loc="4" ncloc="3" npath="1"/>
+      <method name="headerAction" ccn="1" ccn2="1" cloc="1" eloc="2" lloc="0" loc="4" ncloc="3" npath="1"/>
+      <method name="footerAction" ccn="1" ccn2="1" cloc="1" eloc="2" lloc="0" loc="4" ncloc="3" npath="1"/>
+    </class>
+    <class name="Site_ErrorController" ca="0" cbo="1" ce="1" cis="2" cloc="4" cr="0.15" csz="2" dit="2" eloc="32" impl="0" lloc="24" loc="51" ncloc="47" noam="2" nocc="0" nom="2" noom="0" npm="2" rcr="0.17125" vars="0" varsi="0" varsnp="0" wmc="9" wmci="9" wmcnp="9">
+      <file name="/vagrant/application/modules/site/controllers/ErrorController.php"/>
+      <method name="errorAction" ccn="7" ccn2="7" cloc="4" eloc="24" lloc="19" loc="35" ncloc="31" npath="20"/>
+      <method name="getLog" ccn="2" ccn2="2" cloc="0" eloc="8" lloc="5" loc="9" ncloc="9" npath="2"/>
+    </class>
+    <class name="Site_IndexController" ca="0" cbo="7" ce="7" cis="4" cloc="17" cr="0.15" csz="7" dit="2" eloc="49" impl="0" lloc="15" loc="89" ncloc="72" noam="4" nocc="0" nom="4" noom="0" npm="4" rcr="0.17125" vars="3" varsi="3" varsnp="0" wmc="6" wmci="6" wmcnp="6">
+      <file name="/vagrant/application/modules/site/controllers/IndexController.php"/>
+      <method name="init" ccn="1" ccn2="1" cloc="1" eloc="2" lloc="0" loc="4" ncloc="3" npath="1"/>
+      <method name="indexAction" ccn="3" ccn2="3" cloc="0" eloc="23" lloc="13" loc="26" ncloc="26" npath="4"/>
+      <method name="headerAction" ccn="1" ccn2="1" cloc="0" eloc="22" lloc="2" loc="24" ncloc="24" npath="1"/>
+      <method name="footerAction" ccn="1" ccn2="1" cloc="0" eloc="2" lloc="0" loc="4" ncloc="4" npath="1"/>
+    </class>
+  </package>
+  <package name="App\Entity" cr="0.15" noc="1" nof="0" noi="0" nom="6" rcr="0.15">
+    <class name="Post" ca="1" cbo="1" ce="1" cis="6" cloc="6" cr="0.15" csz="9" dit="0" eloc="20" impl="0" lloc="8" loc="44" ncloc="38" noam="0" nocc="0" nom="6" noom="0" npm="6" rcr="0.15" vars="3" varsi="3" varsnp="0" wmc="6" wmci="6" wmcnp="6">
+      <file name="/vagrant/library/App/Entity/Post.php"/>
+      <method name="getId" ccn="1" ccn2="1" cloc="0" eloc="3" lloc="1" loc="4" ncloc="4" npath="1"/>
+      <method name="getTitle" ccn="1" ccn2="1" cloc="0" eloc="3" lloc="1" loc="4" ncloc="4" npath="1"/>
+      <method name="setTitle" ccn="1" ccn2="1" cloc="0" eloc="4" lloc="2" loc="5" ncloc="5" npath="1"/>
+      <method name="getPublishDate" ccn="1" ccn2="1" cloc="0" eloc="3" lloc="1" loc="4" ncloc="4" npath="1"/>
+      <method name="setPublishDate" ccn="1" ccn2="1" cloc="0" eloc="4" lloc="2" loc="5" ncloc="5" npath="1"/>
+      <method name="__toString" ccn="1" ccn2="1" cloc="0" eloc="3" lloc="1" loc="4" ncloc="4" npath="1"/>
+    </class>
+  </package>
+  <package name="App\Service" cr="0.15" noc="2" nof="0" noi="0" nom="3" rcr="0.15">
+    <class name="RandomStringGenerator" ca="1" cbo="0" ce="0" cis="2" cloc="0" cr="0.15" csz="3" dit="0" eloc="8" impl="0" lloc="4" loc="16" ncloc="16" noam="0" nocc="0" nom="2" noom="0" npm="2" rcr="0.15" vars="1" varsi="1" varsnp="0" wmc="2" wmci="2" wmcnp="2">
+      <file name="/vagrant/library/App/Service/RandomStringGenerator.php"/>
+      <method name="__construct" ccn="1" ccn2="1" cloc="0" eloc="3" lloc="1" loc="4" ncloc="4" npath="1"/>
+      <method name="createString" ccn="1" ccn2="1" cloc="0" eloc="5" lloc="3" loc="6" ncloc="6" npath="1"/>
+    </class>
+    <class name="StringReverser" ca="0" cbo="0" ce="0" cis="1" cloc="0" cr="0.15" csz="1" dit="0" eloc="3" impl="0" lloc="1" loc="7" ncloc="7" noam="0" nocc="0" nom="1" noom="0" npm="1" rcr="0.15" vars="0" varsi="0" varsnp="0" wmc="1" wmci="1" wmcnp="1">
+      <file name="/vagrant/library/App/Service/StringReverser.php"/>
+      <method name="reverse" ccn="1" ccn2="1" cloc="0" eloc="3" lloc="1" loc="4" ncloc="4" npath="1"/>
+    </class>
+  </package>
+</metrics>
