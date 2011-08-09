@@ -74,3 +74,7 @@ end
 execute "PECL: install xdebug" do
   command "pecl install xdebug"
 end
+
+execute "PEAR: install phpcpd" do
+  command "pear install -f phpunit/phpcpd"
+end

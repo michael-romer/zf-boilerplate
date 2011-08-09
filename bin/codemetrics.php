@@ -8,3 +8,8 @@ echo PHP_EOL . "####################" . PHP_EOL;
 echo "#  PHP MD Results  #" . PHP_EOL;
 echo "####################" . PHP_EOL;
 echo shell_exec("phpmd ../application,../library/App text design,codesize,unusedcode,naming");
+
+echo PHP_EOL . "####################" . PHP_EOL;
+echo "#  PHP CPD Results  #" . PHP_EOL;
+echo "####################" . PHP_EOL;
+echo shell_exec("phpcpd ../application ../library/App");
