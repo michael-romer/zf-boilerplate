@@ -28,7 +28,7 @@ class Boilerplate_Controller_Helper_DependencyInjector
                         $sc = Zend_Registry::get('sc');
 
                         $service = $sc->getService(
-                            lcfirst($tag->getDescription())
+                            trim(lcfirst($tag->getDescription()))
                         );
 
                         $property->setAccessible(true);
