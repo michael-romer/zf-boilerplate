@@ -65,17 +65,16 @@ class Site_IndexController extends Zend_Controller_Action
                     'action'     => 'index',
                     'controller' => 'index',
                     'module'     => 'site',
-                    'label'      => 'welcome'
+                    'label'      => 'Welcome!'
                 ),
                 array(
-                    'uri'        => 'http://www.zf-boilerplate.com/',
-                    'label'      => 'project website'
+                    'uri'        => 'http://zf-boilerplate.com/documentation/',
+                    'label'      => 'Documentation'
                 ),
                 array(
-                    'uri'        => 'https://github.com/michael-romer/' .
-                                        'zf-boilerplate',
-                    'label'      => 'GitHub'
-                )
+                    'uri'        => 'http://zf-boilerplate.com/',
+                    'label'      => 'Project Website'
+                ),
             )
         );
 
@@ -84,8 +83,20 @@ class Site_IndexController extends Zend_Controller_Action
 
     public function footerAction()
     {
-        
+        // Sample explicit usage of Memcached
+        $cache = Zend_Registry::get('cache');
+
+        if ($cache->contains('timestamp'))
+        {
+            $timestamp = $cache->fetch('timestamp');
+            $this->view->cachedTimestamp = true;
+        }
+        else
+        {
+            $timestamp = date("d M Y H:i:s");
+            $cache->save('timestamp', $timestamp);
+        }
+
+        $this->view->timestamp = $timestamp;
     }
-
-
 }
