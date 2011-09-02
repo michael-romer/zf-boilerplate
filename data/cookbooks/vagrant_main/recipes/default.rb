@@ -1,5 +1,6 @@
 require_recipe "apt"
 require_recipe "apache2"
+require_recipe "networking_basic"
 require_recipe "mysql::server"
 require_recipe "php::php5"
 require_recipe "elasticsearch"
