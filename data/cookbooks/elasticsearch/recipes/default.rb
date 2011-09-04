@@ -110,6 +110,10 @@ template "/etc/elasticsearch/elasticsearch.in.sh" do
   mode 0644
 end
 
+template "/etc/elasticsearch/elasticsearch.yml" do
+  source "elasticsearch.yml.erb"
+  mode 0644
+end
 
 
 runit_service "elasticsearch" do

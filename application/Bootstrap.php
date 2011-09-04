@@ -51,4 +51,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         Zend_Registry::set('sc', $sc);
     }
 
+    public function _initElasticSearch()
+    {
+        $es = new Elastica_Client();
+        Zend_Registry::set('es', $es);
+    }
+
 }

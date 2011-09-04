@@ -82,7 +82,7 @@ class Site_IndexController extends Zend_Controller_Action
     }
 
     public function footerAction()
-    {
+    { 
         // Sample explicit usage of Memcached
         $cache = Zend_Registry::get('cache');
 

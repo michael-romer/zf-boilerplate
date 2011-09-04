@@ -16,6 +16,7 @@ set_include_path(implode(PATH_SEPARATOR, array(
 include "Zend/Loader/Autoloader.php";
 $l = Zend_Loader_Autoloader::getInstance();
 $l->registerNamespace('Boilerplate_');
+$l->registerNamespace('Elastica_');
 
 // Making XDebug more chatty in Development Environment
 if (APPLICATION_ENV == 'development')
