@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <book xml:id="myapp_users_manual" xmlns="http://docbook.org/ns/docbook" version="5.0">
+   <title>Introduction</title>
+   <chapter xml:id="chapter_1">
+     <title>Welcome to MyApp</title>
+     <para>A very warm welcome to MyApp!</para>
+     <para>In the following, you will learn all the details about MyApp ...</para>
+   </chapter>
+   <chapter xml:id="chapter_2">
+     <title>Main Concepts</title>
+     <para>To understand how MyApp works, it important to go over some fundamental concepts first ...</para>
+   </chapter>
+ </book>

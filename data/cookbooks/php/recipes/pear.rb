@@ -46,10 +46,32 @@ php_pear_channel "pear.docblox-project.org" do
   action :discover
 end
 
+php_pear_channel "pear.michelf.com" do
+  action :discover
+end
+
 # using apt
 package "phpunit" do
   action :install
 end
+
+# XSL needed by DocBlox
+package "php5-xsl" do
+  action :install
+end
+
+# Graphviz needed by DocBlox
+package "graphviz" do
+  action :install
+end
+
+# Sqlite needed by PHD (Docbook)
+package "php5-sqlite" do
+  action :install
+end
+
+
+# Using PEAR installer
 
 execute "PEAR: upgrade all packages" do
   command "pear upgrade-all"
@@ -77,4 +99,12 @@ end
 
 execute "PEAR: install phpcpd" do
   command "pear install -f phpunit/phpcpd"
+end
+
+execute "PEAR: install docblox" do
+  command "pear install -f docblox/DocBlox"
+end
+
+execute "PEAR: install phd" do
+  command "pear install -f --alldeps doc.php.net/phd"
 end
