@@ -17,6 +17,7 @@ set_include_path(implode(PATH_SEPARATOR, array(
 include "Zend/Loader/Autoloader.php";
 $l = Zend_Loader_Autoloader::getInstance();
 $l->registerNamespace('Boilerplate_');
+$l->registerNamespace('Elastica_');
 
 require_once 'Zend/Application.php';
 
