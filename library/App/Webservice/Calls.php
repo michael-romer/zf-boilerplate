@@ -11,13 +11,15 @@ namespace App\Webservice;
 class Calls {
     /**
      * Returns the input string reversed
-     * @param string $input
-     * @return  string
+     * @param App_Webservice_Types_Request_ReverseStringRequest $request
+     * @return  App_Webservice_Types_Response_ReverseStringResponse $response
      */
-    public function reverseString($input = "") {
+    public function reverseString($request) {
         $sc = \Zend_Registry::get('sc');
         $srv = $sc->getService('stringReverser');
-        return $srv->reverse($input);
+        $response = new \App_Webservice_Types_Response_ReverseStringResponse();
+        $response->output = $srv->reverse($request->input);
+        return $response;
     }
 
 }
