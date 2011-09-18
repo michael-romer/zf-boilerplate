@@ -8,6 +8,11 @@ Vagrant::Config.run do |config|
      chef.cookbooks_path = "data/cookbooks"
      chef.add_recipe("vagrant_main")
      chef.log_level = :debug
+     # Configure http(s) proxy if needed (requires Vagrant >= 0.7.4)
+     # chef.http_proxy = "http://proxy.vmware.com:3128"
+     # chef.https_proxy = "http://proxy.vmware.com:3128"
+     # chef.http_proxy_user = "my_username"
+     # chef.http_proxy_pass = "foo"
      chef.json.merge!({ :mysql => { :server_root_password => "" } })
   end
 end
