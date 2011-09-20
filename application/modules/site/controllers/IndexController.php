@@ -89,8 +89,7 @@ class Site_IndexController extends Zend_Controller_Action
         if ($cache->contains('timestamp')) {
             $timestamp = $cache->fetch('timestamp');
             $this->view->cachedTimestamp = true;
-        }
-        else {
+        } else {
             $timestamp = date("d M Y H:i:s");
             $cache->save('timestamp', $timestamp);
         }
