@@ -7,8 +7,8 @@
  * To change this template use File | Settings | File Templates.
  */
 
-class App_Webservice_Types_Request_ReverseStringRequest {
-
+class App_Webservice_Types_Request_ReverseStringRequest
+{
     /**
      * @var string
      */
