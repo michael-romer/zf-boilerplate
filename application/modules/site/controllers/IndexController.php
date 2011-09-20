@@ -86,13 +86,11 @@ class Site_IndexController extends Zend_Controller_Action
         // Sample explicit usage of Memcached
         $cache = Zend_Registry::get('cache');
 
-        if ($cache->contains('timestamp'))
-        {
+        if ($cache->contains('timestamp')) {
             $timestamp = $cache->fetch('timestamp');
             $this->view->cachedTimestamp = true;
         }
-        else
-        {
+        else {
             $timestamp = date("d M Y H:i:s");
             $cache->save('timestamp', $timestamp);
         }
