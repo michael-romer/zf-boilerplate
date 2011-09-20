@@ -15,8 +15,7 @@ set_include_path(implode(PATH_SEPARATOR, array(
 )));
 
 include "Zend/Loader/Autoloader.php";
-$l = Zend_Loader_Autoloader::getInstance();
-$l->registerNamespace('Boilerplate_');
+Zend_Loader_Autoloader::getInstance();
 
 // Create application, bootstrap, and run
 $application = new Zend_Application(

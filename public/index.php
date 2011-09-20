@@ -13,10 +13,9 @@ set_include_path(implode(PATH_SEPARATOR, array(
     get_include_path(),
 )));
 
+// Activate PSR-0 Autoloading; pseudo-namespaces defined in application.ini
 include "Zend/Loader/Autoloader.php";
-$l = Zend_Loader_Autoloader::getInstance();
-$l->registerNamespace('Boilerplate_');
-$l->registerNamespace('Elastica_');
+Zend_Loader_Autoloader::getInstance();
 
 // Making XDebug more chatty in Development Environment
 if (APPLICATION_ENV == 'development')
