@@ -48,11 +48,16 @@ class Site_IndexController extends Zend_Controller_Action
 
         try
         {
-            $data = $this->_em->getRepository("\App\Entity\Post")->findAll();
+            /*
+             You could use "$data = $this->_em->getRepository("\App\Entity\Post")->findAll();"
+             as well, but for the purpose of demonstrating using Custom Repositories with Doctrine
+             I am calling a custom finder-method in a custom repository class for Entity "Post".
+             */
+            $data = $this->_em->getRepository("\App\Entity\Post")->findThemAll();
             $this->view->data = $data;
         }
         catch (Exception $e)
-        {
+        {   
             $this->view->databaseError = true;
         }
     }

@@ -1,7 +1,7 @@
 <?php
 namespace App\Entity;
 /**
- * @Entity
+ * @Entity(repositoryClass="App\Repository\Post")
  * @Table(name="post")
  */
 class Post
