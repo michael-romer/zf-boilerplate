@@ -8,29 +8,19 @@ bootstrap your projects with nearly zero work.
 ZF-Boilerplate isn't a framework, nor does it claim to be complete. It's the sum of the latest and greatest libraries,
 tools and scripts to get your ZF based project off the ground quickly and to speed up your development process.
 
-Included tools & libraries
---------------------------
-* Zend Framework 1.11.4
-* Doctrine 2.0.2
-* Symfony Dependency Injection
-* HTML5 Boilerplate
-* Vagrant 0.7
-* Jenkins / Hudson Build Template
 
 Features
 --------
-* All tools and libraries are configured to work together right away.
-* Get your ZF project off the ground with nearly zero additional boilerplate work.
-* Includes a fully virtualized and portable runtime and development environment. No Apache, PHP or MySQL installation needed on your local box.
-* Supports Service-oriented development, DDD & TDD.
-* Wire your services at runtime with a single configuration file and Dependency Injection.
-* Supports handy annotation based dependency management in Controller classes.
-* Comes with the pre-configured application modules site, admin and account all with individual layouts & error handling.
-* HTML5 ready templating
-* DB Schema creation script
-* Data fixture load script
-* Ant based build script
-* ... and much more!
+
+* Zend Framework on Steriods: ZF-Boilerplate is based on a current version of Zend Framework, the enterprise PHP framework by Zend, the company behind PHP. For ZF-Boilerplate, Zend Framework has been extended, e.g. by a Service Locator and annotation based Dependency Injection. 
+* Doctrine 2 tightly integrated: Doctrine 2 is the de-facto ORM system for PHP, mapping objects to relational databases. Doctrine 2 takes away all the pain working in both worlds. With ZF-Boilerplate, Doctrine 2 works out-of-the-box. But there is even more: It brings the tools for managing the database and dealing with data fixtures!
+* Virtual Machine based Development: With ZF Boilerplate, there is no need to set up a production-like runtime environment on your local box. ZF Boilerplate ships with a Virtual Machine (VM) that brings all applications and tools required to run and develop a Zend Framework application. The VM is based on Virtual Box, is maintained by Vagrant and provisioned by Chef.
+* Enterprise Search: Nearly all applications need search functionality. For many, search even is the most important part. Consider Online-Shops, Marketplaces or News Sites. They all heavily rely on search. ZF-Boilerplate ships with ElasticSearch, an enterprise, cloud-focused search technology pre-installed, pre-configured and ready to be used.
+* Test Driven Development: With Unit Testing available out-of-the-box, ZF-Boilerplate perfectly supports TDD and doesn't allow for any reason not to do "test-first" with your next ZF-Project. Includes Testdox creation and Code Coverage reports.
+* Domain Driven Design: ZF-Boilerplate greatly supports Domain Driven Design and lets you easily model your Services, Entities, Repositories and Value Objects in plain PHP minimizing dependencies on other application components.
+* SOAP Webservice: A serious webapp without a proper API? Naaa. ZF-Boilerplate gives you a SOAP based a API that is combat-ready right from the beginning. No setup, no config, no hassle. Just hook in the functions you want to expose via the API. Client application authentification via API token is certainly right built-in. 
+* Software Minining: ZF-Boilerplate comes with a bunch of the latest and greatest Software Mining tools available such as PHP_Depend and PHP_MD. Check the coding style of all your code with just a single command. 
+* Application Documentation: Documentation usually sucks because its too hard to get it in shape. ZF-Boilerplate brings Docblox for automatically generating your application's api documentation and DocBook support for authoring your users manual with ease. All installed, configured and ready to be used. 
 
 
 Installation
