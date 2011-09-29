@@ -48,19 +48,8 @@ class DB2Platform extends AbstractPlatform
      *
      * @param array $field
      */
-    public function getVarcharTypeDeclarationSQL(array $field)
+    protected function getVarcharTypeDeclarationSQLSnippet($length, $fixed)
     {
-        if ( ! isset($field['length'])) {
-            if (array_key_exists('default', $field)) {
-                $field['length'] = $this->getVarcharDefaultLength();
-            } else {
-                $field['length'] = false;
-            }
-        }
-
-        $length = ($field['length'] <= $this->getVarcharMaxLength()) ? $field['length'] : false;
-        $fixed = (isset($field['fixed'])) ? $field['fixed'] : false;
-
         return $fixed ? ($length ? 'CHAR(' . $length . ')' : 'CHAR(255)')
                 : ($length ? 'VARCHAR(' . $length . ')' : 'VARCHAR(255)');
     }
@@ -208,7 +197,7 @@ class DB2Platform extends AbstractPlatform
      * @param  string $table
      * @return string
      */
-    public function getListTableColumnsSQL($table)
+    public function getListTableColumnsSQL($table, $database = null)
     {
         return "SELECT DISTINCT c.tabschema, c.tabname, c.colname, c.colno,
                 c.typename, c.default, c.nulls, c.length, c.scale,
@@ -245,7 +234,7 @@ class DB2Platform extends AbstractPlatform
         return "SELECT NAME, TEXT FROM SYSIBM.SYSVIEWS";
     }
 
-    public function getListTableIndexesSQL($table)
+    public function getListTableIndexesSQL($table, $currentDatabase = null)
     {
         return "SELECT NAME, COLNAMES, UNIQUERULE FROM SYSIBM.SYSINDEXES WHERE TBNAME = UPPER('" . $table . "')";
     }
@@ -464,7 +453,7 @@ class DB2Platform extends AbstractPlatform
         return "SESSION." . $tableName;
     }
 
-    public function modifyLimitQuery($query, $limit, $offset = null)
+    protected function doModifyLimitQuery($query, $limit, $offset = null)
     {
         if ($limit === null && $offset === null) {
             return $query;
@@ -560,5 +549,10 @@ class DB2Platform extends AbstractPlatform
     public function supportsSavepoints()
     {
         return false;
+    }
+    
+    protected function getReservedKeywordsClass()
+    {
+        return 'Doctrine\DBAL\Platforms\Keywords\DB2Keywords';
     }
 }

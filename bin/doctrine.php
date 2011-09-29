@@ -50,4 +50,5 @@ $cli->addCommands(array(
     new \Doctrine\ORM\Tools\Console\Command\RunDqlCommand(),
 
 ));
+ 
 $cli->run();

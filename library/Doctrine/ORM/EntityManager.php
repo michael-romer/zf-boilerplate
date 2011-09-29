@@ -21,6 +21,7 @@ namespace Doctrine\ORM;
 
 use Closure, Exception,
     Doctrine\Common\EventManager,
+    Doctrine\Common\Persistence\ObjectManager,
     Doctrine\DBAL\Connection,
     Doctrine\DBAL\LockMode,
     Doctrine\ORM\Mapping\ClassMetadata,
@@ -37,7 +38,7 @@ use Closure, Exception,
  * @author  Jonathan Wage <jonwage@gmail.com>
  * @author  Roman Borschel <roman@code-factory.org>
  */
-class EntityManager
+class EntityManager implements ObjectManager
 {
     /**
      * The used Configuration.
@@ -96,12 +97,16 @@ class EntityManager
     private $proxyFactory;
 
     /**
-     * @var ExpressionBuilder The expression builder instance used to generate query expressions.
+     * The expression builder instance used to generate query expressions.
+     *
+     * @var Doctrine\ORM\Query\Expr
      */
     private $expressionBuilder;
 
     /**
      * Whether the EntityManager is closed or not.
+     *
+     * @var bool
      */
     private $closed = false;
 
@@ -163,7 +168,7 @@ class EntityManager
      *         ->where($expr->orX($expr->eq('u.id', 1), $expr->eq('u.id', 2)));
      * </code>
      *
-     * @return ExpressionBuilder
+     * @return Doctrine\ORM\Query\Expr
      */
     public function getExpressionBuilder()
     {
@@ -198,13 +203,18 @@ class EntityManager
     public function transactional(Closure $func)
     {
         $this->conn->beginTransaction();
+        
         try {
-            $func($this);
+            $return = $func($this);
+            
             $this->flush();
             $this->conn->commit();
+            
+            return $return ?: true;
         } catch (Exception $e) {
             $this->close();
             $this->conn->rollback();
+            
             throw $e;
         }
     }
@@ -677,6 +687,9 @@ class EntityManager
                 break;
             case Query::HYDRATE_SINGLE_SCALAR:
                 $hydrator = new Internal\Hydration\SingleScalarHydrator($this);
+                break;
+            case Query::HYDRATE_SIMPLEOBJECT:
+                $hydrator = new Internal\Hydration\SimpleObjectHydrator($this);
                 break;
             default:
                 if ($class = $this->config->getCustomHydrationMode($hydrationMode)) {

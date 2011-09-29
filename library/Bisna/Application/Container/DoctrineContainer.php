@@ -1,39 +1,20 @@
 <?php
 
-/**
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the LGPL. For more information, see
- * <http://www.doctrine-project.org>.
- */
-
 namespace Bisna\Application\Container;
 
-use Bisna\Application\Exception;
+use Bisna\Application\Exception,
+    Doctrine\DBAL\Types\Type,
+    Doctrine\Common\Annotations\AnnotationRegistry;
 
 /**
  * Doctrine Container class.
- *
- * @license http://www.opensource.org/licenses/lgpl-license.php LGPL
- * @link www.doctrine-project.org
  *
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  */
 class DoctrineContainer
 {
     /**
-     * @var string Default DBAL Connection name. 
+     * @var string Default DBAL Connection name.
      */
     public $defaultConnection = 'default';
 
@@ -67,7 +48,7 @@ class DoctrineContainer
      */
     private $entityManagers = array();
 
-    
+
     /**
      * Constructor.
      *
@@ -75,6 +56,11 @@ class DoctrineContainer
      */
     public function __construct(array $config = array())
     {
+        // Registering Class Loaders
+        if (isset($config['classLoader'])) {
+            $this->registerClassLoaders($config['classLoader']);
+        }
+
         // Defining DBAL configuration
         $dbalConfig = $this->prepareDBALConfiguration($config);
 
@@ -110,6 +96,24 @@ class DoctrineContainer
     }
 
     /**
+     * Register Doctrine Class Loaders
+     *
+     * @param array Doctrine Class Loader configuration
+     */
+    private function registerClassLoaders(array $config = array())
+    {
+        $classLoaderClass = $config['loaderClass'];
+        $classLoaderFile  = $config['loaderFile'];
+
+        require_once $classLoaderFile;
+
+        foreach ($config['loaders'] as $loaderItem) {
+            $classLoader = new $classLoaderClass($loaderItem['namespace'], $loaderItem['includePath']);
+            $classLoader->register();
+        }
+    }
+
+    /**
      * Prepare DBAL Connections configurations.
      *
      * @param array $config Doctrine Container configuration
@@ -125,11 +129,12 @@ class DoctrineContainer
         unset($dbalConfig['defaultConnection']);
 
         $defaultConnection = array(
-            'eventManagerClass' => 'Doctrine\Common\EventManager',
+            'eventManagerClass'  => 'Doctrine\Common\EventManager',
             'eventSubscribers'   => array(),
             'configurationClass' => 'Doctrine\DBAL\Configuration',
-            'sqlLoggerClass'    => null,
-            'parameters'          => array(
+            'sqlLoggerClass'     => null,
+            'types'              => array(),
+            'parameters'         => array(
                 'wrapperClass'       => null,
                 'driver'              => 'pdo_mysql',
                 'host'                => 'localhost',
@@ -175,7 +180,7 @@ class DoctrineContainer
             ? $cacheConfig['defaultCacheInstance'] : $this->defaultCacheInstance;
 
         unset($cacheConfig['defaultCacheInstance']);
-            
+
         $defaultCacheInstance = array(
             'adapterClass' => 'Doctrine\Common\Cache\ArrayCache',
             'namespace'    => '',
@@ -346,8 +351,22 @@ class DoctrineContainer
 
             unset($this->configuration['orm'][$emName]);
         }
-        
+
         return $this->entityManagers[$emName];
+    }
+
+    /**
+     * Retrieves a list of names for all Entity Managers configured
+     * and/or loaded
+     *
+     * @return array
+     */
+    public function getEntityManagerNames()
+    {
+       $configuredEMs = array_keys($this->configuration['orm']);
+       $loadedEMs = array_keys($this->entityManagers);
+
+       return array_merge($configuredEMs, $loadedEMs);
     }
 
     /**
@@ -384,6 +403,13 @@ class DoctrineContainer
             $configuration->setSQLLogger(new $sqlLoggerClass());
         }
 
+        //DBAL Types configuration
+        $types = $config['types'];
+
+        foreach ($types as $name => $className) {
+            Type::addType($name, $className);
+        }
+
         return $configuration;
     }
 
@@ -401,7 +427,9 @@ class DoctrineContainer
 
         // Event Subscribers configuration
         foreach ($config['eventSubscribers'] as $subscriber) {
-            $eventManager->addEventSubscriber(new $subscriber());
+       	    if ($subscriber) {
+       	        $eventManager->addEventSubscriber(new $subscriber());
+       	    }
         }
 
         return $eventManager;
@@ -473,7 +501,12 @@ class DoctrineContainer
      */
     private function startORMEntityManager(array $config = array())
     {
-        return \Doctrine\ORM\EntityManager::create(
+        if (isset($config['entityManagerClass'])) {
+            $entityManagerClass = $config['entityManagerClass'];
+        } else {
+            $entityManagerClass = '\Doctrine\ORM\EntityManager';
+        }
+        return $entityManagerClass::create(
             $this->getConnection($config['connection']),
             $this->startORMConfiguration($config)
         );
@@ -552,9 +585,15 @@ class DoctrineContainer
             'annotationReaderNamespaces' => array()
         );
 
-        foreach ($config as $driver) {
+
+        // Setup AnnotationRegistry
+        if (isset($config['annotationRegistry'])) {
+            $this->startAnnotationRegistry($config['annotationRegistry']);
+        }
+
+        foreach ($config['drivers'] as $driver) {
             $driver = array_replace_recursive($defaultMetadataDriver, $driver);
-            
+
             $reflClass = new \ReflectionClass($driver['adapterClass']);
             $nestedDriver = null;
 
@@ -563,18 +602,30 @@ class DoctrineContainer
                 $reflClass->isSubclassOf('Doctrine\ORM\Mapping\Driver\AnnotationDriver')
             ) {
                 $annotationReaderClass = $driver['annotationReaderClass'];
-                $annotationReader = new $annotationReaderClass($this->getCacheInstance($driver['annotationReaderCache']));
-                $annotationReader->setDefaultAnnotationNamespace('Doctrine\ORM\Mapping\\');
+                $annotationReader = new $annotationReaderClass();
 
-                foreach ($driver['annotationReaderNamespaces'] as $alias => $namespace) {
-                    $annotationReader->setAnnotationNamespaceAlias($namespace, $alias);
+                if (method_exists($annotationReader, 'setDefaultAnnotationNamespace')) {
+                    $annotationReader->setDefaultAnnotationNamespace('Doctrine\ORM\Mapping\\');
                 }
 
-                $nestedDriver = $reflClass->newInstance($annotationReader, $driver['mappingDirs']);
+                if (method_exists($annotationReader, 'setAnnotationNamespaceAlias')) {
+                    $driver['annotationReaderNamespaces']['ORM'] = 'Doctrine\ORM\Mapping\\';
+
+                    foreach ($driver['annotationReaderNamespaces'] as $alias => $namespace) {
+                        $annotationReader->setAnnotationNamespaceAlias($namespace, $alias);
+                    }
+                }
+
+                $indexedReader = new \Doctrine\Common\Annotations\CachedReader(
+                    new \Doctrine\Common\Annotations\IndexedReader($annotationReader),
+                    $this->getCacheInstance($driver['annotationReaderCache'])
+                );
+
+                $nestedDriver = $reflClass->newInstance($indexedReader, $driver['mappingDirs']);
             } else {
                 $nestedDriver = $reflClass->newInstance($driver['mappingDirs']);
             }
-            
+
             $metadataDriver->addDriver($nestedDriver, $driver['mappingNamespace']);
         }
 
@@ -584,5 +635,31 @@ class DoctrineContainer
         }
 
         return $metadataDriver;
+    }
+
+    /**
+     * Initialize ORM Metatada Annotation Registry driver
+     *
+     * @param array $config  ORM Annotation Registry configuration.
+     */
+    private function startAnnotationRegistry($config)
+    {
+        // Load annotations from Files
+        if (isset($config['annotationFiles']) && is_array($config['annotationFiles'])) {
+            foreach($config['annotationFiles'] as $file) {
+                AnnotationRegistry::registerFile($file);
+            }
+        }
+
+        // Load annotation namespaces
+        if (isset($config['annotationNamespaces']) && is_array($config['annotationNamespaces'])) {
+            foreach($config['annotationNamespaces'] as $annotationNamespace) {
+                AnnotationRegistry::registerAutoloadNamespace(
+                        $annotationNamespace['namespace'],
+                        $annotationNamespace['includePath']
+                );
+            }
+
+        }
     }
 }

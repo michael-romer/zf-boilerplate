@@ -75,8 +75,7 @@ class QueryException extends \Doctrine\ORM\ORMException
     public static function invalidPathExpression($pathExpr)
     {
         return new self(
-            "Invalid PathExpression '" . $pathExpr->identificationVariable .
-            "." . implode('.', $pathExpr->parts) . "'."
+            "Invalid PathExpression '" . $pathExpr->identificationVariable . "." . $pathExpr->field . "'."
         );
     }
 
@@ -135,5 +134,11 @@ class QueryException extends \Doctrine\ORM\ORMException
             "key is not supported. Explicitly name the components of the composite primary key ".
             "in the query."
         );
+    }
+    
+    public static function instanceOfUnrelatedClass($className, $rootClass)
+    {
+        return new self("Cannot check if a child of '" . $rootClass . "' is instanceof '" . $className . "', " .
+                "inheritance hierachy exists between these two classes.");
     }
 }

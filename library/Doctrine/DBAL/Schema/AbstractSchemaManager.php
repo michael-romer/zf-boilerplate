@@ -33,7 +33,6 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  * @author      Roman Borschel <roman@code-factory.org>
  * @author      Jonathan H. Wage <jonwage@gmail.com>
  * @author      Benjamin Eberlei <kontakt@beberlei.de>
- * @version     $Revision$
  * @since       2.0
  */
 abstract class AbstractSchemaManager
@@ -141,11 +140,16 @@ abstract class AbstractSchemaManager
      * in the platformDetails array.
      *
      * @param string $table The name of the table.
+     * @param string $database
      * @return Column[]
      */
-    public function listTableColumns($table)
+    public function listTableColumns($table, $database = null)
     {
-        $sql = $this->_platform->getListTableColumnsSQL($table);
+        if (!$database) {
+            $database = $this->_conn->getDatabase();
+        }
+
+        $sql = $this->_platform->getListTableColumnsSQL($table, $database);
 
         $tableColumns = $this->_conn->fetchAll($sql);
 
@@ -162,7 +166,7 @@ abstract class AbstractSchemaManager
      */
     public function listTableIndexes($table)
     {
-        $sql = $this->_platform->getListTableIndexesSQL($table);
+        $sql = $this->_platform->getListTableIndexesSQL($table, $this->_conn->getDatabase());
 
         $tableIndexes = $this->_conn->fetchAll($sql);
 
@@ -773,5 +777,26 @@ abstract class AbstractSchemaManager
         $schemaConfig->setMaxIdentifierLength($this->_platform->getMaxIdentifierLength());
 
         return $schemaConfig;
+    }
+
+    /**
+     * Given a table comment this method tries to extract a typehint for Doctrine Type, or returns
+     * the type given as default.
+     * 
+     * @param  string $comment
+     * @param  string $currentType
+     * @return string
+     */
+    public function extractDoctrineTypeFromComment($comment, $currentType)
+    {
+        if (preg_match("(\(DC2Type:([a-zA-Z0-9]+)\))", $comment, $match)) {
+            $currentType = $match[1];
+        }
+        return $currentType;
+    }
+
+    public function removeDoctrineTypeFromComment($comment, $type)
+    {
+        return str_replace('(DC2Type:'.$type.')', '', $comment);
     }
 }

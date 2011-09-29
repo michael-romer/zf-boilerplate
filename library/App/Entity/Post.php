@@ -1,5 +1,6 @@
 <?php
 namespace App\Entity;
+
 /**
  * @Entity(repositoryClass="App\Repository\Post")
  * @Table(name="post")

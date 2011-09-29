@@ -89,6 +89,11 @@ class Column extends AbstractAsset
     protected $_columnDefinition = null;
 
     /**
+     * @var string
+     */
+    protected $_comment = null;
+
+    /**
      * Create a new Column
      * 
      * @param string $columnName
@@ -154,6 +159,10 @@ class Column extends AbstractAsset
      */
     public function setPrecision($precision)
     {
+        if (!is_numeric($precision)) {
+            $precision = 10; // defaults to 10 when no valid precision is given.
+        }
+
         $this->_precision = (int)$precision;
         return $this;
     }
@@ -164,7 +173,11 @@ class Column extends AbstractAsset
      */
     public function setScale($scale)
     {
-        $this->_scale = $scale;
+        if (!is_numeric($scale)) {
+            $scale = 0;
+        }
+
+        $this->_scale = (int)$scale;
         return $this;
     }
 
@@ -316,6 +329,17 @@ class Column extends AbstractAsset
         return $this;
     }
 
+    public function setComment($comment)
+    {
+        $this->_comment = $comment;
+        return $this;
+    }
+
+    public function getComment()
+    {
+        return $this->_comment;
+    }
+
     /**
      * @param Visitor $visitor
      */
@@ -341,6 +365,7 @@ class Column extends AbstractAsset
             'unsigned'      => $this->_unsigned,
             'autoincrement' => $this->_autoincrement,
             'columnDefinition' => $this->_columnDefinition,
+            'comment' => $this->_comment,
         ), $this->_platformOptions);
     }
 }

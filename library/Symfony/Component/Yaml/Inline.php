@@ -2,7 +2,7 @@
 
 /*
  * This file is part of the Symfony package.
- * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,10 +10,13 @@
 
 namespace Symfony\Component\Yaml;
 
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Exception\DumpException;
+
 /**
  * Inline implements a YAML parser/dumper for the YAML inline syntax.
  *
- * @author Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author Fabien Potencier <fabien@symfony.com>
  */
 class Inline
 {
@@ -26,7 +29,7 @@ class Inline
      *
      * @return array A PHP array representing the YAML string
      */
-    static public function load($value)
+    static public function parse($value)
     {
         $value = trim($value);
 
@@ -64,16 +67,13 @@ class Inline
      *
      * @return string The YAML string representing the PHP array
      *
-     * @throws Exception When trying to dump PHP resource
+     * @throws DumpException When trying to dump PHP resource
      */
     static public function dump($value)
     {
-        $trueValues = '1.1' == Yaml::getSpecVersion() ? array('true', 'on', '+', 'yes', 'y') : array('true');
-        $falseValues = '1.1' == Yaml::getSpecVersion() ? array('false', 'off', '-', 'no', 'n') : array('false');
-
         switch (true) {
             case is_resource($value):
-                throw new Exception('Unable to dump PHP resources in a YAML file.');
+                throw new DumpException('Unable to dump PHP resources in a YAML file.');
             case is_object($value):
                 return '!!php/object:'.serialize($value);
             case is_array($value):
@@ -88,19 +88,14 @@ class Inline
                 return is_string($value) ? "'$value'" : (int) $value;
             case is_numeric($value):
                 return is_infinite($value) ? str_ireplace('INF', '.Inf', strval($value)) : (is_string($value) ? "'$value'" : $value);
-            case false !== strpos($value, "\n") || false !== strpos($value, "\r"):
-                return sprintf('"%s"', str_replace(array('"', "\n", "\r"), array('\\"', '\n', '\r'), $value));
-            case preg_match('/[ \s \' " \: \{ \} \[ \] , & \* \# \?] | \A[ - ? | < > = ! % @ ` ]/x', $value):
-                return sprintf("'%s'", str_replace('\'', '\'\'', $value));
+            case Escaper::requiresDoubleQuoting($value):
+                return Escaper::escapeWithDoubleQuotes($value);
+            case Escaper::requiresSingleQuoting($value):
+                return Escaper::escapeWithSingleQuotes($value);
             case '' == $value:
                 return "''";
             case preg_match(self::getTimestampRegex(), $value):
-                return "'$value'";
-            case in_array(strtolower($value), $trueValues):
-                return "'$value'";
-            case in_array(strtolower($value), $falseValues):
-                return "'$value'";
-            case in_array(strtolower($value), array('null', '~')):
+            case in_array(strtolower($value), array('null', '~', 'true', 'false')):
                 return "'$value'";
             default:
                 return $value;
@@ -114,7 +109,7 @@ class Inline
      *
      * @return string The YAML string representing the PHP array
      */
-    static protected function dumpArray($value)
+    static private function dumpArray($value)
     {
         // array
         $keys = array_keys($value);
@@ -143,13 +138,13 @@ class Inline
      *
      * @param scalar  $scalar
      * @param string  $delimiters
-     * @param array   $stringDelimiter
-     * @param integer $i
+     * @param array   $stringDelimiters
+     * @param integer &$i
      * @param Boolean $evaluate
      *
      * @return string A YAML string
      *
-     * @throws ParserException When malformed inline YAML string is parsed
+     * @throws ParseException When malformed inline YAML string is parsed
      */
     static public function parseScalar($scalar, $delimiters = null, $stringDelimiters = array('"', "'"), &$i = 0, $evaluate = true)
     {
@@ -170,7 +165,7 @@ class Inline
                 $output = $match[1];
                 $i += strlen($output);
             } else {
-                throw new ParserException(sprintf('Malformed inline YAML string (%s).', $scalar));
+                throw new ParseException(sprintf('Malformed inline YAML string (%s).', $scalar));
             }
 
             $output = $evaluate ? self::evaluateScalar($output) : $output;
@@ -187,22 +182,21 @@ class Inline
      *
      * @return string A YAML string
      *
-     * @throws ParserException When malformed inline YAML string is parsed
+     * @throws ParseException When malformed inline YAML string is parsed
      */
-    static protected function parseQuotedScalar($scalar, &$i)
+    static private function parseQuotedScalar($scalar, &$i)
     {
         if (!preg_match('/'.self::REGEX_QUOTED_STRING.'/Au', substr($scalar, $i), $match)) {
-            throw new ParserException(sprintf('Malformed inline YAML string (%s).', substr($scalar, $i)));
+            throw new ParseException(sprintf('Malformed inline YAML string (%s).', substr($scalar, $i)));
         }
 
         $output = substr($match[0], 1, strlen($match[0]) - 2);
 
+        $unescaper = new Unescaper();
         if ('"' == $scalar[$i]) {
-            // evaluate the string
-            $output = str_replace(array('\\"', '\\n', '\\r'), array('"', "\n", "\r"), $output);
+            $output = $unescaper->unescapeDoubleQuotedString($output);
         } else {
-            // unescape '
-            $output = str_replace('\'\'', '\'', $output);
+            $output = $unescaper->unescapeSingleQuotedString($output);
         }
 
         $i += strlen($match[0]);
@@ -218,9 +212,9 @@ class Inline
      *
      * @return string A YAML string
      *
-     * @throws ParserException When malformed inline YAML string is parsed
+     * @throws ParseException When malformed inline YAML string is parsed
      */
-    static protected function parseSequence($sequence, &$i = 0)
+    static private function parseSequence($sequence, &$i = 0)
     {
         $output = array();
         $len = strlen($sequence);
@@ -263,7 +257,7 @@ class Inline
             ++$i;
         }
 
-        throw new ParserException(sprintf('Malformed inline YAML string %s', $sequence));
+        throw new ParseException(sprintf('Malformed inline YAML string %s', $sequence));
     }
 
     /**
@@ -274,9 +268,9 @@ class Inline
      *
      * @return string A YAML string
      *
-     * @throws ParserException When malformed inline YAML string is parsed
+     * @throws ParseException When malformed inline YAML string is parsed
      */
-    static protected function parseMapping($mapping, &$i = 0)
+    static private function parseMapping($mapping, &$i = 0)
     {
         $output = array();
         $len = strlen($mapping);
@@ -327,7 +321,7 @@ class Inline
             }
         }
 
-        throw new ParserException(sprintf('Malformed inline YAML string %s', $mapping));
+        throw new ParseException(sprintf('Malformed inline YAML string %s', $mapping));
     }
 
     /**
@@ -337,12 +331,9 @@ class Inline
      *
      * @return string A YAML string
      */
-    static protected function evaluateScalar($scalar)
+    static private function evaluateScalar($scalar)
     {
         $scalar = trim($scalar);
-
-        $trueValues = '1.1' == Yaml::getSpecVersion() ? array('true', 'on', '+', 'yes', 'y') : array('true');
-        $falseValues = '1.1' == Yaml::getSpecVersion() ? array('false', 'off', '-', 'no', 'n') : array('false');
 
         switch (true) {
             case 'null' == strtolower($scalar):
@@ -358,10 +349,11 @@ class Inline
             case ctype_digit($scalar):
                 $raw = $scalar;
                 $cast = intval($scalar);
+
                 return '0' == $scalar[0] ? octdec($scalar) : (((string) $raw == (string) $cast) ? $cast : $raw);
-            case in_array(strtolower($scalar), $trueValues):
+            case 'true' === strtolower($scalar):
                 return true;
-            case in_array(strtolower($scalar), $falseValues):
+            case 'false' === strtolower($scalar):
                 return false;
             case is_numeric($scalar):
                 return '0x' == $scalar[0].$scalar[1] ? hexdec($scalar) : floatval($scalar);
@@ -384,7 +376,7 @@ class Inline
      *
      * @return string The regular expression
      */
-    static protected function getTimestampRegex()
+    static private function getTimestampRegex()
     {
         return <<<EOF
         ~^

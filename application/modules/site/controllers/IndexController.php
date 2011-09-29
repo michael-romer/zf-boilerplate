@@ -42,7 +42,7 @@ class Site_IndexController extends Zend_Controller_Action
             $this->_em->flush();
         }
         catch (Exception $e)
-        {
+        {   
             $this->view->databaseError = true;
         }
 

@@ -38,14 +38,16 @@ class PostgreSqlSchemaManager extends AbstractSchemaManager
         $onUpdate = null;
         $onDelete = null;
 
-        if (preg_match('(ON UPDATE ([a-zA-Z0-9]+))', $tableForeignKey['condef'], $match)) {
+        if (preg_match('(ON UPDATE ([a-zA-Z0-9]+( (NULL|ACTION|DEFAULT))?))', $tableForeignKey['condef'], $match)) {
             $onUpdate = $match[1];
         }
-        if (preg_match('(ON DELETE ([a-zA-Z0-9]+))', $tableForeignKey['condef'], $match)) {
+        if (preg_match('(ON DELETE ([a-zA-Z0-9]+( (NULL|ACTION|DEFAULT))?))', $tableForeignKey['condef'], $match)) {
             $onDelete = $match[1];
         }
 
         if (preg_match('/FOREIGN KEY \((.+)\) REFERENCES (.+)\((.+)\)/', $tableForeignKey['condef'], $values)) {
+            // PostgreSQL returns identifiers that are keywords with quotes, we need them later, don't get
+            // the idea to trim them here.
             $localColumns = array_map('trim', explode(",", $values[1]));
             $foreignColumns = array_map('trim', explode(",", $values[3]));
             $foreignTable = $values[2];
@@ -199,7 +201,6 @@ class PostgreSqlSchemaManager extends AbstractSchemaManager
         if ((int) $length <= 0) {
             $length = null;
         }
-        $type = array();
         $fixed = null;
 
         if (!isset($tableColumn['name'])) {
@@ -217,6 +218,9 @@ class PostgreSqlSchemaManager extends AbstractSchemaManager
         }
 
         $type = $this->_platform->getDoctrineTypeMapping($dbType);
+        $type = $this->extractDoctrineTypeFromComment($tableColumn['comment'], $type);
+        $tableColumn['comment'] = $this->removeDoctrineTypeFromComment($tableColumn['comment'], $type);
+
         switch ($dbType) {
             case 'smallint':
             case 'int2':
@@ -268,15 +272,16 @@ class PostgreSqlSchemaManager extends AbstractSchemaManager
         }
 
         $options = array(
-            'length' => $length,
-            'notnull' => (bool) $tableColumn['isnotnull'],
-            'default' => $tableColumn['default'],
-            'primary' => (bool) ($tableColumn['pri'] == 't'),
-            'precision' => $precision,
-            'scale' => $scale,
-            'fixed' => $fixed,
-            'unsigned' => false,
+            'length'        => $length,
+            'notnull'       => (bool) $tableColumn['isnotnull'],
+            'default'       => $tableColumn['default'],
+            'primary'       => (bool) ($tableColumn['pri'] == 't'),
+            'precision'     => $precision,
+            'scale'         => $scale,
+            'fixed'         => $fixed,
+            'unsigned'      => false,
             'autoincrement' => $autoincrement,
+            'comment'       => $tableColumn['comment'],
         );
 
         return new Column($tableColumn['field'], \Doctrine\DBAL\Types\Type::getType($type), $options);
