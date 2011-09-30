@@ -17,7 +17,7 @@
  * @subpackage Table
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Abstract.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id: Abstract.php 24148 2011-06-21 15:14:00Z yoshida@zend.co.jp $
  */
 
 /**
@@ -744,6 +744,7 @@ abstract class Zend_Db_Table_Abstract
      * Initialize database adapter.
      *
      * @return void
+     * @throws Zend_Db_Table_Exception
      */
     protected function _setupDatabaseAdapter()
     {
@@ -974,6 +975,7 @@ abstract class Zend_Db_Table_Abstract
      *
      * @param  string $key The specific info part to return OPTIONAL
      * @return mixed
+     * @throws Zend_Db_Table_Exception
      */
     public function info($key = null)
     {
@@ -1052,7 +1054,7 @@ abstract class Zend_Db_Table_Abstract
         /**
          * If the primary key can be generated automatically, and no value was
          * specified in the user-supplied data, then omit it from the tuple.
-         * 
+         *
          * Note: this checks for sensible values in the supplied primary key
          * position of the data.  The following values are considered empty:
          *   null, false, true, '', array()
@@ -1363,10 +1365,11 @@ abstract class Zend_Db_Table_Abstract
      *
      * @param string|array|Zend_Db_Table_Select $where  OPTIONAL An SQL WHERE clause or Zend_Db_Table_Select object.
      * @param string|array                      $order  OPTIONAL An SQL ORDER clause.
+     * @param int                               $offset OPTIONAL An SQL OFFSET value.
      * @return Zend_Db_Table_Row_Abstract|null The row results per the
      *     Zend_Db_Adapter fetch mode, or null if no row found.
      */
-    public function fetchRow($where = null, $order = null)
+    public function fetchRow($where = null, $order = null, $offset = null)
     {
         if (!($where instanceof Zend_Db_Table_Select)) {
             $select = $this->select();
@@ -1379,10 +1382,10 @@ abstract class Zend_Db_Table_Abstract
                 $this->_order($select, $order);
             }
 
-            $select->limit(1);
+            $select->limit(1, ((is_numeric($offset)) ? (int) $offset : null));
 
         } else {
-            $select = $where->limit(1);
+            $select = $where->limit(1, $where->getPart(Zend_Db_Select::LIMIT_OFFSET));
         }
 
         $rows = $this->_fetch($select);
