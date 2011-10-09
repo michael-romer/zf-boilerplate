@@ -6,8 +6,8 @@
  * Time: 18:32
  * To change this template use File | Settings | File Templates.
  */
-$newPost = new \App\Entity\Post();
-$newPost->setTitle("Post added by DB fixture");
-$em->persist($newPost);
+$newQuote = new \App\Entity\Quote();
+$newQuote->setWording("Don’t let the past steal your present.");
+$newQuote->setAuthor("Cherralea Morgen");
+$em->persist($newQuote);
 $em->flush();
-

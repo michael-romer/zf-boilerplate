@@ -1,11 +1,3 @@
-<footer id="contentinfo" class="body">
-	<address id="about" class="vcard body">
-		<span class="primary">
-			<strong><a href="http://www.zf-boilerplate.com" target="_blank" class="fn url">ZF Boilerplate</a></strong>
-		</span><!-- /.primary -->
-
-		<span class="bio">Visit the <a href="http://www.zf-boilerplate.com/">official website</a> for tutorials & help.</span>
-
-	</address><!-- /#about -->
-	<p>Page rendered on <?php echo $this->timestamp ?><br /><?php if ($this->cachedTimestamp) { ?>(Timestamp served from Memcached) <?php } ?></p>
-</footer><!-- /#contentinfo -->
+<p>&copy; 2011 Michael Romer
+<small>Page rendered on <?php echo $this->timestamp ?> <?php if ($this->cachedTimestamp) { ?>(Timestamp served from Memcached) <?php } ?></small>
+</p>

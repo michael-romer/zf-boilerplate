@@ -1,10 +1,10 @@
 <?xml version="1.0" ?>
 <container xmlns="http://symfony-project.org/2.0/container">
   <services>
-    <service id="randomStringGenerator" class="App\Service\RandomStringGenerator" shared="true">
-      <argument type="service" id="stringReverser" />
+    <service id="randomQuote" class="App\Service\RandomQuote" shared="true">
+      <argument type="service" id="randomizer" />
     </service>
-    <service id="stringReverser" class="App\Service\StringReverser" shared="true">
+    <service id="randomizer" class="App\Service\Randomizer" shared="true">
     </service>
   </services>
 </container>

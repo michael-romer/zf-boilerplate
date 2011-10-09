@@ -5,61 +5,156 @@ class Site_IndexController extends Zend_Controller_Action
 
     /**
      * @var Doctrine\ORM\EntityManager
-     * 
-     * 
      */
     protected $_em = null;
 
     /**
      * @var \sfServiceContainer
-     * 
-     * 
      */
     protected $_sc = null;
 
     /**
-     * @var \App\Service\RandomStringGenerator
-     * @InjectService RandomStringGenerator
-     * 
-     * 
+     * @var \App\Service\RandomQuote
+     * @InjectService RandomQuote
      */
-    protected $_randomStringGenerator = null;
+    protected $_randomQuote = null;
 
     public function init()
     {
-        /* Initialize action controller here */
+        $this->_em = Zend_Registry::get('em');
     }
 
+    public function searchAction()
+    {
+        if ($query = $this->getRequest()->getParam('query')) {
+            $resultSet = array();
+
+            try {
+                $client = Zend_Registry::get('es');
+                $index = $client->getIndex('quotes');
+                $type = $index->getType('quote');
+                $resultSet = $type->search($query);
+            } catch (Exception $e) {
+                $this->_redirect('/');
+            }
+
+            $data = array();
+
+            foreach ($resultSet as $result) {
+                $hit = $result->getHit();
+                $quote = new \App\Entity\Quote();
+                $quote->setAuthor($hit['_source']['author']);
+                $quote->setWording($hit['_source']['wording']);
+                $data[] = $quote;
+            }
+
+            $this->view->search = true;
+            $this->view->data = $data;
+            $this->_helper->viewRenderer('index');
+        }
+        else
+            $this->_redirect('/');
+
+    }
+
+    public function addRandomAction()
+    {
+        $tempQuote = $this->_randomQuote->getQuote();
+        $newQuote = new \App\Entity\Quote();
+        $newQuote->setWording($tempQuote[0]);
+        $newQuote->setAuthor($tempQuote[1]);
+
+        try
+        {
+            $this->_em->persist($newQuote);
+            $this->_em->flush();
+            $this->indexQuote($newQuote);
+        }
+        catch (Exception $e)
+        {
+            $this->_redirect('/');
+        }
+
+        $this->_redirect('/');
+    }
+
+    public function addCustomAction()
+    {
+        if ($this->_request->isPost()) {
+            $addQuoteForm = new \App\Form\AddQuote();
+
+            if ($addQuoteForm->isValid($this->_request->getPost())) {
+
+                $values = $addQuoteForm->getValues();
+                $newQuote = new \App\Entity\Quote();
+                $newQuote->setWording($values['quote']);
+                $newQuote->setAuthor($values['name']);
+
+                try {
+                    $this->_em->persist($newQuote);
+                    $this->_em->flush();
+                    $this->indexQuote($newQuote);
+                }
+                catch (Exception $e) {
+                    $this->_redirect('/');
+                }
+            } else {
+                $addQuoteForm->buildBootstrapErrorDecorators();
+            }
+
+            $data = $this->_em->getRepository("\App\Entity\Quote")
+                    ->findThemAll();
+
+            $this->view->data = $data;
+            $this->_helper->viewRenderer('index');
+        } else {
+            $this->_redirect('/');
+        }
+    }
+        
     public function indexAction()
     {
-        $this->_em = Zend_Registry::get('em');
-        $newPost = new \App\Entity\Post();
-        $newPost->setTitle($this->_randomStringGenerator->createString());
+        $addQuoteForm = new \App\Form\AddQuote();
+        $this->view->form = $addQuoteForm;
+        $this->checkSearchindex();
 
-        try
-        {
-            $this->_em->persist($newPost);
-            $this->_em->flush();
-        }
-        catch (Exception $e)
-        {   
-            $this->view->databaseError = true;
-        }
-
-        try
-        {
-            /*
-             You could use "$data = $this->_em->getRepository("\App\Entity\Post")->findAll();"
-             as well, but for the purpose of demonstrating using Custom Repositories with Doctrine
-             I am calling a custom finder-method in a custom repository class for Entity "Post".
-             */
-            $data = $this->_em->getRepository("\App\Entity\Post")->findThemAll();
+        try {
+            $data = $this->_em->getRepository("\App\Entity\Quote")
+                    ->findThemAll();
             $this->view->data = $data;
         }
-        catch (Exception $e)
-        {   
+        catch (Exception $e) {
             $this->view->databaseError = true;
         }
+    }
+
+    private function checkSearchindex()
+    {
+        try {
+            $client = Zend_Registry::get('es');
+            $index = $client->getIndex('quotes');
+            $type = $index->getType('quote');
+            $resultSet = $type->search($this->getRequest()->getParam('query'));
+        } catch (Exception $e) {
+            $this->view->searchindexError = true;
+        }
+    }
+
+    private function indexQuote(\App\Entity\Quote $quote)
+    {
+       $client = Zend_Registry::get('es');
+       $index = $client->getIndex('quotes');
+       $index->create(array(), true);
+       $type = $index->getType('quote');
+
+       $doc = new Elastica_Document(
+           1, array('id' => $quote->getId(),
+           'wording' => $quote->getWording(),
+           'author' => $quote->getAuthor())
+       );
+
+       $type->addDocument($doc);
+       $index->refresh();
     }
 
     public function headerAction()
@@ -70,16 +165,12 @@ class Site_IndexController extends Zend_Controller_Action
                     'action'     => 'index',
                     'controller' => 'index',
                     'module'     => 'site',
-                    'label'      => 'Welcome!'
+                    'label'      => 'Home'
                 ),
                 array(
                     'uri'        => 'http://zf-boilerplate.com/documentation/',
                     'label'      => 'Documentation'
-                ),
-                array(
-                    'uri'        => 'http://zf-boilerplate.com/',
-                    'label'      => 'Project Website'
-                ),
+                )
             )
         );
 
@@ -88,7 +179,6 @@ class Site_IndexController extends Zend_Controller_Action
 
     public function footerAction()
     { 
-        // Sample explicit usage of Memcached
         $cache = Zend_Registry::get('cache');
 
         if ($cache->contains('timestamp')) {

@@ -1,34 +1,36 @@
-<aside id="featured" class="body"><article>
-	<hgroup>
-    	<h2>This is ZF-Boilerplate.</h2>
-		<h3>Well done, it works!</h3>
-	</hgroup>
-	<p>ZF-Boilerplate is a pre-packaged, pre-configured Zend Framework - based project blueprint for your enterprise grade PHP application. It combines state-of-the-art tools, frameworks and the best ideas to bootstrap your projects with nearly zero work. ZF Boilerplate ships with Doctrine 2, Symfony Dependency Injection, HTML 5 Boilerplate and a fully configured Virtual Machine that is managed by Vagrant and Chef - no need to install any deamons such as Apache or MySQL on your local box. And there is much more: Annotation based dependency injection, Module based Layouting, Scripts for creating the database and loading fixtures, Hudson/Jenkins Build Script and even more.</p>
+<?php if ($this->databaseError) { ?>
+<div class="alert-message warning">
+  <a class="close" href="#">×</a>
+  <p><strong>Sample Database:</strong> If you want see some persistence action, you will first need to <a href="http://zf-boilerplate.com/documentation/managing-the-virtual-machine/#ssh" target="blank">SSH into your VM</a> and run the <a href="http://zf-boilerplate.com/documentation/persistence-the-database/#fixtures" target="blank">database and fixtures setup script</a>.</p>
+</div>
+<?php } ?>
 
-</article></aside><!-- /#featured -->
+<?php if ($this->searchindexError) { ?>
+<div class="alert-message warning">
+  <a class="close" href="#">×</a>
+  <p><strong>Fulltext Search:</strong> If you want query the fulltext search index, you will first need to <a href="http://zf-boilerplate.com/documentation/managing-the-virtual-machine/#ssh" target="blank">SSH into your VM</a> and run the searchindex and fixtures setup script.</p>
+</div>
+<?php } ?>
 
-<section id="content" class="body">
-    <?php if (!$this->databaseError) { ?>
-    <h3>Database Sample Records</h3>
-    <p>With each page reload, a new record with random data is added to the database. The record title is randomly generated using a local service.</p>
-	<ul>
-	<?php foreach($this->data as $post) { ?>
-        <li><?php echo $post; ?></li>
-    <?php } ?>
-    </ul><!-- /#posts-list -->
-    <?php } else { ?>
-    <h3>Database Setup</h3>
-	<p>It looks like that the sample database hasn't been initialized yet. If you want to see Doctrine 2 in action, you will want to run the database and fixture setup script.</p>
-    <ul>
-        <li>SSH into the virtual box.
-        <ul>
-            <li>When running on linux, just execute "vagrant ssh" within the project directory.</li>
-            <li>When on Windows, you will need to setup Putty first. For instructions please refer to <a href="http://vagrantup.com/docs/getting-started/setup/windows.html">Vagrant Windows Get Started Guide</a>.</li>
-        </ul>
-        </li>
-        <li>Change to /vagrant/bin</li>
-        <li>Run "php create-db-load-fixtures.php".</li>
-        <li>Refresh this page.</li>
-    </ul>
-    <?php } ?>
-</section><!-- /#content -->
+<div class="hero-unit">
+<h1>Hello from ZF-Boilerplate!</h1>
+<p>Well done, ZF-Boilerplate is up and running. You may want to modify or remove this example page.</p>
+<p><a class="btn primary large">Learn more &raquo;</a></p>
+</div>
+
+<?php if (!$this->databaseError) { ?>
+<div class="row" style="padding-left:148px">
+    <div class="span10">
+        <h3 style="margin-bottom:10px;"><? if (!$this->search) { ?> Random Quotes <a href="/index/add-random" class="btn small success">Add another</a><?php } else { ?>Quotes found <a href="/" class="btn small success">Back</a><?php } ?></h3>
+        <?php foreach($this->data as $quote) { ?>
+        <blockquote>
+            <p><?php echo $quote; ?></p>
+            <small><?php echo $quote->getAuthor(); ?></small>
+        </blockquote>
+        <?php } ?>
+    </div>
+</div>
+<div>
+    <?php echo $this->form; ?>
+</div>
+<?php } ?>

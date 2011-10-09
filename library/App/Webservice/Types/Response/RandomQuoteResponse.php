@@ -7,10 +7,10 @@
  * To change this template use File | Settings | File Templates.
  */
 
-class App_Webservice_Types_Response_ReverseStringResponse
+class App_Webservice_Types_Response_RandomQuoteResponse
 {
     /**
-     * @var string
+     * @var App_Webservice_Types_Complex_Quote
      */
-    public $output;
+    public $quote;
 }

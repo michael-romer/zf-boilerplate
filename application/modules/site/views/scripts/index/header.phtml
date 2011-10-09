@@ -1,6 +1,14 @@
-<header id="banner" class="body">
-	<h1><a href="/homepage">ZF-Boilerplate</strong></a></h1>
-	<nav><ul>
-        <?php echo $this->navigation()->menu(); ?>
-	</ul></nav>
-</header><!-- /#banner -->
+<div class="topbar">
+  <div class="fill">
+    <div class="container">
+      <a class="brand" href="/">ZF-Boilerplate</a>
+      <?php echo $this->navigation()->menu(); ?>
+        <form action="/index/search" class="pull-right">
+            <input class="input" name="query" type="text" placeholder="Cherralea Morgen">
+            <button class="btn" type="submit">Find Quote</button>
+        </form>
+    </div>
+  </div>
+</div>
+
+

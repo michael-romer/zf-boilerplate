@@ -8,10 +8,10 @@
  */
 namespace App\Service;
 
-class StringReverser
+class Randomizer
 {
-    public function reverse($string)
+    public function getNumber($low, $high)
     {
-        return strrev($string);
+        return rand($low, $high);
     }
 }
