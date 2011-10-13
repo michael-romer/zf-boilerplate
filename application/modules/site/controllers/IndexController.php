@@ -134,7 +134,8 @@ class Site_IndexController extends Zend_Controller_Action
             $client = Zend_Registry::get('es');
             $index = $client->getIndex('quotes');
             $type = $index->getType('quote');
-            $resultSet = $type->search($this->getRequest()->getParam('query'));
+            $resultSet = $type->search('*');
+            //var_dump($resultSet);exit;
         } catch (Exception $e) {
             $this->view->searchindexError = true;
         }
@@ -144,15 +145,15 @@ class Site_IndexController extends Zend_Controller_Action
     {
        $client = Zend_Registry::get('es');
        $index = $client->getIndex('quotes');
-       $index->create(array(), true);
+       //$index->create(array(), true);
        $type = $index->getType('quote');
 
        $doc = new Elastica_Document(
-           1, array('id' => $quote->getId(),
+           $quote->getId(), array('id' => $quote->getId(),
            'wording' => $quote->getWording(),
            'author' => $quote->getAuthor())
        );
-
+       // var_dump($doc);exit;
        $type->addDocument($doc);
        $index->refresh();
     }
