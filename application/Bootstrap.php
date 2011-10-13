@@ -56,7 +56,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         try{
             $locale = new Zend_Locale(Zend_Locale::BROWSER);
         } catch (Zend_Locale_Exception $e) {
-            $locale = new Zend_Locale('de');
+            $config = $this->getOptions();
+            $locale = new Zend_Locale($config['resources']['locale']['default']);
         }
 
         Zend_Registry::set('Zend_Locale', $locale);
@@ -67,7 +68,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                 'content' => APPLICATION_PATH . '/../data/lang/',
                 'scan' => Zend_Translate::LOCALE_DIRECTORY,
                 'delimiter' => ',',
-                'disableNotices' => true
+                'disableNotices' => true,
             )
         );
 
