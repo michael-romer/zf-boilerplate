@@ -1,3 +1,5 @@
 <?php
 require_once('bootstrap.php');
-echo exec('php doctrine.php clear-cache') . PHP_EOL;
+// FIX ME: Not cross-platform compatible hack
+echo exec('sudo service memcached restart') . PHP_EOL;
+echo "Memcached succesfully cleared!" . PHP_EOL;
