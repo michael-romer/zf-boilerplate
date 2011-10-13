@@ -185,7 +185,7 @@ class Site_IndexController extends Zend_Controller_Action
             $timestamp = $cache->fetch('timestamp');
             $this->view->cachedTimestamp = true;
         } else {
-            $timestamp = date("d M Y H:i:s");
+            $timestamp = time();
             $cache->save('timestamp', $timestamp);
         }
 

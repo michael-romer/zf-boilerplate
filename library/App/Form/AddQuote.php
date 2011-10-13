@@ -13,6 +13,7 @@ class AddQuote extends \EasyBib_Form
 {
     public function init()
     {
+        // $this->setDefaultTranslator(\Zend_Registry::get('Zend_Translate')); ???
         $this->setMethod('POST');
         $this->setAction('/index/add-custom');
         $this->setAttrib('id', 'addQuote');
@@ -23,12 +24,13 @@ class AddQuote extends \EasyBib_Form
 
         $quote->setLabel('Your wise words:')
             ->setRequired(true)
-            ->setAttrib('rows', '4');
+            ->setAttrib('rows', '4')
+            ->setTranslator(\Zend_Registry::get('Zend_Translate'));
 
-        $name->setLabel('Your Name:')
+        $name->setLabel('Your name:')
             ->setRequired(true);
 
-        $submit->setLabel('Add to list');
+        $submit->setLabel('List my quote');
         $this->addElements(array($quote, $name, $submit));
 
         \EasyBib_Form_Decorator::setFormDecorator(

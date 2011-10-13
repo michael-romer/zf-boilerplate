@@ -13,15 +13,15 @@
 <?php } ?>
 
 <div class="hero-unit">
-<h1>Hello from ZF-Boilerplate!</h1>
-<p>Well done, ZF-Boilerplate is up and running. You may want to modify or remove this example page.</p>
-<p><a class="btn primary large">Learn more &raquo;</a></p>
+<h1><?php echo $this->translate("Hello from ZF-Boilerplate!");?></h1>
+<p><?php echo $this->translate("Well done, ZF-Boilerplate is up and running. You may want to modify or remove this example page.");?></p>
+<p><a class="btn primary large"><?php echo $this->translate("Learn more");?> &raquo;</a></p>
 </div>
 
 <?php if (!$this->databaseError) { ?>
 <div class="row" style="padding-left:148px">
     <div class="span10">
-        <h3 style="margin-bottom:10px;"><? if (!$this->search) { ?> Random Quotes <a href="/index/add-random" class="btn small success">Add another</a><?php } else { ?>Quotes found <a href="/" class="btn small success">Back</a><?php } ?></h3>
+        <h3 style="margin-bottom:10px;"><? if (!$this->search) { ?> <?php echo $this->translate("Random Quotes"); ?> <a href="/index/add-random" class="btn small success"><?php echo $this->translate("Add another"); ?></a><?php } else { ?><?php echo $this->translate("Quotes found"); ?> <a href="/" class="btn small success"><?php echo $this->translate("Back"); ?></a><?php } ?></h3>
         <?php foreach($this->data as $quote) { ?>
         <blockquote>
             <p><?php echo $quote; ?></p>
