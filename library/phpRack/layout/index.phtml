@@ -1,0 +1,76 @@
+<!--
+ *
+ * phpRack: Integration Testing Framework
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt. It is also available 
+ * through the world-wide-web at this URL: http://www.phprack.com/LICENSE.txt
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@phprack.com so we can send you a copy immediately.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * @copyright Copyright (c) phpRack.com
+ * @version $Id: index.phtml 594 2010-07-02 05:35:01Z yegor256@yahoo.com $
+ * @author netcoderpl@gmail.com
+ * @category phpRack
+-->
+
+<p>PHPRACK_PATH: <tt><?php echo PHPRACK_PATH?></tt></p>
+
+<?php $i = 0; ?>
+<?php $jsCalls = array(); ?>
+<div id='task-list'>
+    <?php foreach ($this->runner->getTests() as $test):?>
+        <?php $ajaxOptions = $test->getAjaxOptions();?>
+
+        <div id="d<?php echo ++$i?>" class="task">
+            <span class="label" title="click to re-start"><?php echo $test->getLabel() ?>:</span>&#160;
+            <span class="result" title="click to see the log"><?php
+            if (!empty($ajaxOptions['autoStart'])) {
+                echo 'waiting...';
+            } else {
+                echo 'click to start...';
+            }
+            // No enter before span to avoid slideToogle() problem in IE
+            ?></span>
+            <span class="tags"></span>
+            <pre style="display:none;"></pre>
+        </div>
+        <?php 
+        $jsCalls[$i] = array(
+            'divId'              => 'div#d' . $i,
+            'fileName'           => $this->jsPath($test->getFileName()),
+            'autoStart'          => !empty($ajaxOptions['autoStart']) ? true : false,
+            'pauseWhenFocusLost' => !empty($ajaxOptions['pauseWhenFocusLost']) ? true : false,
+        );
+        ?>
+    <?php endforeach; ?>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+    // array with server side params which will be used in javascript
+    var phpParams = {
+        calls: <?php echo json_encode($jsCalls) ?>,
+        ok: '<?php echo phpRack_Test::OK?>',
+        failure: '<?php echo phpRack_Test::FAILURE?>',
+        requestUri: '<?php echo $_SERVER['REQUEST_URI']?>',
+        ajaxTag: '<?php echo PHPRACK_AJAX_TAG?>',
+        ajaxToken: '<?php echo PHPRACK_AJAX_TOKEN?>',
+    };
+    <?php include PHPRACK_PATH . '/layout/index.js' ?>
+//]]>
+</script>

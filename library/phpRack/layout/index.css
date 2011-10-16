@@ -1,0 +1,126 @@
+/**
+ * phpRack: Integration Testing Framework
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt. It is also available 
+ * through the world-wide-web at this URL: http://www.phprack.com/LICENSE.txt
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@phprack.com so we can send you a copy immediately.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * @copyright Copyright (c) phpRack.com
+ * @version $Id: index.css 582 2010-05-12 09:19:41Z yegor256@yahoo.com $
+ * @category phpRack
+ */
+ 
+/* everything in the page */
+body {
+    font-family: Verdana;
+    font-size: 12px;
+}
+
+/* all images */
+img {
+    border: 0;
+}
+
+/* all hyper links */
+a {
+    color: #25AAE1;
+    text-decoration: none;
+}
+    /* mouse-hovered hyper links */
+    a:hover {
+        text-decoration: underline;
+    }
+
+/* top left logo block, including image */
+#logo {
+    position: relative;
+    width: 264px;
+    margin-bottom: 10px;
+}
+
+    /* image in the logo block */
+    #logo img {
+        width: 228px;
+        height: 60px;
+    }
+    
+    /* text label with revision number, in the logo block */
+    #logo span {
+        position: absolute;
+        top: 2px;
+        left: 212px;
+        width: 100px;
+        color: #25AAE1;
+    }
+
+/* list of tasks */
+#task-list {
+}
+
+    /* one individual task */
+    #task-list .task {
+        padding: 5px;
+    }
+    
+        /* log of the task execution */
+        #task-list .task pre {
+            padding: 5px;
+            margin-left: 10px;
+            border-left: 2px solid #25AAE1;
+        }
+
+    /* still processing... */
+    #task-list .result {
+        cursor: pointer;
+        color: gray;
+    }
+    
+    /* task label, with the name of the test */
+    #task-list .label {
+        cursor: pointer;
+    }
+
+    /* task tag, with the value of param */
+    #task-list .tag {
+        cursor: pointer;
+        margin-left: 20px;
+    }
+    
+    /* finished with success */
+    #task-list .success {
+        color: green !important;
+        text-decoration: underline;
+    }
+    
+    /* finished with failure */
+    #task-list .failure { 
+        color: red !important;
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
+/* wrapping of words when the result is not a formatted text */
+.word_wrap {
+    white-space: pre-wrap; /* css-3 */
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+    width: 900px;
+}

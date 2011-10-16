@@ -1,0 +1,62 @@
+<?php echo "<?xml version=\"1.0\"?>\n" ?>
+<!DOCTYPE html PUBLIC
+    "-//W3C//DTD XHTML 1.0 Strict//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+ *
+ * phpRack: Integration Testing Framework
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt. It is also available 
+ * through the world-wide-web at this URL: http://www.phprack.com/LICENSE.txt
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@phprack.com so we can send you a copy immediately.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * @copyright Copyright (c) phpRack.com
+ * @version $Id: index.phtml 286 2010-04-05 13:46:54Z yegor256@yahoo.com $
+ * @author netcoderpl@gmail.com
+ * @category phpRack
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8"/>
+        <style type="text/css"><?php echo $this->compressedCss('index.css') ?></style>
+        <title>phpRack Testing Report</title>
+    </head>
+
+    <body>
+        <script type="text/javascript">
+        //<![CDATA[
+            <?php include PHPRACK_PATH . '/layout/jquery-1.4.2.min.js' ?>
+        //]]>
+        </script>
+        <div id='logo'>
+            <a href='http://www.phprack.com'><img
+                src='data:image/png;base64,<?php
+                    echo base64_encode(
+                        file_get_contents(PHPRACK_PATH . '/layout/logo.png')
+                    )
+                ?>'
+                alt='phpRack' /></a>
+            <span>v<?php echo PHPRACK_VERSION?></span>
+        </div>
+
+        <!-- script content, ZCA-friendly include -->
+        <?php eval("include PHPRACK_PATH . '/layout/{$this->script}';")?>
+    </body>
+</html>

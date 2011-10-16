@@ -2,6 +2,11 @@
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
+    public function _initConfig()
+    {
+        Zend_Registry::set('config', $this->getOptions());
+    }
+    
     public function _initAutoloaderNamespaces()
     {
         require_once APPLICATION_PATH .
@@ -59,6 +64,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             $config = $this->getOptions();
             $locale = new Zend_Locale($config['resources']['locale']['default']);
         }
+
+        //         Zend_Locale::setDefault('de'); // check hasLanguage, sonst switch auf default siehe Zend TIcket
 
         Zend_Registry::set('Zend_Locale', $locale);
 
