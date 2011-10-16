@@ -10,6 +10,12 @@ class BaseTest extends phpRack_Test
     public function testPhpExtensionsExist()
     {
         $this->assert->php->extensions
-            ->isLoaded('simplexml');
+            ->isLoaded('simplexml')
+            ->isLoaded('ctype')
+            ->isLoaded('iconv')
+            ->isLoaded('Reflection')
+            ->isLoaded('session')
+            ->isLoaded('soap')
+            ->isLoaded('dom');
     }
 }
