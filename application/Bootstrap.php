@@ -58,14 +58,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
     public function _initLocale()
     {
+        $config = $this->getOptions();
+        
         try{
             $locale = new Zend_Locale(Zend_Locale::BROWSER);
         } catch (Zend_Locale_Exception $e) {
-            $config = $this->getOptions();
             $locale = new Zend_Locale($config['resources']['locale']['default']);
         }
-
-        //         Zend_Locale::setDefault('de'); // check hasLanguage, sonst switch auf default siehe Zend TIcket
 
         Zend_Registry::set('Zend_Locale', $locale);
 
@@ -78,6 +77,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
                 'disableNotices' => true,
             )
         );
+
+        if (!$translator->isAvailable($locale->getLanguage()))
+            $translator->setLocale($config['resources']['locale']['default']);
 
         Zend_Registry::set('Zend_Translate', $translator);
         Zend_Form::setDefaultTranslator($translator);
