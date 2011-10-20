@@ -12,27 +12,23 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         require_once APPLICATION_PATH .
             '/../library/Doctrine/Common/ClassLoader.php';
 
-        $autoloader = \Zend_Loader_Autoloader::getInstance();
-        $fmmAutoloader = new \Doctrine\Common\ClassLoader('Bisna');
-
-        $autoloader->pushAutoloader(
-            array($fmmAutoloader, 'loadClass'),
-            'Bisna'
-        );
-        
-        $fmmAutoloader = new \Doctrine\Common\ClassLoader('App');
-        $autoloader->pushAutoloader(array($fmmAutoloader, 'loadClass'), 'App');
-        $fmmAutoloader = new \Doctrine\Common\ClassLoader('Boilerplate');
-
-        $autoloader->pushAutoloader(
-            array($fmmAutoloader, 'loadClass'),
-            'Boilerplate'
-        );
-
         require_once APPLICATION_PATH .
             '/../library/Symfony/Component/Di/sfServiceContainerAutoloader.php';
 
         sfServiceContainerAutoloader::register();
+        $autoloader = \Zend_Loader_Autoloader::getInstance();
+
+        $fmmAutoloader = new \Doctrine\Common\ClassLoader('Bisna');
+        $autoloader->pushAutoloader(array($fmmAutoloader, 'loadClass'), 'Bisna');
+        
+        $fmmAutoloader = new \Doctrine\Common\ClassLoader('App');
+        $autoloader->pushAutoloader(array($fmmAutoloader, 'loadClass'), 'App');
+
+        $fmmAutoloader = new \Doctrine\Common\ClassLoader('Boilerplate');
+        $autoloader->pushAutoloader(array($fmmAutoloader, 'loadClass'), 'Boilerplate');
+
+        $fmmAutoloader = new \Doctrine\Common\ClassLoader('Doctrine\DBAL\Migrations');
+        $autoloader->pushAutoloader(array($fmmAutoloader, 'loadClass'), 'Doctrine\DBAL\Migrations');
     }
 
     public function _initModuleLayout()

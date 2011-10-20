@@ -22,6 +22,9 @@ try {
     if (($em = $container->getEntityManager(getenv('EM') ?: $container->defaultEntityManager)) !== null) {
         $helperSet['em'] = new \Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper($em);
     }
+
+    $helperSet['dialog'] = new \Symfony\Component\Console\Helper\DialogHelper();
+
 } catch (\Exception $e) {
     $cli->renderException($e, new \Symfony\Component\Console\Output\ConsoleOutput());
 }
@@ -30,11 +33,14 @@ $cli->setCatchExceptions(true);
 $cli->setHelperSet(new \Symfony\Component\Console\Helper\HelperSet($helperSet));
 
 $cli->addCommands(array(
-    // DBAL Commands
     new \Doctrine\DBAL\Tools\Console\Command\RunSqlCommand(),
     new \Doctrine\DBAL\Tools\Console\Command\ImportCommand(),
-
-    // ORM Commands
+    new \Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand(),
+    new \Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand(),
+    new \Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand(),
+    new \Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand(),
+    new \Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand(),
+    new \Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand(),
     new \Doctrine\ORM\Tools\Console\Command\ClearCache\MetadataCommand(),
     new \Doctrine\ORM\Tools\Console\Command\ClearCache\ResultCommand(),
     new \Doctrine\ORM\Tools\Console\Command\ClearCache\QueryCommand(),
@@ -48,7 +54,6 @@ $cli->addCommands(array(
     new \Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand(),
     new \Doctrine\ORM\Tools\Console\Command\ConvertMappingCommand(),
     new \Doctrine\ORM\Tools\Console\Command\RunDqlCommand(),
-
 ));
  
 $cli->run();

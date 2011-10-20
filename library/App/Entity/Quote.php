@@ -48,4 +48,7 @@ class Quote
     {
         return $this->getWording();
     }
+
+
+
 }
