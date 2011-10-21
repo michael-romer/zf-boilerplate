@@ -17,22 +17,23 @@
  * @subpackage View
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: BorderContainer.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-/** Zend_Dojo_View_Helper_DijitContainer */
-require_once 'Zend/Dojo/View/Helper/DijitContainer.php';
+/**
+ * @namespace
+ */
+namespace Zend\Dojo\View\Helper;
 
 /**
  * Dojo BorderContainer dijit
  *
- * @uses       Zend_Dojo_View_Helper_DijitContainer
+ * @uses       \Zend\Dojo\View\Helper\DijitContainer
  * @package    Zend_Dojo
  * @subpackage View
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
-  */
-class Zend_Dojo_View_Helper_BorderContainer extends Zend_Dojo_View_Helper_DijitContainer
+ */
+class BorderContainer extends DijitContainer
 {
     /**
      * Dijit being used
@@ -61,7 +62,7 @@ class Zend_Dojo_View_Helper_BorderContainer extends Zend_Dojo_View_Helper_DijitC
      * @param  array $attribs HTML attributes
      * @return string
      */
-    public function borderContainer($id = null, $content = '', array $params = array(), array $attribs = array())
+    public function __invoke($id = null, $content = '', array $params = array(), array $attribs = array())
     {
         if (0 === func_num_args()) {
             return $this;
@@ -69,7 +70,7 @@ class Zend_Dojo_View_Helper_BorderContainer extends Zend_Dojo_View_Helper_DijitC
 
         // this will ensure that the border container is viewable:
         if (!$this->_styleIsRegistered) {
-            $this->view->headStyle()->appendStyle('html, body { height: 100%; width: 100%; margin: 0; padding: 0; }');
+            $this->view->plugin('headStyle')->appendStyle('html, body { height: 100%; width: 100%; margin: 0; padding: 0; }');
             $this->_styleIsRegistered = true;
         }
 

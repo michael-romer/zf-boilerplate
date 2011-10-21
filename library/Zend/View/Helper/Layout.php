@@ -16,39 +16,41 @@
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: Layout.php 23775 2011-03-01 17:25:24Z ralph $
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-/** Zend_View_Helper_Abstract.php */
-require_once 'Zend/View/Helper/Abstract.php';
+/**
+ * @namespace
+ */
+namespace Zend\View\Helper;
 
 /**
  * View helper for retrieving layout object
  *
+ * @uses       \Zend\Layout\Layout
+ * @uses       \Zend\View\Helper\AbstractHelper
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_Layout extends Zend_View_Helper_Abstract
+class Layout extends AbstractHelper
 {
-    /** @var Zend_Layout */
+    /** @var \Zend\Layout\Layout */
     protected $_layout;
 
     /**
      * Get layout object
      *
-     * @return Zend_Layout
+     * @return \Zend\Layout\Layout
      */
     public function getLayout()
     {
         if (null === $this->_layout) {
-            require_once 'Zend/Layout.php';
-            $this->_layout = Zend_Layout::getMvcInstance();
+            $this->_layout = \Zend\Layout\Layout::getMvcInstance();
             if (null === $this->_layout) {
                 // Implicitly creates layout object
-                $this->_layout = new Zend_Layout();
+                $this->_layout = new \Zend\Layout\Layout();
             }
         }
 
@@ -58,10 +60,10 @@ class Zend_View_Helper_Layout extends Zend_View_Helper_Abstract
     /**
      * Set layout object
      *
-     * @param  Zend_Layout $layout
-     * @return Zend_Layout_Controller_Action_Helper_Layout
+     * @param  \Zend\Layout\Layout $layout
+     * @return \Zend\Layout\Controller\Action\Helper\Layout
      */
-    public function setLayout(Zend_Layout $layout)
+    public function setLayout(\Zend\Layout\Layout $layout)
     {
         $this->_layout = $layout;
         return $this;
@@ -72,9 +74,9 @@ class Zend_View_Helper_Layout extends Zend_View_Helper_Abstract
      *
      * Usage: $this->layout()->setLayout('alternate');
      *
-     * @return Zend_Layout
+     * @return \Zend\Layout\Layout
      */
-    public function layout()
+    public function __invoke()
     {
         return $this->getLayout();
     }

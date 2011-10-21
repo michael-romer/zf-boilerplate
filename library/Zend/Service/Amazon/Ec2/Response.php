@@ -17,22 +17,25 @@
  * @subpackage Ec2
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Response.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Http_Response
+ * @namespace
  */
-require_once 'Zend/Http/Response.php';
+namespace Zend\Service\Amazon\Ec2;
 
 /**
+ * @uses       DOMDocument
+ * @uses       DOMXPath
+ * @uses       Zend_Http_Response
  * @category   Zend
  * @package    Zend_Service_Amazon
  * @subpackage Ec2
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Service_Amazon_Ec2_Response {
+class Response 
+{
     /**
      * XML namespace used for EC2 responses.
      */
@@ -80,7 +83,7 @@ class Zend_Service_Amazon_Ec2_Response {
      *
      * @param Zend_Http_Response $httpResponse the HTTP response.
      */
-    public function __construct(Zend_Http_Response $httpResponse)
+    public function __construct(\Zend\Http\Response $httpResponse)
     {
         $this->_httpResponse = $httpResponse;
     }
@@ -97,7 +100,7 @@ class Zend_Service_Amazon_Ec2_Response {
             if ($document === false) {
                 $this->_xpath = false;
             } else {
-                $this->_xpath = new DOMXPath($document);
+                $this->_xpath = new \DOMXPath($document);
                 $this->_xpath->registerNamespace('ec2',
                     $this->getNamespace());
             }
@@ -115,7 +118,7 @@ class Zend_Service_Amazon_Ec2_Response {
     {
         try {
             $body = $this->_httpResponse->getBody();
-        } catch (Zend_Http_Exception $e) {
+        } catch (\Zend\Http\Exception $e) {
             $body = false;
         }
 
@@ -124,7 +127,7 @@ class Zend_Service_Amazon_Ec2_Response {
                 // turn off libxml error handling
                 $errors = libxml_use_internal_errors();
 
-                $this->_document = new DOMDocument();
+                $this->_document = new \DOMDocument();
                 if (!$this->_document->loadXML($body)) {
                     $this->_document = false;
                 }

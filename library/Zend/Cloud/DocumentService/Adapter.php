@@ -18,6 +18,11 @@
  */
 
 /**
+ * namespace
+ */
+namespace Zend\Cloud\DocumentService;
+
+/**
  * Common interface for document storage services in the cloud. This interface
  * supports most document services and provides some flexibility for
  * vendor-specific features and requirements via an optional $options array in
@@ -29,12 +34,12 @@
  * access control support in future versions of the interface.
  *
  * @category   Zend
- * @package    Zend_Cloud
+ * @package    Zend\Cloud
  * @subpackage DocumentService
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Zend_Cloud_DocumentService_Adapter
+interface Adapter
 {
     // HTTP adapter to use for connections
     const HTTP_ADAPTER = 'http_adapter';

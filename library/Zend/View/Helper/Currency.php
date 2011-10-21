@@ -17,41 +17,47 @@
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Currency.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-/** Zend_View_Helper_Abstract.php */
-require_once 'Zend/View/Helper/Abstract.php';
+/**
+ * @namespace
+ */
+namespace Zend\View\Helper;
+use Zend;
+use Zend\Locale;
 
 /**
  * Currency view helper
  *
+ * @uses      \Zend\Currency\Currency
+ * @uses      \Zend\Locale\Locale
+ * @uses      \Zend\Registry
+ * @uses      \Zend\View\Helper\AbstractHelper
  * @category  Zend
  * @package   Zend_View
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_Currency extends Zend_View_Helper_Abstract
+class Currency extends AbstractHelper
 {
     /**
      * Currency object
      *
-     * @var Zend_Currency
+     * @var \Zend\Currency\Currency
      */
     protected $_currency;
 
     /**
      * Constructor for manually handling
      *
-     * @param  Zend_Currency $currency Instance of Zend_Currency
+     * @param  \Zend\Currency\Currency $currency Instance of \Zend\Currency\Currency
      * @return void
      */
     public function __construct($currency = null)
     {
         if ($currency === null) {
-            require_once 'Zend/Registry.php';
-            if (Zend_Registry::isRegistered('Zend_Currency')) {
-                $currency = Zend_Registry::get('Zend_Currency');
+            if (\Zend\Registry::isRegistered('Zend_Currency')) {
+                $currency = \Zend\Registry::get('Zend_Currency');
             }
         }
 
@@ -62,18 +68,17 @@ class Zend_View_Helper_Currency extends Zend_View_Helper_Abstract
      * Output a formatted currency
      *
      * @param  integer|float                    $value    Currency value to output
-     * @param  string|Zend_Locale|Zend_Currency $currency OPTIONAL Currency to use for this call
+     * @param  string|Zend_Locale|\Zend\Currency\Currency $currency OPTIONAL Currency to use for this call
      * @return string Formatted currency
      */
-    public function currency($value = null, $currency = null)
+    public function __invoke($value = null, $currency = null)
     {
         if ($value === null) {
             return $this;
         }
 
-        if (is_string($currency) || ($currency instanceof Zend_Locale)) {
-            require_once 'Zend/Locale.php';
-            if (Zend_Locale::isLocale($currency)) {
+        if (is_string($currency) || ($currency instanceof Locale\Locale)) {
+            if (Locale\Locale::isLocale($currency)) {
                 $currency = array('locale' => $currency);
             }
         }
@@ -92,15 +97,14 @@ class Zend_View_Helper_Currency extends Zend_View_Helper_Abstract
     /**
      * Sets a currency to use
      *
-     * @param  Zend_Currency|String|Zend_Locale $currency Currency to use
-     * @throws Zend_View_Exception When no or a false currency was set
-     * @return Zend_View_Helper_Currency
+     * @param  Zend_Currency|String|\Zend\Locale\Locale $currency Currency to use
+     * @throws \Zend\View\Exception When no or a false currency was set
+     * @return \Zend\View\Helper\Currency
      */
     public function setCurrency($currency = null)
     {
-        if (!$currency instanceof Zend_Currency) {
-            require_once 'Zend/Currency.php';
-            $currency = new Zend_Currency($currency);
+        if (!$currency instanceof \Zend\Currency\Currency) {
+            $currency = new \Zend\Currency\Currency($currency);
         }
         $this->_currency = $currency;
 
@@ -110,7 +114,7 @@ class Zend_View_Helper_Currency extends Zend_View_Helper_Abstract
     /**
      * Retrieve currency object
      *
-     * @return Zend_Currency|null
+     * @return \Zend\Currency\Currency|null
      */
     public function getCurrency()
     {

@@ -16,38 +16,39 @@
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: RenderToPlaceholder.php 23775 2011-03-01 17:25:24Z ralph $
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-/** Zend_View_Helper_Abstract.php */
-require_once 'Zend/View/Helper/Abstract.php';
+/**
+ * @namespace
+ */
+namespace Zend\View\Helper;
 
 /**
  * Renders a template and stores the rendered output as a placeholder
  * variable for later use.
  *
+ * @uses       \Zend\View\Helper\AbstractHelper
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-
-class Zend_View_Helper_RenderToPlaceholder extends Zend_View_Helper_Abstract
+class RenderToPlaceholder extends AbstractHelper
 {
-
     /**
      * Renders a template and stores the rendered output as a placeholder
      * variable for later use.
      *
-     * @param string $script The template script to render
-     * @param string $placeholder The placeholder variable name in which to store the rendered output
+     * @param $script The template script to render
+     * @param $placeholder The placeholder variable name in which to store the rendered output
      * @return void
      */
-    public function renderToPlaceholder($script, $placeholder)
+    public function __invoke($script, $placeholder)
     {
-        $this->view->placeholder($placeholder)->captureStart();
+        $placeholderHelper = $this->view->plugin('placeholder');
+        $placeholderHelper($placeholder)->captureStart();
         echo $this->view->render($script);
-        $this->view->placeholder($placeholder)->captureEnd();
+        $placeholderHelper($placeholder)->captureEnd();
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -16,22 +15,29 @@
  * @category   Zend
  * @package    Zend_Http
  * @subpackage Response
- * @version    $Id: Stream.php 23775 2011-03-01 17:25:24Z ralph $
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
+
+/**
+ * @namespace
+ */
+namespace Zend\Http\Response;
+
+use Zend\Http\Response;
 
 /**
  * Zend_Http_Response represents an HTTP 1.0 / 1.1 response message. It
  * includes easy access to all the response's different elemts, as well as some
  * convenience methods for parsing and validating HTTP responses.
  *
+ * @uses       \Zend\Http\Response
  * @package    Zend_Http
  * @subpackage Response
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Http_Response_Stream extends Zend_Http_Response
+class Stream extends Response
 {
     /**
      * Response as stream
@@ -70,7 +76,7 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
      * Set the response stream
      *
      * @param resourse $stream
-     * @return Zend_Http_Response_Stream
+     * @return \Zend\Http\Response\Stream
      */
     public function setStream($stream)
     {
@@ -90,7 +96,7 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
     /**
      * Set the cleanup trigger
      *
-     * @param bool $cleanup Set cleanup trigger
+     * @param $cleanup Set cleanup trigger
      */
     public function setCleanup($cleanup = true) {
         $this->_cleanup = $cleanup;
@@ -109,58 +115,30 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
      * Set file name associated with the stream
      *
      * @param string $stream_name Name to set
-     * @return Zend_Http_Response_Stream
+     * @return \Zend\Http\Response\Stream
      */
     public function setStreamName($stream_name) {
         $this->stream_name = $stream_name;
         return $this;
     }
 
-
     /**
-     * HTTP response constructor
+     * Create a new Zend\Http\Response\Stream object from a string
      *
-     * In most cases, you would use Zend_Http_Response::fromString to parse an HTTP
-     * response string and create a new Zend_Http_Response object.
-     *
-     * NOTE: The constructor no longer accepts nulls or empty values for the code and
-     * headers and will throw an exception if the passed values do not form a valid HTTP
-     * responses.
-     *
-     * If no message is passed, the message will be guessed according to the response code.
-     *
-     * @param int $code Response code (200, 404, ...)
-     * @param array $headers Headers array
-     * @param string $body Response body
-     * @param string $version HTTP version
-     * @param string $message Response code as text
-     * @throws Zend_Http_Exception
-     */
-    public function __construct($code, $headers, $body = null, $version = '1.1', $message = null)
-    {
-
-        if(is_resource($body)) {
-            $this->setStream($body);
-            $body = '';
-        }
-        parent::__construct($code, $headers, $body, $version, $message);
-    }
-
-    /**
-     * Create a new Zend_Http_Response_Stream object from a string
-     *
-     * @param string $response_str
-     * @param resource $stream
-     * @return Zend_Http_Response_Stream
+     * @param  string $response_str
+     * @param  resource $stream
+     * @return Stream
      */
     public static function fromStream($response_str, $stream)
     {
-        $code    = self::extractCode($response_str);
-        $headers = self::extractHeaders($response_str);
-        $version = self::extractVersion($response_str);
-        $message = self::extractMessage($response_str);
-
-        return new self($code, $headers, $stream, $version, $message);
+        $response= new static();
+        
+        $response::fromString($response_str);
+        if (is_resource($stream)) {
+            $response->setStream($stream);
+        }
+        
+        return $response;
     }
 
     /**

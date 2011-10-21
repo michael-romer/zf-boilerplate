@@ -17,28 +17,31 @@
  * @subpackage Formatter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Firebug.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-/** Zend_Log_Formatter_Abstract */
-require_once 'Zend/Log/Formatter/Abstract.php';
+/**
+ * @namespace
+ */
+namespace Zend\Log\Formatter;
+use \Zend\Log\Formatter;
 
 /**
+ * @uses       \Zend\Log\Formatter\AbstractFormatter
  * @category   Zend
  * @package    Zend_Log
  * @subpackage Formatter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Log_Formatter_Firebug extends Zend_Log_Formatter_Abstract
+class Firebug extends AbstractFormatter
 {
     /**
 	 * Factory for Zend_Log_Formatter_Firebug classe
 	 *
-     * @param array|Zend_Config $options useless
-	 * @return Zend_Log_Formatter_Firebug
+     * @param array|\Zend\Config\Config $options useless
+	 * @return \Zend\Log\Formatter\Firebug
      */
-    public static function factory($options)
+    public static function factory($options = array())
     {
         return new self;
     }

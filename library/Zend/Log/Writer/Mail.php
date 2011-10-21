@@ -17,17 +17,13 @@
  * @subpackage Writer
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Mail.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-/** Zend_Log_Writer_Abstract */
-require_once 'Zend/Log/Writer/Abstract.php';
-
-/** Zend_Log_Exception */
-require_once 'Zend/Log/Exception.php';
-
-/** Zend_Log_Formatter_Simple*/
-require_once 'Zend/Log/Formatter/Simple.php';
+/**
+ * @namespace
+ */
+namespace Zend\Log\Writer;
+use Zend\Log;
 
 /**
  * Class used for writing log messages to email via Zend_Mail.
@@ -36,14 +32,17 @@ require_once 'Zend/Log/Formatter/Simple.php';
  * Zend_Mail object.  Note that this class only sends the email upon
  * completion, so any log entries accumulated are sent in a single email.
  *
+ * @uses       \Zend\Log\Exception\InvalidArgumentException
+ * @uses       \Zend\Log\Exception\RuntimeException
+ * @uses       \Zend\Log\Formatter\Simple
+ * @uses       \Zend\Log\Writer\AbstractWriter
  * @category   Zend
  * @package    Zend_Log
  * @subpackage Writer
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Mail.php 23775 2011-03-01 17:25:24Z ralph $
  */
-class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
+class Mail extends AbstractWriter
 {
     /**
      * Array of formatted events to include in message body.
@@ -64,21 +63,21 @@ class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
     /**
      * Zend_Mail instance to use
      *
-     * @var Zend_Mail
+     * @var \Zend\Mail\Mail
      */
     protected $_mail;
 
     /**
      * Zend_Layout instance to use; optional.
      *
-     * @var Zend_Layout
+     * @var \Zend\Layout\Layout
      */
     protected $_layout;
 
     /**
      * Optional formatter for use when rendering with Zend_Layout.
      *
-     * @var Zend_Log_Formatter_Interface
+     * @var \Zend\Log\Formatter
      */
     protected $_layoutFormatter;
 
@@ -101,7 +100,7 @@ class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
     protected $_subjectPrependText;
 
     /**
-     * MethodMap for Zend_Mail's headers
+     * MethodMap for \Zend\Mail\Mail's headers
      *
      * @var array
      */
@@ -119,26 +118,26 @@ class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
      * optional Zend_Layout instance.  If Zend_Layout is being used,
      * $this->_layout->events will be set for use in the layout template.
      *
-     * @param  Zend_Mail $mail Mail instance
-     * @param  Zend_Layout $layout Layout instance; optional
+     * @param  \Zend\Mail\Mail $mail Mail instance
+     * @param  \Zend\Layout\Layout $layout Layout instance; optional
      * @return void
      */
-    public function __construct(Zend_Mail $mail, Zend_Layout $layout = null)
+    public function __construct(\Zend\Mail\Mail $mail, \Zend\Layout\Layout $layout = null)
     {
         $this->_mail = $mail;
         if (null !== $layout) {
             $this->setLayout($layout);
         }
-        $this->_formatter = new Zend_Log_Formatter_Simple();
+        $this->_formatter = new Log\Formatter\Simple();
     }
 
     /**
      * Create a new instance of Zend_Log_Writer_Mail
      *
-     * @param  array|Zend_Config $config
-     * @return Zend_Log_Writer_Mail
+     * @param  array|\Zend\Config\Config $config
+     * @return \Zend\Log\Writer\Mail
      */
-    static public function factory($config)
+    static public function factory($config = array())
     {
         $config = self::_parseConfig($config);
         $mail = self::_constructMailFromConfig($config);
@@ -161,9 +160,9 @@ class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
     /**
      * Set the layout
      *
-     * @param Zend_Layout|array $layout
-     * @return Zend_Log_Writer_Mail
-     * @throws Zend_Log_Exception
+     * @param \Zend\Layout\Layout|array $layout
+     * @throws \Zend\Log\Exception\InvalidArgumentException
+     * @return \Zend\Log\Writer\Mail
      */
     public function setLayout($layout)
     {
@@ -171,9 +170,11 @@ class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
             $layout = $this->_constructLayoutFromConfig($layout);
         }
 
-        if (!$layout instanceof Zend_Layout) {
+        if (!$layout instanceof \Zend\Layout\Layout) {
             require_once 'Zend/Log/Exception.php';
-            throw new Zend_Log_Exception('Mail must be an instance of Zend_Layout or an array');
+            throw new Log\Exception\InvalidArgumentException(
+                'Mail must be an instance of \Zend\Layout\Layout or an array'
+            );
         }
         $this->_layout = $layout;
 
@@ -181,15 +182,15 @@ class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
     }
 
     /**
-     * Construct a Zend_Mail instance based on a configuration array
+     * Construct a \Zend\Mail\Mail instance based on a configuration array
      *
      * @param array $config
-     * @return Zend_Mail
-     * @throws Zend_Log_Exception
+     * @throws \Zend\Log\Exception\InvalidArgumentException
+     * @return \Zend\Mail\Mail
      */
     protected static function _constructMailFromConfig(array $config)
     {
-        $mailClass = 'Zend_Mail';
+        $mailClass = 'Zend\Mail\Mail';
         if (isset($config['mail'])) {
             $mailClass = $config['mail'];
         }
@@ -198,8 +199,8 @@ class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
             $config['charset'] = null;
         }
         $mail = new $mailClass($config['charset']);
-        if (!$mail instanceof Zend_Mail) {
-            throw new Zend_Log_Exception($mail . 'must extend Zend_Mail');
+        if (!$mail instanceof \Zend\Mail\Mail) {
+            throw new Log\Exception\InvalidArgumentException($mail . 'must extend \Zend\Mail\Mail');
         }
 
         if (isset($config['subject'])) {
@@ -230,23 +231,25 @@ class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
     }
 
     /**
-     * Construct a Zend_Layout instance based on a configuration array
+     * Construct a \Zend\Layout\Layout instance based on a configuration array
      *
      * @param array $config
-     * @return Zend_Layout
-     * @throws Zend_Log_Exception
+     * @throws \Zend\Log\Exception\InvalidArgumentException
+     * @return \Zend\Layout\Layout
      */
     protected function _constructLayoutFromConfig(array $config)
     {
         $config = array_merge(array(
-            'layout' => 'Zend_Layout',
+            'layout' => 'Zend\Layout\Layout',
             'layoutOptions' => null
         ), $config);
 
         $layoutClass = $config['layout'];
         $layout = new $layoutClass($config['layoutOptions']);
-        if (!$layout instanceof Zend_Layout) {
-            throw new Zend_Log_Exception($layout . 'must extend Zend_Layout');
+        if (!$layout instanceof \Zend\Layout\Layout) {
+            throw new Log\Exception\InvalidArgumentException(
+                $layout . 'must extend \Zend\Layout\Layout'
+            );
         }
 
         return $layout;
@@ -292,7 +295,7 @@ class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
      * Gets instance of Zend_Log_Formatter_Instance used for formatting a
      * message using Zend_Layout, if applicable.
      *
-     * @return Zend_Log_Formatter_Interface|null The formatter, or null.
+     * @return \Zend\Log\Formatter|null The formatter, or null.
      */
     public function getLayoutFormatter()
     {
@@ -306,16 +309,16 @@ class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
      * Zend_Layout.  In the event that Zend_Layout is not being used, this
      * formatter cannot be set, so an exception will be thrown.
      *
-     * @param  Zend_Log_Formatter_Interface $formatter
-     * @return Zend_Log_Writer_Mail
-     * @throws Zend_Log_Exception
+     * @param  \Zend\Log\Formatter $formatter
+     * @return \Zend\Log\Writer\Mail
+     * @throws \Zend\Log\Exception\InvalidArgumentException
      */
-    public function setLayoutFormatter(Zend_Log_Formatter_Interface $formatter)
+    public function setLayoutFormatter(Log\Formatter $formatter)
     {
         if (!$this->_layout) {
-            throw new Zend_Log_Exception(
+            throw new Log\Exception\InvalidArgumentException(
                 'cannot set formatter for layout; ' .
-                    'a Zend_Layout instance is not in use');
+                    'a Zend\Layout\Layout instance is not in use');
         }
 
         $this->_layoutFormatter = $formatter;
@@ -332,13 +335,13 @@ class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
      * subject set.
      *
      * @param  string $subject Subject prepend text.
-     * @return Zend_Log_Writer_Mail
-     * @throws Zend_Log_Exception
+     * @throws \Zend\Log\Exception\RuntimeException
+     * @return \Zend\Log\Writer\Mail
      */
     public function setSubjectPrependText($subject)
     {
         if ($this->_mail->getSubject()) {
-            throw new Zend_Log_Exception(
+            throw new Log\Exception\RuntimeException(
                 'subject already set on mail; ' .
                     'cannot set subject prepend text');
         }
@@ -385,7 +388,7 @@ class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
             // so we can avoid an exception thrown without a stack frame.
             try {
                 $this->_mail->setBodyHtml($this->_layout->render());
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 trigger_error(
                     "exception occurred when rendering layout; " .
                         "unable to set html body for message; " .
@@ -401,7 +404,7 @@ class Zend_Log_Writer_Mail extends Zend_Log_Writer_Abstract
         // stack frame.
         try {
             $this->_mail->send();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             trigger_error(
                 "unable to send log entries via email; " .
                     "message = {$e->getMessage()}; " .

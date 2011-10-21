@@ -17,22 +17,22 @@
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: HtmlQuicktime.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_View_Helper_HtmlObject
+ * @namespace
  */
-require_once 'Zend/View/Helper/HtmlObject.php';
+namespace Zend\View\Helper;
 
 /**
+ * @uses       \Zend\View\Helper\HtmlObject
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_HtmlQuicktime extends Zend_View_Helper_HtmlObject
+class HtmlQuicktime extends HtmlElement
 {
     /**
      * Default file type for a movie applet
@@ -69,7 +69,7 @@ class Zend_View_Helper_HtmlQuicktime extends Zend_View_Helper_HtmlObject
      * @param string $content Alternative content
      * @return string
      */
-    public function htmlQuicktime($data, array $attribs = array(), array $params = array(), $content = null)
+    public function __invoke($data, array $attribs = array(), array $params = array(), $content = null)
     {
         // Attrs
         $attribs = array_merge($this->_attribs, $attribs);
@@ -77,6 +77,7 @@ class Zend_View_Helper_HtmlQuicktime extends Zend_View_Helper_HtmlObject
         // Params
         $params = array_merge(array('src' => $data), $params);
 
-        return $this->htmlObject($data, self::TYPE, $attribs, $params, $content);
+        $htmlObject = $this->getView()->plugin('htmlObject');
+        return $htmlObject($data, self::TYPE, $attribs, $params, $content);
     }
 }

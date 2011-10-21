@@ -17,30 +17,29 @@
  * @subpackage Entity
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Subscription.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-/** @see Zend_Feed_Pubsubhubbub_Model_ModelAbstract */
-require_once 'Zend/Feed/Pubsubhubbub/Model/ModelAbstract.php';
-
-/** @see Zend_Feed_Pubsubhubbub_Model_SubscriptionInterface */
-require_once 'Zend/Feed/Pubsubhubbub/Model/SubscriptionInterface.php';
-
-/** @see Zend_Date */
-require_once 'Zend/Date.php';
+/**
+ * @namespace
+ */
+namespace Zend\Feed\PubSubHubbub\Model;
+use Zend\Feed\PubSubHubbub;
+use Zend\Date;
 
 /**
+ * @uses       \Zend\Date\Date
+ * @uses       \Zend\Feed\PubSubHubbub\Exception
+ * @uses       \Zend\Feed\PubSubHubbub\Model\AbstractModel
+ * @uses       \Zend\Feed\PubSubHubbub\Model\SubscriptionPersistence
  * @category   Zend
  * @package    Zend_Feed_Pubsubhubbub
  * @subpackage Entity
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Feed_Pubsubhubbub_Model_Subscription
-    extends Zend_Feed_Pubsubhubbub_Model_ModelAbstract
-    implements Zend_Feed_Pubsubhubbub_Model_SubscriptionInterface
+class Subscription extends AbstractModel implements SubscriptionPersistence
 {
-
+    
     /**
      * Save subscription to RDMBS
      *
@@ -50,17 +49,18 @@ class Zend_Feed_Pubsubhubbub_Model_Subscription
     public function setSubscription(array $data)
     {
         if (!isset($data['id'])) {
-            require_once 'Zend/Feed/Pubsubhubbub/Exception.php';
-            throw new Zend_Feed_Pubsubhubbub_Exception(
+            throw new PubSubHubbub\Exception(
                 'ID must be set before attempting a save'
             );
         }
         $result = $this->_db->find($data['id']);
-        if (count($result)) {
+        if ($result && (0 < count($result))) {
             $data['created_time'] = $result->current()->created_time;
-            $now = new Zend_Date;
-            if (isset($data['lease_seconds'])) {
-                $data['expiration_time'] = $now->add($data['lease_seconds'], Zend_Date::SECOND)
+            $now = new Date\Date;
+            if (array_key_exists('lease_seconds', $data) 
+                && $data['lease_seconds']
+            ) {
+                $data['expiration_time'] = $now->add($data['lease_seconds'], Date\Date::SECOND)
                 ->get('yyyy-MM-dd HH:mm:ss');
             }
             $this->_db->update(
@@ -73,18 +73,17 @@ class Zend_Feed_Pubsubhubbub_Model_Subscription
         $this->_db->insert($data);
         return true;
     }
-
+    
     /**
      * Get subscription by ID/key
-     *
-     * @param  string $key
+     * 
+     * @param  string $key 
      * @return array
      */
     public function getSubscription($key)
     {
         if (empty($key) || !is_string($key)) {
-            require_once 'Zend/Feed/Pubsubhubbub/Exception.php';
-            throw new Zend_Feed_Pubsubhubbub_Exception('Invalid parameter "key"'
+            throw new PubSubHubbub\Exception('Invalid parameter "key"'
                 .' of "' . $key . '" must be a non-empty string');
         }
         $result = $this->_db->find($key);
@@ -96,15 +95,14 @@ class Zend_Feed_Pubsubhubbub_Model_Subscription
 
     /**
      * Determine if a subscription matching the key exists
-     *
-     * @param  string $key
+     * 
+     * @param  string $key 
      * @return bool
      */
     public function hasSubscription($key)
     {
         if (empty($key) || !is_string($key)) {
-            require_once 'Zend/Feed/Pubsubhubbub/Exception.php';
-            throw new Zend_Feed_Pubsubhubbub_Exception('Invalid parameter "key"'
+            throw new PubSubHubbub\Exception('Invalid parameter "key"'
                 .' of "' . $key . '" must be a non-empty string');
         }
         $result = $this->_db->find($key);

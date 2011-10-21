@@ -19,21 +19,22 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-/** Zend_Dojo_Form_Element_Dijit */
-require_once 'Zend/Dojo/Form/Element/Dijit.php';
+/**
+ * @namespace
+ */
+namespace Zend\Dojo\Form\Element;
 
 /**
  * dijit.form.SimpleTextArea
  *
- * @uses       Zend_Dojo_Form_Element_Dijit
+ * @uses       \Zend\Dojo\Form\Element\Dijit
  * @category   Zend
  * @package    Zend_Dojo
  * @subpackage Form_Element
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: SimpleTextarea.php 23775 2011-03-01 17:25:24Z ralph $
  */
-class Zend_Dojo_Form_Element_SimpleTextarea extends Zend_Dojo_Form_Element_Dijit
+class SimpleTextarea extends Dijit
 {
     /**
      * Use SimpleTextarea dijit view helper

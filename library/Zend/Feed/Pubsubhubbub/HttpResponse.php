@@ -16,21 +16,22 @@
  * @package    Zend_Feed_Pubsubhubbub
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: HttpResponse.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Feed_Pubsubhubbub
+ * @namespace
  */
-require_once 'Zend/Feed/Pubsubhubbub.php';
+namespace Zend\Feed\PubSubHubbub;
 
 /**
+ * @uses       \Zend\Feed\PubSubHubbub\PubSubHubbub
+ * @uses       \Zend\Feed\PubSubHubbub\Exception
  * @category   Zend
  * @package    Zend_Feed_Pubsubhubbub
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Feed_Pubsubhubbub_HttpResponse
+class HttpResponse
 {
     /**
      * The body of any response to the current callback request
@@ -103,7 +104,7 @@ class Zend_Feed_Pubsubhubbub_HttpResponse
      * @param  string $name
      * @param  string $value
      * @param  boolean $replace
-     * @return Zend_Feed_Pubsubhubbub_HttpResponse
+     * @return \Zend\Feed\PubSubHubbub\HttpResponse
      */
     public function setHeader($name, $value, $replace = false)
     {
@@ -156,14 +157,13 @@ class Zend_Feed_Pubsubhubbub_HttpResponse
      *
      * @param  boolean $throw Whether or not to throw an exception if headers have been sent; defaults to false
      * @return boolean
-     * @throws Zend_Feed_Pubsubhubbub_Exception
+     * @throws \Zend\Feed\PubSubHubbub\Exception
      */
     public function canSendHeaders($throw = false)
     {
         $ok = headers_sent($file, $line);
         if ($ok && $throw) {
-            require_once 'Zend/Feed/Pubsubhubbub/Exception.php';
-            throw new Zend_Feed_Pubsubhubbub_Exception('Cannot send headers; headers already sent in ' . $file . ', line ' . $line);
+            throw new Exception('Cannot send headers; headers already sent in ' . $file . ', line ' . $line);
         }
         return !$ok;
     }
@@ -172,13 +172,12 @@ class Zend_Feed_Pubsubhubbub_HttpResponse
      * Set HTTP response code to use with headers
      *
      * @param  int $code
-     * @return Zend_Feed_Pubsubhubbub_HttpResponse
+     * @return \Zend\Feed\PubSubHubbub\HttpResponse
      */
     public function setHttpResponseCode($code)
     {
         if (!is_int($code) || (100 > $code) || (599 < $code)) {
-            require_once 'Zend/Feed/Pubsubhubbub/Exception.php';
-            throw new Zend_Feed_Pubsubhubbub_Exception('Invalid HTTP response'
+            throw new Exception('Invalid HTTP response'
             . ' code:' . $code);
         }
         $this->_httpResponseCode = $code;
@@ -199,7 +198,7 @@ class Zend_Feed_Pubsubhubbub_HttpResponse
      * Set body content
      *
      * @param  string $content
-     * @return Zend_Feed_Pubsubhubbub_HttpResponse
+     * @return \Zend\Feed\PubSubHubbub\HttpResponse
      */
     public function setBody($content)
     {

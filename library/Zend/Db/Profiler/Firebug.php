@@ -17,28 +17,28 @@
  * @subpackage Profiler
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Firebug.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-/** Zend_Db_Profiler */
-require_once 'Zend/Db/Profiler.php';
+/**
+ * @namespace
+ */
+namespace Zend\Db\Profiler;
 
-/** Zend_Wildfire_Plugin_FirePhp */
-require_once 'Zend/Wildfire/Plugin/FirePhp.php';
-
-/** Zend_Wildfire_Plugin_FirePhp_TableMessage */
-require_once 'Zend/Wildfire/Plugin/FirePhp/TableMessage.php';
+use Zend\Db\Profiler;
 
 /**
  * Writes DB events as log messages to the Firebug Console via FirePHP.
  *
+ * @uses       \Zend\Db\Profiler
+ * @uses       \Zend\Wildfire\Plugin\FirePhp\FirePhp
+ * @uses       \Zend\Wildfire\Plugin\FirePhp\TableMessage
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Profiler
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Db_Profiler_Firebug extends Zend_Db_Profiler
+class Firebug extends Profiler
 {
     /**
      * The original label for this profiler.
@@ -54,7 +54,7 @@ class Zend_Db_Profiler_Firebug extends Zend_Db_Profiler
 
     /**
      * The message envelope holding the profiling summary
-     * @var Zend_Wildfire_Plugin_FirePhp_TableMessage
+     * @var \Zend\Wildfire\Plugin\FirePhp\TableMessage
      */
     protected $_message = null;
 
@@ -83,7 +83,7 @@ class Zend_Db_Profiler_Firebug extends Zend_Db_Profiler
      * is disabled and will not log any queries sent to it.
      *
      * @param  boolean $enable
-     * @return Zend_Db_Profiler Provides a fluent interface
+     * @return \Zend\Db\Profiler Provides a fluent interface
      */
     public function setEnabled($enable)
     {
@@ -92,12 +92,12 @@ class Zend_Db_Profiler_Firebug extends Zend_Db_Profiler
         if ($this->getEnabled()) {
 
             if (!$this->_message) {
-                $this->_message = new Zend_Wildfire_Plugin_FirePhp_TableMessage($this->_label);
+                $this->_message = new \Zend\Wildfire\Plugin\FirePhp\TableMessage($this->_label);
                 $this->_message->setBuffered(true);
                 $this->_message->setHeader(array('Time','Event','Parameters'));
                 $this->_message->setDestroy(true);
                 $this->_message->setOption('includeLineNumbers', false);
-                Zend_Wildfire_Plugin_FirePhp::getInstance()->send($this->_message);
+                \Zend\Wildfire\Plugin\FirePhp\FirePhp::getInstance()->send($this->_message);
             }
 
         } else {
@@ -116,7 +116,7 @@ class Zend_Db_Profiler_Firebug extends Zend_Db_Profiler
      * Intercept the query end and log the profiling data.
      *
      * @param  integer $queryId
-     * @throws Zend_Db_Profiler_Exception
+     * @throws \Zend\Db\Profiler\Exception
      * @return void
      */
     public function queryEnd($queryId)

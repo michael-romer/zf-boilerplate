@@ -16,21 +16,23 @@
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: Container.php 23775 2011-03-01 17:25:24Z ralph $
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-/** Zend_View_Helper_Placeholder_Container_Abstract */
-require_once 'Zend/View/Helper/Placeholder/Container/Abstract.php';
+/**
+ * @namespace
+ */
+namespace Zend\View\Helper\Placeholder;
 
 /**
  * Container for placeholder values
  *
+ * @uses       \Zend\View\Helper\Placeholder\Container\AbstractContainer
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_Placeholder_Container extends Zend_View_Helper_Placeholder_Container_Abstract
+class Container extends Container\AbstractContainer
 {
 }

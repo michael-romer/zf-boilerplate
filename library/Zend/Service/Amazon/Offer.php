@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -18,18 +17,22 @@
  * @subpackage Amazon
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Offer.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
+/**
+ * @namespace
+ */
+namespace Zend\Service\Amazon;
 
 /**
+ * @uses       DOMXPath
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Amazon
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Service_Amazon_Offer
+class Offer
 {
     /**
      * @var string
@@ -82,9 +85,9 @@ class Zend_Service_Amazon_Offer
      * @param  DOMElement $dom
      * @return void
      */
-    public function __construct(DOMElement $dom)
+    public function __construct(\DOMElement $dom)
     {
-        $xpath = new DOMXPath($dom->ownerDocument);
+        $xpath = new \DOMXPath($dom->ownerDocument);
         $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/2005-10-05');
         $this->MerchantId = (string) $xpath->query('./az:Merchant/az:MerchantId/text()', $dom)->item(0)->data;
         $name = $xpath->query('./az:Merchant/az:Name/text()', $dom);
@@ -100,7 +103,7 @@ class Zend_Service_Amazon_Offer
             $this->CurrencyCode = (string) $xpath->query('./az:OfferListing/az:Price/az:CurrencyCode/text()', $dom)->item(0)->data;
         }
         $availability = $xpath->query('./az:OfferListing/az:Availability/text()', $dom)->item(0);
-        if($availability instanceof DOMText) {
+        if($availability instanceof \DOMText) {
             $this->Availability = (string) $availability->data;
         }
         $result = $xpath->query('./az:OfferListing/az:IsEligibleForSuperSaverShipping/text()', $dom);

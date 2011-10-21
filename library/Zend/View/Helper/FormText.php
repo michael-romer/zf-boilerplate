@@ -17,27 +17,33 @@
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: FormText.php 23775 2011-03-01 17:25:24Z ralph $
  */
-
 
 /**
- * Abstract class for extension
+ * @namespace
  */
-require_once 'Zend/View/Helper/FormElement.php';
-
+namespace Zend\View\Helper;
 
 /**
  * Helper to generate a "text" element
  *
+ * @uses       \Zend\View\Helper\FormElement
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_FormText extends Zend_View_Helper_FormElement
+class FormText extends FormElement
 {
+    /**
+     * Form field 'type' attribute
+     *
+     * Extending classes can override this value to render HTML5 style form
+     * input fields such as 'url', 'email', etc.
+     */
+    protected $inputType = 'text';
+
     /**
      * Generates a 'text' element.
      *
@@ -53,12 +59,19 @@ class Zend_View_Helper_FormText extends Zend_View_Helper_FormElement
      *
      * @return string The element XHTML.
      */
-    public function formText($name, $value = null, $attribs = null)
+    public function __invoke($name, $value = null, $attribs = null)
     {
         $info = $this->_getInfo($name, $value, $attribs);
         extract($info); // name, value, attribs, options, listsep, disable
 
         // build the element
+        if (isset($attribs['type'])) {
+            $inputType = $attribs['type'];
+            unset($attribs['type']);
+        } else {
+            $inputType = $this->inputType;
+        }
+
         $disabled = '';
         if ($disable) {
             // disabled
@@ -67,14 +80,15 @@ class Zend_View_Helper_FormText extends Zend_View_Helper_FormElement
 
         // XHTML or HTML end tag?
         $endTag = ' />';
-        if (($this->view instanceof Zend_View_Abstract) && !$this->view->doctype()->isXhtml()) {
+        if ($this->view instanceof \Zend\Loader\Pluggable && !$this->view->plugin('doctype')->isXhtml()) {
             $endTag= '>';
         }
 
-        $xhtml = '<input type="text"'
-                . ' name="' . $this->view->escape($name) . '"'
-                . ' id="' . $this->view->escape($id) . '"'
-                . ' value="' . $this->view->escape($value) . '"'
+        $xhtml = '<input'
+                . ' type="' .  $this->view->vars()->escape($inputType) . '"'
+                . ' name="' . $this->view->vars()->escape($name) . '"'
+                . ' id="' . $this->view->vars()->escape($id) . '"'
+                . ' value="' . $this->view->vars()->escape($value) . '"'
                 . $disabled
                 . $this->_htmlAttribs($attribs)
                 . $endTag;

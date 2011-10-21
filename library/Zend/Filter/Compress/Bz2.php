@@ -16,23 +16,25 @@
  * @package    Zend_Filter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Bz2.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Filter_Compress_CompressAbstract
+ * @namespace
  */
-require_once 'Zend/Filter/Compress/CompressAbstract.php';
+namespace Zend\Filter\Compress;
+use Zend\Filter\Exception;
 
 /**
  * Compression adapter for Bz2
  *
+ * @uses       \Zend\Filter\Compress\AbstractCompressionAlgorithm
+ * @uses       \Zend\Filter\Exception
  * @category   Zend
  * @package    Zend_Filter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Filter_Compress_Bz2 extends Zend_Filter_Compress_CompressAbstract
+class Bz2 extends AbstractCompressionAlgorithm
 {
     /**
      * Compression Options
@@ -51,13 +53,12 @@ class Zend_Filter_Compress_Bz2 extends Zend_Filter_Compress_CompressAbstract
     /**
      * Class constructor
      *
-     * @param array|Zend_Config $options (Optional) Options to set
+     * @param array|\Zend\Config\Config $options (Optional) Options to set
      */
     public function __construct($options = null)
     {
         if (!extension_loaded('bz2')) {
-            require_once 'Zend/Filter/Exception.php';
-            throw new Zend_Filter_Exception('This filter needs the bz2 extension');
+            throw new Exception\ExtensionNotLoadedException('This filter needs the bz2 extension');
         }
         parent::__construct($options);
     }
@@ -76,13 +77,12 @@ class Zend_Filter_Compress_Bz2 extends Zend_Filter_Compress_CompressAbstract
      * Sets a new blocksize
      *
      * @param integer $level
-     * @return Zend_Filter_Compress_Bz2
+     * @return \Zend\Filter\Compress\Bz2
      */
     public function setBlocksize($blocksize)
     {
         if (($blocksize < 0) || ($blocksize > 9)) {
-            require_once 'Zend/Filter/Exception.php';
-            throw new Zend_Filter_Exception('Blocksize must be between 0 and 9');
+            throw new Exception\InvalidArgumentException('Blocksize must be between 0 and 9');
         }
 
         $this->_options['blocksize'] = (int) $blocksize;
@@ -103,7 +103,7 @@ class Zend_Filter_Compress_Bz2 extends Zend_Filter_Compress_CompressAbstract
      * Sets the archive to use for de-/compression
      *
      * @param string $archive Archive to use
-     * @return Zend_Filter_Compress_Bz2
+     * @return \Zend\Filter\Compress\Bz2
      */
     public function setArchive($archive)
     {
@@ -123,8 +123,7 @@ class Zend_Filter_Compress_Bz2 extends Zend_Filter_Compress_CompressAbstract
         if (!empty($archive)) {
             $file = bzopen($archive, 'w');
             if (!$file) {
-                require_once 'Zend/Filter/Exception.php';
-                throw new Zend_Filter_Exception("Error opening the archive '" . $archive . "'");
+                throw new Exception\RuntimeException("Error opening the archive '" . $archive . "'");
             }
 
             bzwrite($file, $content);
@@ -135,8 +134,7 @@ class Zend_Filter_Compress_Bz2 extends Zend_Filter_Compress_CompressAbstract
         }
 
         if (is_int($compressed)) {
-            require_once 'Zend/Filter/Exception.php';
-            throw new Zend_Filter_Exception('Error during compression');
+            throw new Exception\RuntimeException('Error during compression');
         }
 
         return $compressed;
@@ -158,8 +156,7 @@ class Zend_Filter_Compress_Bz2 extends Zend_Filter_Compress_CompressAbstract
         if (file_exists($archive)) {
             $file = bzopen($archive, 'r');
             if (!$file) {
-                require_once 'Zend/Filter/Exception.php';
-                throw new Zend_Filter_Exception("Error opening the archive '" . $content . "'");
+                throw new Exception\RuntimeException("Error opening the archive '" . $content . "'");
             }
 
             $compressed = bzread($file);
@@ -169,8 +166,7 @@ class Zend_Filter_Compress_Bz2 extends Zend_Filter_Compress_CompressAbstract
         }
 
         if (is_int($compressed)) {
-            require_once 'Zend/Filter/Exception.php';
-            throw new Zend_Filter_Exception('Error during decompression');
+            throw new Exception\RuntimeException('Error during decompression');
         }
 
         return $compressed;

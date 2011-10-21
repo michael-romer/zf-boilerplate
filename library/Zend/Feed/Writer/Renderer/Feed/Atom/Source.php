@@ -16,44 +16,47 @@
  * @package    Zend_Feed_Writer
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Source.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-require_once 'Zend/Feed/Writer/Renderer/Feed/Atom/AtomAbstract.php';
+/**
+ * @namespace
+ */
+namespace Zend\Feed\Writer\Renderer\Feed\Atom;
 
 /**
+ * @uses       DOMDocument
+ * @uses       \Zend\Feed\Writer\Renderer\Feed\Atom\AbstractAtom
+ * @uses       \Zend\Feed\Writer\Renderer
  * @category   Zend
  * @package    Zend_Feed_Writer
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Feed_Writer_Renderer_Feed_Atom_Source
-    extends Zend_Feed_Writer_Renderer_Feed_Atom_AtomAbstract
-    implements Zend_Feed_Writer_Renderer_RendererInterface
+class Source extends AbstractAtom implements \Zend\Feed\Writer\Renderer
 {
 
     /**
      * Constructor
-     *
-     * @param  Zend_Feed_Writer_Feed_Source $container
+     * 
+     * @param  Zend_Feed_Writer_Feed_Source $container 
      * @return void
      */
-    public function __construct (Zend_Feed_Writer_Source $container)
+    public function __construct (\Zend\Feed\Writer\Source $container)
     {
         parent::__construct($container);
     }
-
+    
     /**
      * Render Atom Feed Metadata (Source element)
-     *
-     * @return Zend_Feed_Writer_Renderer_Feed_Atom
+     * 
+     * @return \Zend\Feed\Writer\Renderer\Feed\Atom
      */
     public function render()
     {
         if (!$this->_container->getEncoding()) {
             $this->_container->setEncoding('UTF-8');
         }
-        $this->_dom = new DOMDocument('1.0', $this->_container->getEncoding());
+        $this->_dom = new \DOMDocument('1.0', $this->_container->getEncoding());
         $this->_dom->formatOutput = true;
         $root = $this->_dom->createElement('source');
         $this->setRootElement($root);
@@ -71,7 +74,7 @@ class Zend_Feed_Writer_Renderer_Feed_Atom_Source
         $this->_setAuthors($this->_dom, $root);
         $this->_setCopyright($this->_dom, $root);
         $this->_setCategories($this->_dom, $root);
-
+        
         foreach ($this->_extensions as $ext) {
             $ext->setType($this->getType());
             $ext->setRootElement($this->getRootElement());
@@ -80,15 +83,15 @@ class Zend_Feed_Writer_Renderer_Feed_Atom_Source
         }
         return $this;
     }
-
+    
     /**
      * Set feed generator string
-     *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
+     * 
+     * @param  DOMDocument $dom 
+     * @param  DOMElement $root 
      * @return void
      */
-    protected function _setGenerator(DOMDocument $dom, DOMElement $root)
+    protected function _setGenerator(\DOMDocument $dom, \DOMElement $root)
     {
         if(!$this->getDataContainer()->getGenerator()) {
             return;

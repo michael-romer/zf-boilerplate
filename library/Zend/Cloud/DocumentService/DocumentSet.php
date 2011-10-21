@@ -18,15 +18,20 @@
  */
 
 /**
+ * namespace
+ */
+namespace Zend\Cloud\DocumentService;
+
+/**
  * Class encapsulating a set of documents
  *
  * @category   Zend
- * @package    Zend_Cloud
+ * @package    Zend\Cloud
  * @subpackage DocumentService
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Cloud_DocumentService_DocumentSet implements Countable, IteratorAggregate
+class DocumentSet implements \Countable, \IteratorAggregate
 {
     /** @var int */
     protected $_documentCount;
@@ -43,7 +48,7 @@ class Zend_Cloud_DocumentService_DocumentSet implements Countable, IteratorAggre
     public function __construct(array $documents)
     {
         $this->_documentCount = count($documents);
-        $this->_documents     = new ArrayIterator($documents);
+        $this->_documents     = new \ArrayIterator($documents);
     }
 
     /**

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -18,18 +17,22 @@
  * @subpackage Amazon
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: SimilarProduct.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
+/**
+ * @namespace
+ */
+namespace Zend\Service\Amazon;
 
 /**
+ * @uses       DOMXPath
  * @category   Zend
  * @package    Zend_Service
  * @subpackage Amazon
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Service_Amazon_SimilarProduct
+class SimilarProduct
 {
     /**
      * @var string
@@ -47,13 +50,13 @@ class Zend_Service_Amazon_SimilarProduct
      * @param  DOMElement $dom
      * @return void
      */
-    public function __construct(DOMElement $dom)
+    public function __construct(\DOMElement $dom)
     {
-        $xpath = new DOMXPath($dom->ownerDocument);
+        $xpath = new \DOMXPath($dom->ownerDocument);
         $xpath->registerNamespace('az', 'http://webservices.amazon.com/AWSECommerceService/2005-10-05');
         foreach (array('ASIN', 'Title') as $el) {
             $text = $xpath->query("./az:$el/text()", $dom)->item(0);
-            if($text instanceof DOMText) {
+            if($text instanceof \DOMText) {
                 $this->$el = (string)$text->data;
             }
         }

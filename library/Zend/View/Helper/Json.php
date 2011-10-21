@@ -16,28 +16,28 @@
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: Json.php 23775 2011-03-01 17:25:24Z ralph $
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-/** Zend_Json */
-require_once 'Zend/Json.php';
-
-/** Zend_Controller_Front */
-require_once 'Zend/Controller/Front.php';
-
-/** Zend_View_Helper_Abstract.php */
-require_once 'Zend/View/Helper/Abstract.php';
+/**
+ * @namespace
+ */
+namespace Zend\View\Helper;
+use Zend\Layout\Layout as LayoutManager;
 
 /**
  * Helper for simplifying JSON responses
  *
+ * @uses       \Zend\Controller\Front
+ * @uses       \Zend\Json\Json
+ * @uses       \Zend\Layout\Layout
+ * @uses       \Zend\View\Helper\AbstractHelper
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_Json extends Zend_View_Helper_Abstract
+class Json extends AbstractHelper
 {
     /**
      * Encode data as JSON, disable layouts, and set response header
@@ -52,7 +52,7 @@ class Zend_View_Helper_Json extends Zend_View_Helper_Abstract
      *         that will not be passed to Zend_Json::encode method but will be used here
      * @return string|void
      */
-    public function json($data, $keepLayouts = false)
+    public function __invoke($data, $keepLayouts = false)
     {
         $options = array();
         if (is_array($keepLayouts))
@@ -64,17 +64,16 @@ class Zend_View_Helper_Json extends Zend_View_Helper_Abstract
             unset($options['keepLayouts']);
         }
 
-        $data = Zend_Json::encode($data, null, $options);
+        $data = \Zend\Json\Json::encode($data, null, $options);
         if (!$keepLayouts) {
-            require_once 'Zend/Layout.php';
-            $layout = Zend_Layout::getMvcInstance();
-            if ($layout instanceof Zend_Layout) {
+            $layout = LayoutManager::getMvcInstance();
+            if ($layout instanceof LayoutManager) {
                 $layout->disableLayout();
             }
         }
 
-        $response = Zend_Controller_Front::getInstance()->getResponse();
-        $response->setHeader('Content-Type', 'application/json', true);
+        $response = \Zend\Controller\Front::getInstance()->getResponse();
+        $response->setHeader('Content-Type', 'application/json');
         return $data;
     }
 }

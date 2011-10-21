@@ -16,21 +16,21 @@
  * @package    Zend_Filter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: RealPath.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Filter_Interface
+ * @namespace
  */
-require_once 'Zend/Filter/Interface.php';
+namespace Zend\Filter;
 
 /**
+ * @uses       Zend\Filter\AbstractFilter
  * @category   Zend
  * @package    Zend_Filter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Filter_RealPath implements Zend_Filter_Interface
+class RealPath extends AbstractFilter
 {
     /**
      * @var boolean $_pathExists
@@ -40,7 +40,7 @@ class Zend_Filter_RealPath implements Zend_Filter_Interface
     /**
      * Class constructor
      *
-     * @param boolean|Zend_Config $options Options to set
+     * @param boolean|\Zend\Config\Config $options Options to set
      */
     public function __construct($options = true)
     {
@@ -62,12 +62,12 @@ class Zend_Filter_RealPath implements Zend_Filter_Interface
      * TRUE when the path must exist
      * FALSE when not existing paths can be given
      *
-     * @param boolean|Zend_Config $exists Path must exist
-     * @return Zend_Filter_RealPath
+     * @param boolean|\Zend\Config\Config $exists Path must exist
+     * @return \Zend\Filter\RealPath
      */
     public function setExists($exists)
     {
-        if ($exists instanceof Zend_Config) {
+        if ($exists instanceof \Zend\Config\Config) {
             $exists = $exists->toArray();
         }
 

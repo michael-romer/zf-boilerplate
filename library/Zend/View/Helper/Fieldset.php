@@ -16,22 +16,24 @@
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: Fieldset.php 23775 2011-03-01 17:25:24Z ralph $
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-/** Zend_View_Helper_FormElement */
-require_once 'Zend/View/Helper/FormElement.php';
+/**
+ * @namespace
+ */
+namespace Zend\View\Helper;
 
 /**
  * Helper for rendering fieldsets
  *
+ * @uses       \Zend\View\Helper\FormElement
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_Fieldset extends Zend_View_Helper_FormElement
+class Fieldset extends FormElement
 {
     /**
      * Render HTML form
@@ -41,9 +43,10 @@ class Zend_View_Helper_Fieldset extends Zend_View_Helper_FormElement
      * @param  array $attribs HTML form attributes
      * @return string
      */
-    public function fieldset($name, $content, $attribs = null)
+    public function __invoke($name = null, $content = null, $attribs = null)
     {
-        $info = $this->_getInfo($name, $content, $attribs);
+        $info   = $this->_getInfo($name, $content, $attribs);
+        $escape = $id = null;
         extract($info);
 
         // get legend
@@ -52,7 +55,7 @@ class Zend_View_Helper_Fieldset extends Zend_View_Helper_FormElement
             $legendString = trim($attribs['legend']);
             if (!empty($legendString)) {
                 $legend = '<legend>'
-                        . (($escape) ? $this->view->escape($legendString) : $legendString)
+                        . (($escape) ? $this->view->vars()->escape($legendString) : $legendString)
                         . '</legend>' . PHP_EOL;
             }
             unset($attribs['legend']);
@@ -60,7 +63,7 @@ class Zend_View_Helper_Fieldset extends Zend_View_Helper_FormElement
 
         // get id
         if (!empty($id)) {
-            $id = ' id="' . $this->view->escape($id) . '"';
+            $id = ' id="' . $this->view->vars()->escape($id) . '"';
         } else {
             $id = '';
         }

@@ -13,28 +13,29 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_View
+ * @package    Zend\View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: Doctype.php 16971 2009-07-22 18:05:45Z mikaelkael $
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-/** Zend_View_Helper_HtmlElement */
-require_once 'Zend/View/Helper/HtmlElement.php';
+/**
+ * @namespace
+ */
+namespace Zend\View\Helper;
 
 /**
  * Helper for retrieving avatars from gravatar.com
  *
- * @package    Zend_View
+ * @uses       \Zend\Controller\Front
+ * @uses       \Zend\View\Helper\AbstractHelper
+ * @package    Zend\View
  * @subpackage Helper
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @link http://pl.gravatar.com/site/implement/url
  */
-class Zend_View_Helper_Gravatar extends Zend_View_Helper_HtmlElement
+class Gravatar extends HtmlElement
 {
-
     /**
      * URL to gravatar service
      */
@@ -66,7 +67,7 @@ class Zend_View_Helper_Gravatar extends Zend_View_Helper_HtmlElement
      *
      * @var array
      */
-    protected $_options = array(
+    protected $options = array(
         'img_size'    => 80,
         'default_img' => self::DEFAULT_MM,
         'rating'      => self::RATING_G,
@@ -78,14 +79,14 @@ class Zend_View_Helper_Gravatar extends Zend_View_Helper_HtmlElement
      *
      * @var string
      */
-    protected $_email;
+    protected $email;
 
     /**
      * Attributes for HTML image tag
      *
      * @var array
      */
-    protected $_attribs;
+    protected $attribs;
 
     /**
      * Returns an avatar from gravatar's service.
@@ -101,13 +102,19 @@ class Zend_View_Helper_Gravatar extends Zend_View_Helper_HtmlElement
      * @param  string|null $email Email adress.
      * @param  null|array $options Options
      * @param  array $attribs Attributes for image tag (title, alt etc.)
-     * @return Zend_View_Helper_Gravatar
+     * @return Zend\View\Helper\Gravatar
      */
-    public function gravatar($email = "", $options = array(), $attribs = array())
+    public function __invoke($email = "", $options = array(), $attribs = array())
     {
-        $this->setEmail($email);
-        $this->setOptions($options);
-        $this->setAttribs($attribs);
+        if (!empty($email)) {
+            $this->setEmail($email);
+        }
+        if (!empty($options)) {
+            $this->setOptions($options);
+        }
+        if (!empty($attribs)) {
+            $this->setAttribs($attribs);
+        }
         return $this;
     }
 
@@ -115,7 +122,7 @@ class Zend_View_Helper_Gravatar extends Zend_View_Helper_HtmlElement
      * Configure state
      *
      * @param  array $options
-     * @return Zend_View_Helper_Gravatar
+     * @return Zend\View\Helper\Gravatar
      */
     public function setOptions(array $options)
     {
@@ -135,7 +142,7 @@ class Zend_View_Helper_Gravatar extends Zend_View_Helper_HtmlElement
      */
     public function getImgSize()
     {
-        return $this->_options['img_size'];
+        return $this->options['img_size'];
     }
 
     /**
@@ -146,7 +153,7 @@ class Zend_View_Helper_Gravatar extends Zend_View_Helper_HtmlElement
      */
     public function setImgSize($imgSize)
     {
-        $this->_options['img_size'] = (int) $imgSize;
+        $this->options['img_size'] = (int) $imgSize;
         return $this;
     }
 
@@ -157,7 +164,7 @@ class Zend_View_Helper_Gravatar extends Zend_View_Helper_HtmlElement
      */
     public function getDefaultImg()
     {
-        return $this->_options['default_img'];
+        return $this->options['default_img'];
     }
 
     /**
@@ -167,11 +174,11 @@ class Zend_View_Helper_Gravatar extends Zend_View_Helper_HtmlElement
      *
      * @param string $defaultImg
      * @link http://pl.gravatar.com/site/implement/url More information about default image.
-     * @return Zend_View_Helper_Gravatar
+     * @return Zend\View\Helper\Gravatar
      */
     public function setDefaultImg($defaultImg)
     {
-        $this->_options['default_img'] = urlencode($defaultImg);
+        $this->options['default_img'] = urlencode($defaultImg);
         return $this;
     }
 
@@ -182,7 +189,7 @@ class Zend_View_Helper_Gravatar extends Zend_View_Helper_HtmlElement
      *
      * @param string $rating Value for rating. Allowed values are: g, px, r,x
      * @link http://pl.gravatar.com/site/implement/url More information about rating.
-     * @throws Zend_View_Exception
+     * @throws \Zend\View\Exception
      */
     public function setRating($rating)
     {
@@ -191,11 +198,10 @@ class Zend_View_Helper_Gravatar extends Zend_View_Helper_HtmlElement
             case self::RATING_PG:
             case self::RATING_R:
             case self::RATING_X:
-                $this->_options['rating'] = $rating;
+                $this->options['rating'] = $rating;
                 break;
             default:
-                require_once 'Zend/View/Exception.php';
-                throw new Zend_View_Exception(sprintf(
+                throw new \Zend\View\Exception(sprintf(
                     'The rating value "%s" is not allowed',
                     $rating
                 ));
@@ -210,7 +216,7 @@ class Zend_View_Helper_Gravatar extends Zend_View_Helper_HtmlElement
      */
     public function getRating()
     {
-        return $this->_options['rating'];
+        return $this->options['rating'];
     }
 
     /**
@@ -221,7 +227,7 @@ class Zend_View_Helper_Gravatar extends Zend_View_Helper_HtmlElement
      */
     public function setEmail( $email )
     {
-        $this->_email = $email;
+        $this->email = $email;
         return $this;
     }
 
@@ -232,18 +238,18 @@ class Zend_View_Helper_Gravatar extends Zend_View_Helper_HtmlElement
      */
     public function getEmail()
     {
-        return $this->_email;
+        return $this->email;
     }
 
     /**
      * Load from an SSL or No-SSL location?
      *
      * @param bool $flag
-     * @return Zend_View_Helper_Gravatar
+     * @return Zend\View\Helper\Gravatar
      */
     public function setSecure($flag)
     {
-        $this->_options['secure'] = ($flag === null) ? null : (bool) $flag;
+        $this->options['secure'] = ($flag === null) ? null : (bool) $flag;
         return $this;
     }
 
@@ -254,10 +260,10 @@ class Zend_View_Helper_Gravatar extends Zend_View_Helper_HtmlElement
      */
     public function getSecure()
     {
-        if ($this->_options['secure'] === null) {
+        if ($this->options['secure'] === null) {
             return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');
         }
-        return $this->_options['secure'];
+        return $this->options['secure'];
     }
 
     /**
@@ -265,29 +271,29 @@ class Zend_View_Helper_Gravatar extends Zend_View_Helper_HtmlElement
      *
      * Warning!
      * If you set src attrib, you get it, but this value will be overwritten in
-     * protected method _setSrcAttribForImg(). And finally your get other src
+     * protected method setSrcAttribForImg(). And finally your get other src
      * value!
      *
      * @return array
      */
     public function getAttribs()
     {
-        return $this->_attribs;
+        return $this->attribs;
     }
 
     /**
      * Set attribs for image tag
      *
      * Warning! You shouldn't set src attrib for image tag.
-     * This attrib is overwritten in protected method _setSrcAttribForImg().
+     * This attrib is overwritten in protected method setSrcAttribForImg().
      * This method(_setSrcAttribForImg) is called in public method getImgTag().
 
      * @param array $attribs
-     * @return Zend_View_Helper_Gravatar
+     * @return Zend\View\Helper\Gravatar
      */
     public function setAttribs(array $attribs)
     {
-        $this->_attribs = $attribs;
+        $this->attribs = $attribs;
         return $this;
     }
 
@@ -296,7 +302,7 @@ class Zend_View_Helper_Gravatar extends Zend_View_Helper_HtmlElement
      *
      * @return string URL
      */
-    protected function _getGravatarUrl()
+    protected function getGravatarUrl()
     {
         return ($this->getSecure() === false) ? self::GRAVATAR_URL : self::GRAVATAR_URL_SECURE;
     }
@@ -306,17 +312,13 @@ class Zend_View_Helper_Gravatar extends Zend_View_Helper_HtmlElement
      *
      * @return string
      */
-    protected function _getAvatarUrl()
+    protected function getAvatarUrl()
     {
-        $src = $this->_getGravatarUrl()
-             . '/'
-             . md5($this->getEmail())
-             . '?s='
-             . $this->getImgSize()
-             . '&d='
-             . $this->getDefaultImg()
-             . '&r='
-             . $this->getRating();
+        $src = $this->getGravatarUrl()
+             . '/'   . md5($this->getEmail())
+             . '?s=' . $this->getImgSize()
+             . '&d=' . $this->getDefaultImg()
+             . '&r=' . $this->getRating();
         return $src;
     }
 
@@ -324,14 +326,14 @@ class Zend_View_Helper_Gravatar extends Zend_View_Helper_HtmlElement
      * Set src attrib for image.
      *
      * You shouldn't set a own url value!
-     * It sets value, uses protected method _getAvatarUrl.
+     * It sets value, uses protected method getAvatarUrl.
      *
      * If already exsist overwritten.
      */
-    protected function _setSrcAttribForImg()
+    protected function setSrcAttribForImg()
     {
         $attribs        = $this->getAttribs();
-        $attribs['src'] = $this->_getAvatarUrl();
+        $attribs['src'] = $this->getAvatarUrl();
         $this->setAttribs($attribs);
     }
 
@@ -342,7 +344,7 @@ class Zend_View_Helper_Gravatar extends Zend_View_Helper_HtmlElement
      */
     public function getImgTag()
     {
-        $this->_setSrcAttribForImg();
+        $this->setSrcAttribForImg();
         $html = '<img'
               . $this->_htmlAttribs($this->getAttribs())
               . $this->getClosingBracket();

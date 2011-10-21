@@ -17,6 +17,15 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
+/**
+ * namespace
+ */
+namespace Zend\Cloud\DocumentService\Adapter;
+
+use Zend\Cloud\DocumentService\Adapter\AbstractAdapter,
+    Zend\Cloud\Exception\InvalidArgumentException,
+    Zend\Service\WindowsAzure\Storage\Table;
+
 require_once 'Zend/Cloud/DocumentService/Adapter/AbstractAdapter.php';
 require_once 'Zend/Cloud/DocumentService/Adapter/WindowsAzure/Query.php';
 require_once 'Zend/Cloud/DocumentService/Exception.php';
@@ -32,8 +41,8 @@ require_once 'Zend/Service/WindowsAzure/Storage/Table.php';
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Cloud_DocumentService_Adapter_WindowsAzure
-    extends Zend_Cloud_DocumentService_Adapter_AbstractAdapter
+class WindowsAzure
+    extends AbstractAdapter
 {
     /*
      * Options array keys for the Azure adapter.
@@ -51,8 +60,8 @@ class Zend_Cloud_DocumentService_Adapter_WindowsAzure
     const VERIFY_ETAG           = "verify_etag";
     const TIMESTAMP_KEY         = "Timestamp";
 
-    const DEFAULT_HOST          = Zend_Service_WindowsAzure_Storage::URL_CLOUD_TABLE;
-    const DEFAULT_QUERY_CLASS   = 'Zend_Cloud_DocumentService_Adapter_WindowsAzure_Query';
+    const DEFAULT_HOST          = Zend\Service\WindowsAzure\Storage::URL_CLOUD_TABLE;
+    const DEFAULT_QUERY_CLASS   = 'Zend\Cloud\DocumentService\Adapter\WindowsAzure\Query';
 
     /**
      * Azure  service instance.
@@ -66,7 +75,7 @@ class Zend_Cloud_DocumentService_Adapter_WindowsAzure
      *
      * @var string
      */
-    protected $_queryClass = 'Zend_Cloud_DocumentService_Adapter_WindowsAzure_Query';
+    protected $_queryClass = 'Zend\Cloud\DocumentService\Adapter\WindowsAzure\Query';
 
     /**
      * Partition key to use by default when constructing document identifiers
@@ -91,7 +100,7 @@ class Zend_Cloud_DocumentService_Adapter_WindowsAzure
         }
 
         if (!is_array($options)) {
-            throw new Zend_Cloud_DocumentService_Exception('Invalid options provided');
+            throw new InvalidArgumentException('Invalid options provided');
         }
 
         if (isset($options[self::DOCUMENT_CLASS])) {
@@ -114,16 +123,16 @@ class Zend_Cloud_DocumentService_Adapter_WindowsAzure
         }
 
         if (! isset($options[self::ACCOUNT_NAME])) {
-            throw new Zend_Cloud_DocumentService_Exception('No Windows Azure account name provided.');
+            throw new InvalidArgumentException('No Windows Azure account name provided.');
         }
 
         if (! isset($options[self::ACCOUNT_KEY])) {
-            throw new Zend_Cloud_DocumentService_Exception('No Windows Azure account key provided.');
+            throw new InvalidArgumentException('No Windows Azure account key provided.');
         }
 
         // TODO: support $usePathStyleUri and $retryPolicy
         try {
-            $this->_storageClient = new Zend_Service_WindowsAzure_Storage_Table(
+            $this->_storageClient = new Zend\Service\WindowsAzure\Storage\Table(
                     $host, $options[self::ACCOUNT_NAME], $options[self::ACCOUNT_KEY]);
             // Parse other options
             if (! empty($options[self::PROXY_HOST])) {
@@ -173,7 +182,7 @@ class Zend_Cloud_DocumentService_Adapter_WindowsAzure
     public function createCollection($name, $options = null)
     {
         if (!preg_match('/^[A-Za-z][A-Za-z0-9]{2,}$/', $name)) {
-            throw new Zend_Cloud_DocumentService_Exception('Invalid collection name; Windows Azure collection names must consist of alphanumeric characters only, and be at least 3 characters long');
+            throw new InvalidArgumentException('Invalid collection name; Windows Azure collection names must consist of alphanumeric characters only, and be at least 3 characters long');
         }
         try {
             $this->_storageClient->createTable($name);

@@ -17,22 +17,23 @@
  * @subpackage View
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: SubmitButton.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-/** Zend_Dojo_View_Helper_Button */
-require_once 'Zend/Dojo/View/Helper/Button.php';
+/**
+ * @namespace
+ */
+namespace Zend\Dojo\View\Helper;
 
 /**
  * Dojo Button dijit tied to submit input
  *
- * @uses       Zend_Dojo_View_Helper_Button
+ * @uses       \Zend\Dojo\View\Helper\Button
  * @package    Zend_Dojo
  * @subpackage View
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
-  */
-class Zend_Dojo_View_Helper_SubmitButton extends Zend_Dojo_View_Helper_Button
+ */
+class SubmitButton extends Button
 {
     /**
      * @var string Submit input
@@ -48,7 +49,7 @@ class Zend_Dojo_View_Helper_SubmitButton extends Zend_Dojo_View_Helper_Button
      * @param  array $attribs HTML attributes
      * @return string
      */
-    public function submitButton($id, $value = null, array $params = array(), array $attribs = array())
+    public function __invoke($id = null, $value = null, array $params = array(), array $attribs = array())
     {
         if (!array_key_exists('label', $params)) {
             $params['label'] = $value;

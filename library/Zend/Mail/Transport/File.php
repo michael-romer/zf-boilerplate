@@ -17,51 +17,53 @@
  * @subpackage Transport
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id$
  */
 
 /**
- * @see Zend_Mail_Transport_Abstract
+ * @namespace
  */
-require_once 'Zend/Mail/Transport/Abstract.php';
-
+namespace Zend\Mail\Transport;
+use Zend\Config\Config,
+    Zend\Mail\AbstractTransport;
 
 /**
  * File transport
  *
  * Class for saving outgoing emails in filesystem
  *
+ * @uses       \Zend\Mail\AbstractTransport
+ * @uses       \Zend\Mail\Transport\Exception
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Transport
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Mail_Transport_File extends Zend_Mail_Transport_Abstract
+class File extends AbstractTransport
 {
     /**
      * Target directory for saving sent email messages
      *
      * @var string
      */
-    protected $_path;
+    protected $path;
 
     /**
      * Callback function generating a file name
      *
-     * @var string|array
+     * @var string|array|Closure
      */
-    protected $_callback;
+    protected $callback;
 
     /**
      * Constructor
      *
-     * @param  array|Zend_Config $options OPTIONAL (Default: null)
+     * @param  array|\Zend\Config\Config $options OPTIONAL (Default: null)
      * @return void
      */
     public function __construct($options = null)
     {
-        if ($options instanceof Zend_Config) {
+        if ($options instanceof Config) {
             $options = $options->toArray();
         } elseif (!is_array($options)) {
             $options = array();
@@ -72,7 +74,7 @@ class Zend_Mail_Transport_File extends Zend_Mail_Transport_Abstract
             $options['path'] = sys_get_temp_dir();
         }
         if (!isset($options['callback'])) {
-            $options['callback'] = array($this, 'defaultCallback');
+            $options['callback'] = $this->getDefaultCallback();
         }
 
         $this->setOptions($options);
@@ -86,11 +88,11 @@ class Zend_Mail_Transport_File extends Zend_Mail_Transport_Abstract
      */
     public function setOptions(array $options)
     {
-        if (isset($options['path']) && is_dir($options['path'])) {
-            $this->_path = $options['path'];
+        if (isset($options['path'])) {
+            $this->path = $options['path'];
         }
-        if (isset($options['callback']) && is_callable($options['callback'])) {
-            $this->_callback = $options['callback'];
+        if (isset($options['callback'])) {
+            $this->callback = $options['callback'];
         }
     }
 
@@ -98,16 +100,15 @@ class Zend_Mail_Transport_File extends Zend_Mail_Transport_Abstract
      * Saves e-mail message to a file
      *
      * @return void
-     * @throws Zend_Mail_Transport_Exception on not writable target directory
-     * @throws Zend_Mail_Transport_Exception on file_put_contents() failure
+     * @throws \Zend\Mail\Transport\Exception on not writable target directory
+     * @throws \Zend\Mail\Transport\Exception on file_put_contents() failure
      */
     protected function _sendMail()
     {
-        $file = $this->_path . DIRECTORY_SEPARATOR . call_user_func($this->_callback, $this);
+        $file = $this->getPath() . DIRECTORY_SEPARATOR . call_user_func($this->getCallback(), $this);
 
         if (!is_writable(dirname($file))) {
-            require_once 'Zend/Mail/Transport/Exception.php';
-            throw new Zend_Mail_Transport_Exception(sprintf(
+            throw new Exception\RuntimeException(sprintf(
                 'Target directory "%s" does not exist or is not writable',
                 dirname($file)
             ));
@@ -116,19 +117,39 @@ class Zend_Mail_Transport_File extends Zend_Mail_Transport_Abstract
         $email = $this->header . $this->EOL . $this->body;
 
         if (!file_put_contents($file, $email)) {
-            require_once 'Zend/Mail/Transport/Exception.php';
-            throw new Zend_Mail_Transport_Exception('Unable to send mail');
+            throw new Exception\RuntimeException('Unable to send mail');
         }
     }
 
     /**
-     * Default callback for generating filenames
+     * Returns the default callback for generating file names
      *
-     * @param Zend_Mail_Transport_File File transport instance
+     * @return callback
+     */
+    public function getDefaultCallback()
+    {
+        return function($transport) {
+            return 'ZendMail_' . time() . '_' . mt_rand() . '.tmp';
+        };
+    }
+
+    /**
+     * Retrieve registered path
+     * 
      * @return string
      */
-    public function defaultCallback($transport)
+    public function getPath()
     {
-        return 'ZendMail_' . $_SERVER['REQUEST_TIME'] . '_' . mt_rand() . '.tmp';
+        return $this->path;
+    }
+
+    /**
+     * Get the registered callback for generating file names
+     * 
+     * @return callback
+     */
+    public function getCallback()
+    {
+        return $this->callback;
     }
 }

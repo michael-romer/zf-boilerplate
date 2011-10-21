@@ -17,26 +17,24 @@
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: FormPassword.php 23775 2011-03-01 17:25:24Z ralph $
  */
-
 
 /**
- * Abstract class for extension
+ * @namespace
  */
-require_once 'Zend/View/Helper/FormElement.php';
-
+namespace Zend\View\Helper;
 
 /**
  * Helper to generate a "password" element
  *
+ * @uses       \Zend\View\Helper\FormElement
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_FormPassword extends Zend_View_Helper_FormElement
+class FormPassword extends FormElement
 {
     /**
      * Generates a 'password' element.
@@ -53,7 +51,7 @@ class Zend_View_Helper_FormPassword extends Zend_View_Helper_FormElement
      *
      * @return string The element XHTML.
      */
-    public function formPassword($name, $value = null, $attribs = null)
+    public function __invoke($name, $value = null, $attribs = null)
     {
         $info = $this->_getInfo($name, $value, $attribs);
         extract($info); // name, value, attribs, options, listsep, disable
@@ -69,21 +67,21 @@ class Zend_View_Helper_FormPassword extends Zend_View_Helper_FormElement
         $valueString = ' value=""';
         if (array_key_exists('renderPassword', $attribs)) {
             if ($attribs['renderPassword']) {
-                $valueString = ' value="' . $this->view->escape($value) . '"';
+                $valueString = ' value="' . $this->view->vars()->escape($value) . '"';
             }
             unset($attribs['renderPassword']);
         }
 
         // XHTML or HTML end tag?
         $endTag = ' />';
-        if (($this->view instanceof Zend_View_Abstract) && !$this->view->doctype()->isXhtml()) {
+        if ($this->view instanceof \Zend\Loader\Pluggable && !$this->view->plugin('doctype')->isXhtml()) {
             $endTag= '>';
         }
 
         // render the element
         $xhtml = '<input type="password"'
-                . ' name="' . $this->view->escape($name) . '"'
-                . ' id="' . $this->view->escape($id) . '"'
+                . ' name="' . $this->view->vars()->escape($name) . '"'
+                . ' id="' . $this->view->vars()->escape($id) . '"'
                 . $valueString
                 . $disabled
                 . $this->_htmlAttribs($attribs)

@@ -16,23 +16,27 @@
  * @package    Zend_Filter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Mcrypt.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Filter_Encrypt_Interface
+ * @namespace
  */
-require_once 'Zend/Filter/Encrypt/Interface.php';
+namespace Zend\Filter\Encrypt;
+use Zend\Filter\Exception,
+    Zend\Filter\Compress,
+    Zend\Filter\Decompress;
 
 /**
  * Encryption adapter for mcrypt
  *
+ * @uses       \Zend\Filter\Encrypt\EncryptionAlgorithm
+ * @uses       \Zend\Filter\Exception
  * @category   Zend
  * @package    Zend_Filter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Filter_Encrypt_Mcrypt implements Zend_Filter_Encrypt_Interface
+class Mcrypt implements EncryptionAlgorithm
 {
     /**
      * Definitions for encryption
@@ -51,7 +55,7 @@ class Zend_Filter_Encrypt_Mcrypt implements Zend_Filter_Encrypt_Interface
         'mode'                => 'cbc',
         'mode_directory'      => '',
         'vector'              => null,
-        'salt'                => false
+        'salt'                => false,
     );
 
     /**
@@ -61,27 +65,28 @@ class Zend_Filter_Encrypt_Mcrypt implements Zend_Filter_Encrypt_Interface
      */
     protected $_compression;
 
-    protected static $_srandCalled = false;
-
     /**
      * Class constructor
      *
-     * @param string|array|Zend_Config $options Cryption Options
+     * @param string|array|\Zend\Config\Config $options Cryption Options
      */
     public function __construct($options)
     {
         if (!extension_loaded('mcrypt')) {
-            require_once 'Zend/Filter/Exception.php';
-            throw new Zend_Filter_Exception('This filter needs the mcrypt extension');
+            throw new Exception\ExtensionNotLoadedException('This filter needs the mcrypt extension');
         }
 
-        if ($options instanceof Zend_Config) {
+        if ($options instanceof \Zend\Config\Config) {
             $options = $options->toArray();
         } elseif (is_string($options)) {
             $options = array('key' => $options);
         } elseif (!is_array($options)) {
-            require_once 'Zend/Filter/Exception.php';
-            throw new Zend_Filter_Exception('Invalid options argument provided to filter');
+            throw new Exception\InvalidArgumentException('Invalid options argument provided to filter');
+        }
+
+        if (array_key_exists('compression', $options)) {
+            $this->setCompression($options['compression']);
+            unset($options['compress']);
         }
 
         if (array_key_exists('compression', $options)) {
@@ -115,26 +120,22 @@ class Zend_Filter_Encrypt_Mcrypt implements Zend_Filter_Encrypt_Interface
         }
 
         if (!is_array($options)) {
-            require_once 'Zend/Filter/Exception.php';
-            throw new Zend_Filter_Exception('Invalid options argument provided to filter');
+            throw new Exception\InvalidArgumentException('Invalid options argument provided to filter');
         }
 
         $options = $options + $this->getEncryption();
         $algorithms = mcrypt_list_algorithms($options['algorithm_directory']);
         if (!in_array($options['algorithm'], $algorithms)) {
-            require_once 'Zend/Filter/Exception.php';
-            throw new Zend_Filter_Exception("The algorithm '{$options['algorithm']}' is not supported");
+            throw new Exception\InvalidArgumentException("The algorithm '{$options['algorithm']}' is not supported");
         }
 
         $modes = mcrypt_list_modes($options['mode_directory']);
         if (!in_array($options['mode'], $modes)) {
-            require_once 'Zend/Filter/Exception.php';
-            throw new Zend_Filter_Exception("The mode '{$options['mode']}' is not supported");
+            throw new Exception\InvalidArgumentException("The mode '{$options['mode']}' is not supported");
         }
 
         if (!mcrypt_module_self_test($options['algorithm'], $options['algorithm_directory'])) {
-            require_once 'Zend/Filter/Exception.php';
-            throw new Zend_Filter_Exception('The given algorithm can not be used due an internal mcrypt problem');
+            throw new Exception\InvalidArgumentException('The given algorithm can not be used due an internal mcrypt problem');
         }
 
         if (!isset($options['vector'])) {
@@ -161,29 +162,24 @@ class Zend_Filter_Encrypt_Mcrypt implements Zend_Filter_Encrypt_Interface
      * Sets the initialization vector
      *
      * @param string $vector (Optional) Vector to set
-     * @return Zend_Filter_Encrypt_Mcrypt
+     * @return \Zend\Filter\Encrypt\Mcrypt
      */
     public function setVector($vector = null)
     {
         $cipher = $this->_openCipher();
         $size   = mcrypt_enc_get_iv_size($cipher);
         if (empty($vector)) {
-            $this->_srand();
-            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' && version_compare(PHP_VERSION, '5.3.0', '<')) {
-                $method = MCRYPT_RAND;
+            if (file_exists('/dev/urandom') || (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')) {
+                $method = MCRYPT_DEV_URANDOM;
+            } elseif (file_exists('/dev/random')) {
+                $method = MCRYPT_DEV_RANDOM;
             } else {
-                if (file_exists('/dev/urandom') || (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')) {
-                    $method = MCRYPT_DEV_URANDOM;
-                } elseif (file_exists('/dev/random')) {
-                    $method = MCRYPT_DEV_RANDOM;
-                } else {
-                    $method = MCRYPT_RAND;
-                }
+                $method = MCRYPT_RAND;
             }
+
             $vector = mcrypt_create_iv($size, $method);
         } else if (strlen($vector) != $size) {
-            require_once 'Zend/Filter/Exception.php';
-            throw new Zend_Filter_Exception('The given vector has a wrong size for the set algorithm');
+            throw new Exception\InvalidArgumentException('The given vector has a wrong size for the set algorithm');
         }
 
         $this->_encryption['vector'] = $vector;
@@ -206,7 +202,7 @@ class Zend_Filter_Encrypt_Mcrypt implements Zend_Filter_Encrypt_Interface
      * Sets a internal compression for values to encrypt
      *
      * @param string|array $compression
-     * @return Zend_Filter_Encrypt_Mcrypt
+     * @return \Zend\Filter\Encrypt\Mcrypt
      */
     public function setCompression($compression)
     {
@@ -230,9 +226,8 @@ class Zend_Filter_Encrypt_Mcrypt implements Zend_Filter_Encrypt_Interface
     {
         // compress prior to encryption
         if (!empty($this->_compression)) {
-            require_once 'Zend/Filter/Compress.php';
-            $compress = new Zend_Filter_Compress($this->_compression);
-            $value    = $compress->filter($value);
+            $compress = new Compress($this->_compression);
+            $value    = $compress($value);
         }
 
         $cipher  = $this->_openCipher();
@@ -262,9 +257,8 @@ class Zend_Filter_Encrypt_Mcrypt implements Zend_Filter_Encrypt_Interface
 
         // decompress after decryption
         if (!empty($this->_compression)) {
-            require_once 'Zend/Filter/Decompress.php';
-            $decompress = new Zend_Filter_Decompress($this->_compression);
-            $decrypted  = $decompress->filter($decrypted);
+            $decompress = new Decompress($this->_compression);
+            $decrypted  = $decompress($decrypted);
         }
 
         return $decrypted;
@@ -283,7 +277,7 @@ class Zend_Filter_Encrypt_Mcrypt implements Zend_Filter_Encrypt_Interface
     /**
      * Open a cipher
      *
-     * @throws Zend_Filter_Exception When the cipher can not be opened
+     * @throws \Zend\Filter\Exception When the cipher can not be opened
      * @return resource Returns the opened cipher
      */
     protected function _openCipher()
@@ -295,8 +289,7 @@ class Zend_Filter_Encrypt_Mcrypt implements Zend_Filter_Encrypt_Interface
             $this->_encryption['mode_directory']);
 
         if ($cipher === false) {
-            require_once 'Zend/Filter/Exception.php';
-            throw new Zend_Filter_Exception('Mcrypt can not be opened with your settings');
+            throw new Exception\RuntimeException('Mcrypt can not be opened with your settings');
         }
 
         return $cipher;
@@ -306,12 +299,11 @@ class Zend_Filter_Encrypt_Mcrypt implements Zend_Filter_Encrypt_Interface
      * Close a cipher
      *
      * @param  resource $cipher Cipher to close
-     * @return Zend_Filter_Encrypt_Mcrypt
+     * @return \Zend\Filter\Encrypt\Mcrypt
      */
     protected function _closeCipher($cipher)
     {
         mcrypt_module_close($cipher);
-
         return $this;
     }
 
@@ -328,37 +320,17 @@ class Zend_Filter_Encrypt_Mcrypt implements Zend_Filter_Encrypt_Interface
 
         $keysizes = mcrypt_enc_get_supported_key_sizes($cipher);
         if (empty($keysizes) || ($this->_encryption['salt'] == true)) {
-            $this->_srand();
             $keysize = mcrypt_enc_get_key_size($cipher);
             $key     = substr(md5($key), 0, $keysize);
         } else if (!in_array(strlen($key), $keysizes)) {
-            require_once 'Zend/Filter/Exception.php';
-            throw new Zend_Filter_Exception('The given key has a wrong size for the set algorithm');
+            throw new Exception\RuntimeException('The given key has a wrong size for the set algorithm');
         }
 
         $result = mcrypt_generic_init($cipher, $key, $this->_encryption['vector']);
         if ($result < 0) {
-            require_once 'Zend/Filter/Exception.php';
-            throw new Zend_Filter_Exception('Mcrypt could not be initialize with the given setting');
+            throw new Exception\RuntimeException('Mcrypt could not be initialize with the given setting');
         }
 
         return $this;
-    }
-
-    /**
-     * _srand() interception
-     *
-     * @see ZF-8742
-     */
-    protected function _srand()
-    {
-        if (version_compare(PHP_VERSION, '5.3.0', '>=')) {
-            return;
-        }
-
-        if (!self::$_srandCalled) {
-            srand((double) microtime() * 1000000);
-            self::$_srandCalled = true;
-        }
     }
 }

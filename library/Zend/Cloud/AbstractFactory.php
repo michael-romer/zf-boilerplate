@@ -13,20 +13,26 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Cloud
+ * @package    Zend\Cloud
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\Cloud;
+use Zend\Config;
+
+/**
  * Abstract factory for Zend_Cloud resources
  *
  * @category   Zend
- * @package    Zend_Cloud
+ * @package    Zend\Cloud
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Cloud_AbstractFactory
+class AbstractFactory
 {
     /**
      * Constructor
@@ -47,7 +53,7 @@ class Zend_Cloud_AbstractFactory
      */
     protected static function _getAdapter($adapterOption, $options)
     {
-        if ($options instanceof Zend_Config) {
+        if ($options instanceof Config) {
             $options = $options->toArray();
         }
 
@@ -57,11 +63,12 @@ class Zend_Cloud_AbstractFactory
 
         $classname = $options[$adapterOption];
         unset($options[$adapterOption]);
+        /*
         if (!class_exists($classname)) {
             require_once 'Zend/Loader.php';
             Zend_Loader::loadClass($classname);
         }
-
+        */
         return new $classname($options);
     }
 }

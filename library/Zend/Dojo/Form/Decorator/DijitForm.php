@@ -18,8 +18,10 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-/** Zend_Dojo_Form_Decorator_DijitContainer */
-require_once 'Zend/Dojo/Form/Decorator/DijitContainer.php';
+/**
+ * @namespace
+ */
+namespace Zend\Dojo\Form\Decorator;
 
 /**
  * Zend_Dojo_Form_Decorator_DijitForm
@@ -29,13 +31,13 @@ require_once 'Zend/Dojo/Form/Decorator/DijitContainer.php';
  * Accepts the following options:
  * - helper:    the name of the view helper to use
  *
+ * @uses       \Zend\Dojo\Form\Decorator\DijitContainer
  * @package    Zend_Dojo
  * @subpackage Form_Decorator
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: DijitForm.php 23775 2011-03-01 17:25:24Z ralph $
  */
-class Zend_Dojo_Form_Decorator_DijitForm extends Zend_Dojo_Form_Decorator_DijitContainer
+class DijitForm extends DijitContainer
 {
     /**
      * Render a form
@@ -56,6 +58,6 @@ class Zend_Dojo_Form_Decorator_DijitForm extends Zend_Dojo_Form_Decorator_DijitC
         $dijitParams = $this->getDijitParams();
         $attribs     = array_merge($this->getAttribs(), $this->getOptions());
 
-        return $view->form($element->getName(), $attribs, $content);
+        return $view->dojoform($element->getName(), $attribs, $content);
     }
 }

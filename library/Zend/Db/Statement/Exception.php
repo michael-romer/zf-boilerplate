@@ -17,24 +17,24 @@
  * @subpackage Statement
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Exception.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Db_Exception
+ * @namespace
  */
-require_once 'Zend/Db/Exception.php';
+namespace Zend\Db\Statement;
 
 /**
  * Zend_Db_Statement_Exception
  *
+ * @uses       \Zend\Db\Exception
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Statement
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Db_Statement_Exception extends Zend_Db_Exception
+class Exception extends \Zend\Db\Exception
 {
     /**
      * Check if this general exception has a specific database driver specific exception nested inside.

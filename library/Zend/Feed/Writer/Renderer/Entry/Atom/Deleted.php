@@ -16,64 +16,67 @@
  * @package    Zend_Feed_Writer
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Deleted.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Feed_Writer_Renderer_RendererAbstract
+ * @namespace
  */
-require_once 'Zend/Feed/Writer/Renderer/RendererAbstract.php';
+namespace Zend\Feed\Writer\Renderer\Entry\Atom;
 
 /**
+ * @uses       DOMDocument
+ * @uses       \Zend\Date\Date
+ * @uses       \Zend\Feed\Writer\Renderer\AbstractRenderer
+ * @uses       \Zend\Feed\Writer\Renderer
  * @category   Zend
  * @package    Zend_Feed_Writer
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Feed_Writer_Renderer_Entry_Atom_Deleted
-    extends Zend_Feed_Writer_Renderer_RendererAbstract
-    implements Zend_Feed_Writer_Renderer_RendererInterface
+class Deleted
+    extends \Zend\Feed\Writer\Renderer\AbstractRenderer
+    implements \Zend\Feed\Writer\Renderer
 {
     /**
      * Constructor
-     *
-     * @param  Zend_Feed_Writer_Deleted $container
+     * 
+     * @param  \Zend\Feed\Writer\Deleted $container 
      * @return void
      */
-    public function __construct (Zend_Feed_Writer_Deleted $container)
+    public function __construct (\Zend\Feed\Writer\Deleted $container)
     {
         parent::__construct($container);
     }
 
     /**
      * Render atom entry
-     *
-     * @return Zend_Feed_Writer_Renderer_Entry_Atom
+     * 
+     * @return \Zend\Feed\Writer\Renderer\Entry\Atom
      */
     public function render()
     {
-        $this->_dom = new DOMDocument('1.0', $this->_container->getEncoding());
+        $this->_dom = new \DOMDocument('1.0', $this->_container->getEncoding());
         $this->_dom->formatOutput = true;
         $entry = $this->_dom->createElement('at:deleted-entry');
         $this->_dom->appendChild($entry);
-
+        
         $entry->setAttribute('ref', $this->_container->getReference());
-        $entry->setAttribute('when', $this->_container->getWhen()->get(Zend_Date::ISO_8601));
-
+        $entry->setAttribute('when', $this->_container->getWhen()->get(\Zend\Date\Date::ISO_8601));
+        
         $this->_setBy($this->_dom, $entry);
         $this->_setComment($this->_dom, $entry);
-
+        
         return $this;
     }
-
+    
     /**
      * Set tombstone comment
-     *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
+     * 
+     * @param  DOMDocument $dom 
+     * @param  DOMElement $root 
      * @return void
      */
-    protected function _setComment(DOMDocument $dom, DOMElement $root)
+    protected function _setComment(\DOMDocument $dom, \DOMElement $root)
     {
         if(!$this->getDataContainer()->getComment()) {
             return;
@@ -84,15 +87,15 @@ class Zend_Feed_Writer_Renderer_Entry_Atom_Deleted
         $cdata = $dom->createCDATASection($this->getDataContainer()->getComment());
         $c->appendChild($cdata);
     }
-
+    
     /**
-     * Set entry authors
-     *
-     * @param  DOMDocument $dom
-     * @param  DOMElement $root
+     * Set entry authors 
+     * 
+     * @param  DOMDocument $dom 
+     * @param  DOMElement $root 
      * @return void
      */
-    protected function _setBy(DOMDocument $dom, DOMElement $root)
+    protected function _setBy(\DOMDocument $dom, \DOMElement $root)
     {
         $data = $this->_container->getBy();
         if ((!$data || empty($data))) {
@@ -117,5 +120,5 @@ class Zend_Feed_Writer_Renderer_Entry_Atom_Deleted
             $uri->appendChild($text);
         }
     }
-
+    
 }

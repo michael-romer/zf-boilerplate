@@ -17,26 +17,24 @@
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: FormSelect.php 24158 2011-06-27 15:31:54Z ezimuel $
  */
-
 
 /**
- * Abstract class for extension
+ * @namespace
  */
-require_once 'Zend/View/Helper/FormElement.php';
-
+namespace Zend\View\Helper;
 
 /**
  * Helper to generate "select" list of options
  *
+ * @uses       \Zend\View\Helper\FormElement
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_FormSelect extends Zend_View_Helper_FormElement
+class FormSelect extends FormElement
 {
     /**
      * Generates 'select' list of options.
@@ -61,8 +59,7 @@ class Zend_View_Helper_FormSelect extends Zend_View_Helper_FormElement
      *
      * @return string The select tag and options XHTML.
      */
-    public function formSelect($name, $value = null, $attribs = null,
-        $options = null, $listsep = "<br />\n")
+    public function __invoke($name, $value = null, $attribs = null, $options = null, $listsep = "<br />\n")
     {
         $info = $this->_getInfo($name, $value, $attribs, $options, $listsep);
         extract($info); // name, id, value, attribs, options, listsep, disable
@@ -104,8 +101,8 @@ class Zend_View_Helper_FormSelect extends Zend_View_Helper_FormElement
 
         // Build the surrounding select element first.
         $xhtml = '<select'
-                . ' name="' . $this->view->escape($name) . '"'
-                . ' id="' . $this->view->escape($id) . '"'
+                . ' name="' . $this->view->vars()->escape($name) . '"'
+                . ' id="' . $this->view->vars()->escape($id) . '"'
                 . $multiple
                 . $disabled
                 . $this->_htmlAttribs($attribs)
@@ -123,12 +120,9 @@ class Zend_View_Helper_FormSelect extends Zend_View_Helper_FormElement
                 if (null !== $translator) {
                     $opt_value = $translator->translate($opt_value);
                 }
-                $opt_id = ' id="' . $this->view->escape($id) . '-optgroup-'
-                        . $this->view->escape($opt_value) . '"';
                 $list[] = '<optgroup'
                         . $opt_disable
-                        . $opt_id
-                        . ' label="' . $this->view->escape($opt_value) .'">';
+                        . ' label="' . $this->view->vars()->escape($opt_value) .'">';
                 foreach ($opt_label as $val => $lab) {
                     $list[] = $this->_build($val, $lab, $value, $disable);
                 }
@@ -160,8 +154,8 @@ class Zend_View_Helper_FormSelect extends Zend_View_Helper_FormElement
         }
 
         $opt = '<option'
-             . ' value="' . $this->view->escape($value) . '"'
-             . ' label="' . $this->view->escape($label) . '"';
+             . ' value="' . $this->view->vars()->escape($value) . '"'
+             . ' label="' . $this->view->vars()->escape($label) . '"';
 
         // selected?
         if (in_array((string) $value, $selected)) {
@@ -173,7 +167,7 @@ class Zend_View_Helper_FormSelect extends Zend_View_Helper_FormElement
             $opt .= ' disabled="disabled"';
         }
 
-        $opt .= '>' . $this->view->escape($label) . "</option>";
+        $opt .= '>' . $this->view->vars()->escape($label) . "</option>";
 
         return $opt;
     }

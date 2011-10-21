@@ -17,25 +17,23 @@
  * @subpackage View
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Editor.php 24191 2011-07-05 15:33:16Z matthew $
  */
 
-/** Zend_Dojo_View_Helper_Dijit */
-require_once 'Zend/Dojo/View/Helper/Dijit.php';
-
-/** Zend_Json */
-require_once 'Zend/Json.php';
+/**
+ * @namespace
+ */
+namespace Zend\Dojo\View\Helper;
 
 /**
  * Dojo Editor dijit
  *
- * @uses       Zend_Dojo_View_Helper_Textarea
+ * @uses       \Zend\Dojo\View\Helper\Dijit
  * @package    Zend_Dojo
  * @subpackage View
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Dojo_View_Helper_Editor extends Zend_Dojo_View_Helper_Dijit
+class Editor extends Dijit
 {
     /**
      * @param string Dijit type
@@ -82,7 +80,7 @@ class Zend_Dojo_View_Helper_Editor extends Zend_Dojo_View_Helper_Dijit
      * @param  array $attribs
      * @return string
      */
-    public function editor($id, $value = null, $params = array(), $attribs = array())
+    public function __invoke($id = null, $value = null, $params = array(), $attribs = array())
     {
         if (isset($params['plugins'])) {
             foreach ($this->_getRequiredModules($params['plugins']) as $module) {
@@ -90,8 +88,8 @@ class Zend_Dojo_View_Helper_Editor extends Zend_Dojo_View_Helper_Dijit
             }
         }
 
-        // Previous versions allowed specifying "degrade" to allow using a
-        // textarea instead of a div -- but this is insecure. Removing the
+        // Previous versions allowed specifying "degrade" to allow using a 
+        // textarea instead of a div -- but this is insecure. Removing the 
         // parameter if set to prevent its injection in the dijit.
         if (isset($params['degrade'])) {
             unset($params['degrade']);
@@ -121,11 +119,11 @@ class Zend_Dojo_View_Helper_Editor extends Zend_Dojo_View_Helper_Dijit
 
         $attribs = $this->_prepareDijit($attribs, $params, 'textarea');
 
-        $html  = '<div' . $this->_htmlAttribs($attribs) . '>'
+        $html = '<div' . $this->_htmlAttribs($attribs) . '>'
                . $value
                . "</div>\n";
 
-        // Embed a textarea in a <noscript> tag to allow for graceful
+        // Embed a textarea in a <noscript> tag to allow for graceful 
         // degradation
         $html .= '<noscript>'
                . $this->view->formTextarea($hiddenId, $value, $attribs)

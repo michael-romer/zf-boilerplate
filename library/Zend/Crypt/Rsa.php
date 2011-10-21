@@ -14,70 +14,49 @@
  *
  * @category   Zend
  * @package    Zend_Crypt
- * @subpackage Rsa
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Rsa.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Crypt_Rsa_Key_Private
+ * @namespace
  */
-require_once 'Zend/Crypt/Rsa/Key/Private.php';
+namespace Zend\Crypt;
 
 /**
- * @see Zend_Crypt_Rsa_Key_Public
- */
-require_once 'Zend/Crypt/Rsa/Key/Public.php';
-
-/**
+ * @uses       Zend\Crypt\Rsa\PrivateKey
+ * @uses       Zend\Crypt\Rsa\PublicKey
  * @category   Zend
  * @package    Zend_Crypt
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Crypt_Rsa
+class Rsa
 {
-
     const BINARY = 'binary';
     const BASE64 = 'base64';
 
-    protected $_privateKey;
+    protected $_privateKey = null;
 
-    protected $_publicKey;
+    protected $_publicKey = null;
 
     /**
      * @var string
      */
-    protected $_pemString;
+    protected $_pemString = null;
 
-    protected $_pemPath;
+    protected $_pemPath = null;
 
-    protected $_certificateString;
+    protected $_certificateString = null;
 
-    protected $_certificatePath;
+    protected $_certificatePath = null;
 
-    protected $_hashAlgorithm;
+    protected $_hashAlgorithm = OPENSSL_ALGO_SHA1;
 
-    protected $_passPhrase;
+    protected $_passPhrase = null;
 
-    /**
-     * Class constructor
-     *
-     * @param array $options
-     * @throws Zend_Crypt_Rsa_Exception
-     */
     public function __construct(array $options = null)
     {
-        if (!extension_loaded('openssl')) {
-            require_once 'Zend/Crypt/Rsa/Exception.php';
-            throw new Zend_Crypt_Rsa_Exception('Zend_Crypt_Rsa requires openssl extention to be loaded.');
-        }
-
-        // Set _hashAlgorithm property when we are sure, that openssl extension is loaded
-        // and OPENSSL_ALGO_SHA1 constant is available
-        $this->_hashAlgorithm = OPENSSL_ALGO_SHA1;
-
         if (isset($options)) {
             $this->setOptions($options);
         }
@@ -120,12 +99,12 @@ class Zend_Crypt_Rsa
     }
 
     /**
-     * @param string $data
-     * @param Zend_Crypt_Rsa_Key_Private $privateKey
-     * @param string $format
+     * @param  string $data
+     * @param  Zend\Crypt\Rsa\PrivateKey $privateKey
+     * @param  string $format
      * @return string
      */
-    public function sign($data, Zend_Crypt_Rsa_Key_Private $privateKey = null, $format = null)
+    public function sign($data, Rsa\PrivateKey $privateKey = null, $format = null)
     {
         $signature = '';
         if (isset($privateKey)) {
@@ -145,9 +124,9 @@ class Zend_Crypt_Rsa
     }
 
     /**
-     * @param string $data
-     * @param string $signature
-     * @param string $format
+     * @param  string $data
+     * @param  string $signature
+     * @param  string $format
      * @return string
      */
     public function verifySignature($data, $signature, $format = null)
@@ -163,15 +142,15 @@ class Zend_Crypt_Rsa
 
     /**
      * @param string $data
-     * @param Zend_Crypt_Rsa_Key $key
+     * @param Zend\Crypt\Rsa\Key $key
      * @param string $format
      * @return string
      */
-    public function encrypt($data, Zend_Crypt_Rsa_Key $key, $format = null)
+    public function encrypt($data, Rsa\Key $key, $format = null)
     {
         $encrypted = '';
         $function = 'openssl_public_encrypt';
-        if ($key instanceof Zend_Crypt_Rsa_Key_Private) {
+        if ($key instanceof Rsa\PrivateKey) {
             $function = 'openssl_private_encrypt';
         }
         $function($data, $encrypted, $key->getOpensslKeyResource());
@@ -183,18 +162,18 @@ class Zend_Crypt_Rsa
 
     /**
      * @param string $data
-     * @param Zend_Crypt_Rsa_Key $key
+     * @param \Zend\Crypt\Rsa\Key $key
      * @param string $format
      * @return string
      */
-    public function decrypt($data, Zend_Crypt_Rsa_Key $key, $format = null)
+    public function decrypt($data, Rsa\Key $key, $format = null)
     {
         $decrypted = '';
         if ($format == self::BASE64) {
             $data = base64_decode($data);
         }
         $function = 'openssl_private_decrypt';
-        if ($key instanceof Zend_Crypt_Rsa_Key_Public) {
+        if ($key instanceof Rsa\PublicKey) {
             $function = 'openssl_public_decrypt';
         }
         $function($data, $decrypted, $key->getOpensslKeyResource());
@@ -212,18 +191,21 @@ class Zend_Crypt_Rsa
             }
             $config = $this->_parseConfigArgs($configargs);
         }
+
         $privateKey = null;
-        $publicKey = null;
-        $resource = openssl_pkey_new($config);
+        $publicKey  = null;
+        $resource   = openssl_pkey_new($config);
         // above fails on PHP 5.3
+        
         openssl_pkey_export($resource, $private, $passPhrase);
-        $privateKey = new Zend_Crypt_Rsa_Key_Private($private, $passPhrase);
-        $details = openssl_pkey_get_details($resource);
-        $publicKey = new Zend_Crypt_Rsa_Key_Public($details['key']);
-        $return = new ArrayObject(array(
-           'privateKey'=>$privateKey,
-           'publicKey'=>$publicKey
-        ), ArrayObject::ARRAY_AS_PROPS);
+
+        $privateKey = new Rsa\PrivateKey($private, $passPhrase);
+        $details    = openssl_pkey_get_details($resource);
+        $publicKey  = new Rsa\PublicKey($details['key']);
+        $return     = new \ArrayObject(array(
+           'privateKey' => $privateKey,
+           'publicKey'  => $publicKey
+        ), \ArrayObject::ARRAY_AS_PROPS);
         return $return;
     }
 
@@ -234,11 +216,11 @@ class Zend_Crypt_Rsa
     {
         $this->_pemString = $value;
         try {
-            $this->_privateKey = new Zend_Crypt_Rsa_Key_Private($this->_pemString, $this->_passPhrase);
+            $this->_privateKey = new Rsa\PrivateKey($this->_pemString, $this->_passPhrase);
             $this->_publicKey = $this->_privateKey->getPublicKey();
-        } catch (Zend_Crypt_Exception $e) {
+        } catch (Exception $e) {
             $this->_privateKey = null;
-            $this->_publicKey = new Zend_Crypt_Rsa_Key_Public($this->_pemString);
+            $this->_publicKey = new Rsa\PublicKey($this->_pemString);
         }
     }
 
@@ -251,7 +233,7 @@ class Zend_Crypt_Rsa
     public function setCertificateString($value)
     {
         $this->_certificateString = $value;
-        $this->_publicKey = new Zend_Crypt_Rsa_Key_Public($this->_certificateString, $this->_passPhrase);
+        $this->_publicKey = new Rsa\PublicKey($this->_certificateString, $this->_passPhrase);
     }
 
     public function setCertificatePath($value)
@@ -260,10 +242,19 @@ class Zend_Crypt_Rsa
         $this->setCertificateString(file_get_contents($this->_certificatePath));
     }
 
+    /**
+     * @param string $name
+     * @throws \Zend\Crypt\Exception
+     */
     public function setHashAlgorithm($name)
     {
         switch (strtolower($name)) {
             case 'md2':
+                // check if md2 digest is enabled on openssl just for backwards compatibility
+                $digests = openssl_get_md_methods();
+                if (!in_array(strtoupper($name), $digests)) {
+                    throw new Zend\Crypt\Exception('Openssl md2 digest is not enabled  (deprecated)');
+                }
                 $this->_hashAlgorithm = OPENSSL_ALGO_MD2;
                 break;
             case 'md4':

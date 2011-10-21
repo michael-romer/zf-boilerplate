@@ -16,42 +16,30 @@
  * @package    Zend_View
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: PaginationControl.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\View\Helper;
+use Zend\Paginator;
+use Zend\View;
+
+/**
+ * @uses       \Zend\View\Exception
  * @category   Zend
  * @package    Zend_View
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_PaginationControl
+class PaginationControl extends AbstractHelper
 {
-    /**
-     * View instance
-     *
-     * @var Zend_View_Instance
-     */
-    public $view = null;
-
     /**
      * Default view partial
      *
      * @var string|array
      */
     protected static $_defaultViewPartial = null;
-
-    /**
-     * Sets the view instance.
-     *
-     * @param  Zend_View_Interface $view View instance
-     * @return Zend_View_Helper_PaginationControl
-     */
-    public function setView(Zend_View_Interface $view)
-    {
-        $this->view = $view;
-        return $this;
-    }
 
     /**
      * Sets the default view partial.
@@ -78,25 +66,20 @@ class Zend_View_Helper_PaginationControl
      * if so, uses that.  Also, if no scrolling style or partial are specified,
      * the defaults will be used (if set).
      *
-     * @param  Zend_Paginator (Optional) $paginator
+     * @param  \Zend\Paginator\Paginator (Optional) $paginator
      * @param  string $scrollingStyle (Optional) Scrolling style
      * @param  string $partial (Optional) View partial
      * @param  array|string $params (Optional) params to pass to the partial
      * @return string
-     * @throws Zend_View_Exception
+     * @throws \Zend\View\Exception
      */
-    public function paginationControl(Zend_Paginator $paginator = null, $scrollingStyle = null, $partial = null, $params = null)
+    public function __invoke(Paginator\Paginator $paginator = null, $scrollingStyle = null, $partial = null, $params = null)
     {
         if ($paginator === null) {
-            if (isset($this->view->paginator) and $this->view->paginator !== null and $this->view->paginator instanceof Zend_Paginator) {
+            if (isset($this->view->paginator) and $this->view->paginator !== null and $this->view->paginator instanceof Paginator\Paginator) {
                 $paginator = $this->view->paginator;
             } else {
-                /**
-                 * @see Zend_View_Exception
-                 */
-                require_once 'Zend/View/Exception.php';
-
-                $e = new Zend_View_Exception('No paginator instance provided or incorrect type');
+                $e = new View\Exception('No paginator instance provided or incorrect type');
                 $e->setView($this->view);
                 throw $e;
             }
@@ -104,11 +87,7 @@ class Zend_View_Helper_PaginationControl
 
         if ($partial === null) {
             if (self::$_defaultViewPartial === null) {
-                /**
-                 * @see Zend_View_Exception
-                 */
-                require_once 'Zend/View/Exception.php';
-                $e = new Zend_View_Exception('No view partial provided and no default set');
+                $e = new View\Exception('No view partial provided and no default set');
                 $e->setView($this->view);
                 throw $e;
             }
@@ -124,22 +103,20 @@ class Zend_View_Helper_PaginationControl
 
         if (is_array($partial)) {
             if (count($partial) != 2) {
-                /**
-                 * @see Zend_View_Exception
-                 */
-                require_once 'Zend/View/Exception.php';
-                $e = new Zend_View_Exception('A view partial supplied as an array must contain two values: the filename and its module');
+                $e = new View\Exception('A view partial supplied as an array must contain two values: the filename and its module');
                 $e->setView($this->view);
                 throw $e;
             }
 
             if ($partial[1] !== null) {
-                return $this->view->partial($partial[0], $partial[1], $pages);
+                $partialHelper = $this->view->plugin('partial');
+                return $partialHelper($partial[0], $partial[1], $pages);
             }
 
             $partial = $partial[0];
         }
 
-        return $this->view->partial($partial, $pages);
+        $partialHelper = $this->view->plugin('partial');
+        return $partialHelper($partial, $pages);
     }
 }

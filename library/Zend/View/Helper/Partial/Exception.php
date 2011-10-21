@@ -16,24 +16,24 @@
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: Exception.php 23775 2011-03-01 17:25:24Z ralph $
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-
-/** Zend_View_Exception */
-require_once 'Zend/View/Exception.php';
-
+/**
+ * @namespace
+ */
+namespace Zend\View\Helper\Partial;
 
 /**
  * Exception for Zend_View_Helper_Partial class.
  *
+ * @uses       \Zend\View\Exception
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_Partial_Exception extends Zend_View_Exception
+class Exception extends \Zend\View\Exception
 {
 }

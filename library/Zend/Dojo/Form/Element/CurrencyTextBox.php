@@ -19,20 +19,24 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-/** Zend_Dojo_Form_Element_NumberTextBox */
-require_once 'Zend/Dojo/Form/Element/NumberTextBox.php';
+/**
+ * @namespace
+ */
+namespace Zend\Dojo\Form\Element;
+
+use Zend\Form\Element\Exception;
 
 /**
  * CurrencyTextBox dijit
  *
- * @uses       Zend_Dojo_Form_Element_NumberTextBox
+ * @uses       \Zend\Dojo\Form\Element\NumberTextBox
+ * @uses       \Zend\Form\Element\Exception
  * @package    Zend_Dojo
  * @subpackage Form_Element
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: CurrencyTextBox.php 23775 2011-03-01 17:25:24Z ralph $
  */
-class Zend_Dojo_Form_Element_CurrencyTextBox extends Zend_Dojo_Form_Element_NumberTextBox
+class CurrencyTextBox extends NumberTextBox
 {
     /**
      * Use CurrencyTextBox dijit view helper
@@ -44,7 +48,7 @@ class Zend_Dojo_Form_Element_CurrencyTextBox extends Zend_Dojo_Form_Element_Numb
      * Set currency
      *
      * @param  string $currency
-     * @return Zend_Dojo_Form_Element_CurrencyTextBox
+     * @return \Zend\Dojo\Form\Element\CurrencyTextBox
      */
     public function setCurrency($currency)
     {
@@ -68,15 +72,14 @@ class Zend_Dojo_Form_Element_CurrencyTextBox extends Zend_Dojo_Form_Element_Numb
      * Casts to string, uppercases, and trims to three characters.
      *
      * @param  string $symbol
-     * @return Zend_Dojo_Form_Element_CurrencyTextBox
+     * @return \Zend\Dojo\Form\Element\CurrencyTextBox
      */
     public function setSymbol($symbol)
     {
         $symbol = strtoupper((string) $symbol);
         $length = strlen($symbol);
         if (3 > $length) {
-            require_once 'Zend/Form/Element/Exception.php';
-            throw new Zend_Form_Element_Exception('Invalid symbol provided; please provide ISO 4217 alphabetic currency code');
+            throw new Exception\InvalidArgumentException('Invalid symbol provided; please provide ISO 4217 alphabetic currency code');
         }
         if (3 < $length) {
             $symbol = substr($symbol, 0, 3);
@@ -100,7 +103,7 @@ class Zend_Dojo_Form_Element_CurrencyTextBox extends Zend_Dojo_Form_Element_Numb
      * Set whether currency is fractional
      *
      * @param  bool $flag
-     * @return Zend_Dojo_Form_Element_CurrencyTextBox
+     * @return \Zend\Dojo\Form\Element\CurrencyTextBox
      */
     public function setFractional($flag)
     {

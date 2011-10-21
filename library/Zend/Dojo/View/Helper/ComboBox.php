@@ -17,22 +17,26 @@
  * @subpackage View
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: ComboBox.php 23931 2011-05-02 19:32:51Z matthew $
  */
 
-/** Zend_Dojo_View_Helper_Dijit */
-require_once 'Zend/Dojo/View/Helper/Dijit.php';
+/**
+ * @namespace
+ */
+namespace Zend\Dojo\View\Helper;
+
+use Zend\Json\Json;
 
 /**
  * Dojo ComboBox dijit
  *
- * @uses       Zend_Dojo_View_Helper_Dijit
+ * @uses       \Zend\Dojo\View\Helper\Dijit
+ * @uses       \Zend\Json\Json
  * @package    Zend_Dojo
  * @subpackage View
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
-  */
-class Zend_Dojo_View_Helper_ComboBox extends Zend_Dojo_View_Helper_Dijit
+ */
+class ComboBox extends Dijit
 {
     /**
      * Dijit being used
@@ -62,7 +66,7 @@ class Zend_Dojo_View_Helper_ComboBox extends Zend_Dojo_View_Helper_Dijit
      * @param  array|null $options Select options
      * @return string
      */
-    public function comboBox($id, $value = null, array $params = array(), array $attribs = array(), array $options = null)
+    public function __invoke($id = null, $value = null, array $params = array(), array $attribs = array(), array $options = null)
     {
         $html = '';
         if (!array_key_exists('id', $attribs)) {
@@ -99,7 +103,7 @@ class Zend_Dojo_View_Helper_ComboBox extends Zend_Dojo_View_Helper_Dijit
             $html .= $this->_createFormElement($id, $value, $params, $attribs);
             return $html;
         }
-
+        
         // required for correct type casting in declerative mode 
         if (isset($params['autocomplete'])) {
             $params['autocomplete'] = ($params['autocomplete']) ? 'true' : 'false';
@@ -138,11 +142,10 @@ class Zend_Dojo_View_Helper_ComboBox extends Zend_Dojo_View_Helper_Dijit
 
         if ($this->_useProgrammatic()) {
             if (!$this->_useProgrammaticNoScript()) {
-                require_once 'Zend/Json.php';
                 $this->dojo->addJavascript('var ' . $storeParams['jsId'] . ";\n");
                 $js = $storeParams['jsId'] . ' = '
                     . 'new ' . $storeParams['dojoType'] . '('
-                    .     Zend_Json::encode($extraParams)
+                    .     Json::encode($extraParams)
                     . ");\n";
                 $js = "function() {\n$js\n}";
                 $this->dojo->_addZendLoad($js);

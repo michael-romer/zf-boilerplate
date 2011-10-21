@@ -16,23 +16,28 @@
  * @package    Zend_Filter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: DashToSeparator.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Filter_PregReplace
+ * @namespace
  */
-require_once 'Zend/Filter/Word/Separator/Abstract.php';
+namespace Zend\Filter\Word;
 
 /**
+ * @uses       \Zend\Filter\Word\Separator\AbstractSeparator
  * @category   Zend
  * @package    Zend_Filter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Filter_Word_DashToSeparator extends Zend_Filter_Word_Separator_Abstract
+class DashToSeparator extends AbstractSeparator
 {
-
+    /**
+     * Defined by Zend\Filter\Filter
+     * 
+     * @param  string $value 
+     * @return string
+     */
     public function filter($value)
     {
         $this->setMatchPattern('#-#');

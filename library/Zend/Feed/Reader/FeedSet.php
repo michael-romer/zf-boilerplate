@@ -16,26 +16,23 @@
  * @package    Zend_Feed_Reader
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: FeedSet.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Feed_Reader
- */
-require_once 'Zend/Feed/Reader.php';
+* @namespace
+*/
+namespace Zend\Feed\Reader;
+
+use ArrayObject,
+    Zend\Uri;
 
 /**
- * @see Zend_Uri
- */
-require_once 'Zend/Uri.php';
-
-/**
- * @category   Zend
- * @package    Zend_Feed_Reader
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- */
-class Zend_Feed_Reader_FeedSet extends ArrayObject
+* @category Zend
+* @package Zend_Feed_Reader
+* @copyright Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+* @license http://framework.zend.com/license/new-bsd New BSD License
+*/
+class FeedSet extends ArrayObject
 {
 
     public $rss = null;
@@ -60,7 +57,7 @@ class Zend_Feed_Reader_FeedSet extends ArrayObject
      * @param string $uri
      * @return void
      */
-    public function addLinks(DOMNodeList $links, $uri)
+    public function addLinks(\DOMNodeList $links, $uri)
     {
         foreach ($links as $link) {
             if (strtolower($link->getAttribute('rel')) !== 'alternate'
@@ -81,29 +78,29 @@ class Zend_Feed_Reader_FeedSet extends ArrayObject
             ));
         }
     }
-
+    
     /**
      *  Attempt to turn a relative URI into an absolute URI
      */
     protected function _absolutiseUri($link, $uri = null)
     {
-        if (!Zend_Uri::check($link)) {
+        if (!Uri\UriFactory::factory($link)->isValid()) {
             if ($uri !== null) {
-                $uri = Zend_Uri::factory($uri);
+                $uri = Uri\UriFactory::factory($uri);
 
                 if ($link[0] !== '/') {
                     $link = $uri->getPath() . '/' . $link;
                 }
 
                 $link = $uri->getScheme() . '://' . $uri->getHost() . '/' . $this->_canonicalizePath($link);
-                if (!Zend_Uri::check($link)) {
+                if (!Uri\UriFactory::factory($link)->isValid()) {
                     $link = null;
                 }
             }
         }
         return $link;
     }
-
+    
     /**
      *  Canonicalize relative path
      */
@@ -138,7 +135,7 @@ class Zend_Feed_Reader_FeedSet extends ArrayObject
             if (!$this->offsetExists('href')) {
                 return null;
             }
-            $feed = Zend_Feed_Reader::import($this->offsetGet('href'));
+            $feed = Reader::import($this->offsetGet('href'));
             $this->offsetSet('feed', $feed);
             return $feed;
         }

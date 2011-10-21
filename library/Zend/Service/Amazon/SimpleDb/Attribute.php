@@ -21,13 +21,18 @@
  */
 
 /**
+ * @namespace
+ */
+namespace Zend\Service\Amazon\SimpleDb;
+
+/**
  * @category   Zend
  * @package    Zend_Service_Amazon
  * @subpackage SimpleDb
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Service_Amazon_SimpleDb_Attribute
+class Attribute
 {
     protected $_itemName;
     protected $_name;
@@ -35,13 +40,13 @@ class Zend_Service_Amazon_SimpleDb_Attribute
 
     /**
      * Constructor
-     *
-     * @param  string $itemName
-     * @param  string $name
-     * @param  array $values
+     * 
+     * @param  string $itemName 
+     * @param  string $name 
+     * @param  array $values 
      * @return void
      */
-    function __construct($itemName, $name, $values)
+    function __construct($itemName, $name, $values) 
     {
         $this->_itemName = $itemName;
         $this->_name     = $name;
@@ -53,7 +58,7 @@ class Zend_Service_Amazon_SimpleDb_Attribute
         }
     }
 
-    /**
+	/**
      * Return the item name to which the attribute belongs
      *
      * @return string
@@ -63,7 +68,7 @@ class Zend_Service_Amazon_SimpleDb_Attribute
         return $this->_itemName;
     }
 
-    /**
+	/**
      * Retrieve attribute values
      *
      * @return array
@@ -73,7 +78,7 @@ class Zend_Service_Amazon_SimpleDb_Attribute
         return $this->_values;
     }
 
-    /**
+	/**
      * Retrieve the attribute name
      *
      * @return string
@@ -82,17 +87,17 @@ class Zend_Service_Amazon_SimpleDb_Attribute
     {
         return $this->_name;
     }
-
+    
     /**
      * Add value
-     *
-     * @param  mixed $value
+     * 
+     * @param  mixed $value 
      * @return void
      */
     public function addValue($value)
     {
         if (is_array($value)) {
-             $this->_values += $value;
+             $this->_values += $value;   
         } else {
             $this->_values[] = $value;
         }

@@ -16,23 +16,24 @@
  * @package   Zend_Config
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
- * @version   $Id: Xml.php 24045 2011-05-23 12:45:11Z rob $
  */
 
 /**
- * @see Zend_Config
+ * @namespace
  */
-require_once 'Zend/Config.php';
+namespace Zend\Config;
 
 /**
  * XML Adapter for Zend_Config
  *
+ * @uses      \Zend\Config\Config
+ * @uses      \Zend\Config\Exception
  * @category  Zend
  * @package   Zend_Config
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Config_Xml extends Zend_Config
+class Xml extends Config
 {
     /**
      * XML namespace for ZF-related tags and attributes
@@ -58,28 +59,17 @@ class Zend_Config_Xml extends Zend_Config
      *
      * Note that the keys in $section will override any keys of the same
      * name in the sections that have been included via "extends".
-     * 
-     * The $options parameter may be provided as either a boolean or an array.
-     * If provided as a boolean, this sets the $allowModifications option of
-     * Zend_Config. If provided as an array, there are two configuration
-     * directives that may be set. For example:
      *
-     * $options = array(
-     *     'allowModifications' => false,
-     *     'skipExtends'        => false
-     *      );
-     *
-     * @param  string        $xml     XML file or string to process
-     * @param  mixed         $section Section to process
-     * @param  array|boolean $options 
-     * @throws Zend_Config_Exception When xml is not set or cannot be loaded
-     * @throws Zend_Config_Exception When section $sectionName cannot be found in $xml
+     * @param  string  $xml     XML file or string to process
+     * @param  mixed   $section Section to process
+     * @param  boolean $options Whether modifications are allowed at runtime
+     * @throws \Zend\Config\Exception When xml is not set or cannot be loaded
+     * @throws \Zend\Config\Exception When section $sectionName cannot be found in $xml
      */
     public function __construct($xml, $section = null, $options = false)
     {
         if (empty($xml)) {
-            require_once 'Zend/Config/Exception.php';
-            throw new Zend_Config_Exception('Filename is not set');
+            throw new Exception\InvalidArgumentException('Filename is not set');
         }
 
         $allowModifications = false;
@@ -94,18 +84,34 @@ class Zend_Config_Xml extends Zend_Config
             }
         }
 
-        set_error_handler(array($this, '_loadFileErrorHandler')); // Warnings and errors are suppressed
-        if (strstr($xml, '<?xml')) {
+        // load XML and throw exception of each failure using previous exception
+        $oldUseInternalErrors = libxml_use_internal_errors(true);
+        if ($oldUseInternalErrors) {
+            libxml_clear_errors();
+        }
+        if (strstr($xml, '<' . '?xml')) { // string concat to fix syntax highlighting
             $config = simplexml_load_string($xml);
         } else {
             $config = simplexml_load_file($xml);
         }
+        $xmlErrors = libxml_get_errors();
+        if (!$oldUseInternalErrors) {
+            libxml_use_internal_errors(false);
+        }
+        if ( ($xmlErrorCnt = count($xmlErrors)) ) {
+            libxml_clear_errors();
 
-        restore_error_handler();
-        // Check if there was a error while loading file
-        if ($this->_loadFileErrorStr !== null) {
-            require_once 'Zend/Config/Exception.php';
-            throw new Zend_Config_Exception($this->_loadFileErrorStr);
+            // create and throw exception stack
+            $e = null;
+            foreach ($xmlErrors as $xmlError) {
+                $msg  = trim($xmlError->message);
+                $line = $xmlError->line;
+                $col  = $xmlError->column;
+                $e = new Exception\RuntimeException(
+                    $msg . ' @ line/column ' . $line . '/' . $col, 0, $e
+                );
+            }
+            throw $e;
         }
 
         if ($section === null) {
@@ -119,8 +125,7 @@ class Zend_Config_Xml extends Zend_Config
             $dataArray = array();
             foreach ($section as $sectionName) {
                 if (!isset($config->$sectionName)) {
-                    require_once 'Zend/Config/Exception.php';
-                    throw new Zend_Config_Exception("Section '$sectionName' cannot be found in $xml");
+                    throw new Exception\InvalidArgumentException("Section '$sectionName' cannot be found in $xml");
                 }
 
                 $dataArray = array_merge($this->_processExtends($config, $sectionName), $dataArray);
@@ -129,8 +134,7 @@ class Zend_Config_Xml extends Zend_Config
             parent::__construct($dataArray, $allowModifications);
         } else {
             if (!isset($config->$section)) {
-                require_once 'Zend/Config/Exception.php';
-                throw new Zend_Config_Exception("Section '$section' cannot be found in $xml");
+                throw new Exception\InvalidArgumentException("Section '$section' cannot be found in $xml");
             }
 
             $dataArray = $this->_processExtends($config, $section);
@@ -152,14 +156,13 @@ class Zend_Config_Xml extends Zend_Config
      * @param  SimpleXMLElement $element XML Element to process
      * @param  string           $section Section to process
      * @param  array            $config  Configuration which was parsed yet
-     * @throws Zend_Config_Exception When $section cannot be found
+     * @throws \Zend\Config\Exception When $section cannot be found
      * @return array
      */
-    protected function _processExtends(SimpleXMLElement $element, $section, array $config = array())
+    protected function _processExtends(\SimpleXMLElement $element, $section, array $config = array())
     {
         if (!isset($element->$section)) {
-            require_once 'Zend/Config/Exception.php';
-            throw new Zend_Config_Exception("Section '$section' cannot be found");
+            throw new Exception\RuntimeException("Section '$section' cannot be found");
         }
 
         $thisSection  = $element->$section;
@@ -186,7 +189,7 @@ class Zend_Config_Xml extends Zend_Config
      * @param  SimpleXMLElement $xmlObject Convert a SimpleXMLElement into an array
      * @return array|string
      */
-    protected function _toArray(SimpleXMLElement $xmlObject)
+    protected function _toArray(\SimpleXMLElement $xmlObject)
     {
         $config       = array();
         $nsAttributes = $xmlObject->attributes(self::XML_NAMESPACE);
@@ -215,8 +218,7 @@ class Zend_Config_Xml extends Zend_Config
         // Search for local 'const' nodes and replace them
         if (count($xmlObject->children(self::XML_NAMESPACE)) > 0) {
             if (count($xmlObject->children()) > 0) {
-                require_once 'Zend/Config/Exception.php';
-                throw new Zend_Config_Exception("A node with a 'const' childnode may not have any other children");
+                throw new Exception\RuntimeException("A node with a 'const' childnode may not have any other children");
             }
 
             $dom                 = dom_import_simplexml($xmlObject);
@@ -225,7 +227,7 @@ class Zend_Config_Xml extends Zend_Config
             // We have to store them in an array, as replacing nodes will
             // confuse the DOMNodeList later
             foreach ($dom->childNodes as $node) {
-                if ($node instanceof DOMElement && $node->namespaceURI === self::XML_NAMESPACE) {
+                if ($node instanceof \DOMElement && $node->namespaceURI === self::XML_NAMESPACE) {
                     $namespaceChildNodes[] = $node;
                 }
             }
@@ -234,15 +236,13 @@ class Zend_Config_Xml extends Zend_Config
                 switch ($node->localName) {
                     case 'const':
                         if (!$node->hasAttributeNS(self::XML_NAMESPACE, 'name')) {
-                            require_once 'Zend/Config/Exception.php';
-                            throw new Zend_Config_Exception("Misssing 'name' attribute in 'const' node");
+                            throw new Exception\RuntimeException("Misssing 'name' attribute in 'const' node");
                         }
 
                         $constantName = $node->getAttributeNS(self::XML_NAMESPACE, 'name');
 
                         if (!defined($constantName)) {
-                            require_once 'Zend/Config/Exception.php';
-                            throw new Zend_Config_Exception("Constant with name '$constantName' was not defined");
+                            throw new Exception\RuntimeException("Constant with name '$constantName' was not defined");
                         }
 
                         $constantValue = constant($constantName);
@@ -251,8 +251,7 @@ class Zend_Config_Xml extends Zend_Config
                         break;
 
                     default:
-                        require_once 'Zend/Config/Exception.php';
-                        throw new Zend_Config_Exception("Unknown node with name '$node->localName' found");
+                        throw new Exception\RuntimeException("Unknown node with name '$node->localName' found");
                 }
             }
 
@@ -292,5 +291,34 @@ class Zend_Config_Xml extends Zend_Config
         }
 
         return $config;
+    }
+
+    /**
+     * Merge two arrays recursively, overwriting keys of the same name
+     * in $firstArray with the value in $secondArray.
+     *
+     * @param  mixed $firstArray  First array
+     * @param  mixed $secondArray Second array to merge into first array
+     * @return array
+     */
+    protected function _arrayMergeRecursive($firstArray, $secondArray)
+    {
+        if (is_array($firstArray) && is_array($secondArray)) {
+            foreach ($secondArray as $key => $value) {
+                if (isset($firstArray[$key])) {
+                    $firstArray[$key] = $this->_arrayMergeRecursive($firstArray[$key], $value);
+                } else {
+                    if($key === 0) {
+                        $firstArray= array(0=>$this->_arrayMergeRecursive($firstArray, $value));
+                    } else {
+                        $firstArray[$key] = $value;
+                    }
+                }
+            }
+        } else {
+            $firstArray = $secondArray;
+        }
+
+        return $firstArray;
     }
 }

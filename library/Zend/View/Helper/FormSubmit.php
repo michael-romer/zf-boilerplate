@@ -17,26 +17,24 @@
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: FormSubmit.php 23775 2011-03-01 17:25:24Z ralph $
  */
-
 
 /**
- * Abstract class for extension
+ * @namespace
  */
-require_once 'Zend/View/Helper/FormElement.php';
-
+namespace Zend\View\Helper;
 
 /**
  * Helper to generate a "submit" button
  *
+ * @uses       \Zend\View\Helper\FormElement
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_FormSubmit extends Zend_View_Helper_FormElement
+class FormSubmit extends FormElement
 {
     /**
      * Generates a 'submit' button.
@@ -53,31 +51,28 @@ class Zend_View_Helper_FormSubmit extends Zend_View_Helper_FormElement
      *
      * @return string The element XHTML.
      */
-    public function formSubmit($name, $value = null, $attribs = null)
+    public function __invoke($name, $value = null, $attribs = null)
     {
         $info = $this->_getInfo($name, $value, $attribs);
-        extract($info); // name, value, attribs, options, listsep, disable, id
+        extract($info); // name, value, attribs, options, listsep, disable
+
         // check if disabled
         $disabled = '';
         if ($disable) {
             $disabled = ' disabled="disabled"';
         }
 
-        if ($id) {
-            $id = ' id="' . $this->view->escape($id) . '"';
-        }
-
         // XHTML or HTML end tag?
         $endTag = ' />';
-        if (($this->view instanceof Zend_View_Abstract) && !$this->view->doctype()->isXhtml()) {
+        if ($this->view instanceof \Zend\Loader\Pluggable && !$this->view->plugin('doctype')->isXhtml()) {
             $endTag= '>';
         }
 
         // Render the button.
         $xhtml = '<input type="submit"'
-               . ' name="' . $this->view->escape($name) . '"'
-               . $id
-               . ' value="' . $this->view->escape($value) . '"'
+               . ' name="' . $this->view->vars()->escape($name) . '"'
+               . ' id="' . $this->view->vars()->escape($id) . '"'
+               . ' value="' . $this->view->vars()->escape($value) . '"'
                . $disabled
                . $this->_htmlAttribs($attribs)
                . $endTag;

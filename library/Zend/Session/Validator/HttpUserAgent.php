@@ -16,51 +16,71 @@
  * @package    Zend_Session
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: HttpUserAgent.php 23775 2011-03-01 17:25:24Z ralph $
  * @since      Preview Release 0.2
  */
 
-/**
- * @see Zend_Session_Validator_Abstract
- */
-require_once 'Zend/Session/Validator/Abstract.php';
+namespace Zend\Session\Validator;
+
+use Zend\Session\Validator as SessionValidator;
 
 /**
- * Zend_Session_Validator_HttpUserAgent
- *
+ * @uses       Zend\Session\Validator
  * @category   Zend
  * @package    Zend_Session
  * @subpackage Validator
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Session_Validator_HttpUserAgent extends Zend_Session_Validator_Abstract
+class HttpUserAgent implements SessionValidator
 {
-
     /**
-     * Setup() - this method will get the current user agent and store it in the session
+     * Constructor - get the current user agent and store it in the session
      * as 'valid data'
      *
      * @return void
      */
-    public function setup()
+    public function __construct($data = null)
     {
-        $this->setValidData( (isset($_SERVER['HTTP_USER_AGENT'])
-            ? $_SERVER['HTTP_USER_AGENT'] : null) );
+        if (empty($data)) {
+            $data = isset($_SERVER['HTTP_USER_AGENT'])
+                  ? $_SERVER['HTTP_USER_AGENT']
+                  : null;
+        }
+        $this->_data = $data;
     }
 
     /**
-     * Validate() - this method will determine if the current user agent matches the
+     * isValid() - this method will determine if the current user agent matches the
      * user agent we stored when we initialized this variable.
      *
      * @return bool
      */
-    public function validate()
+    public function isValid()
     {
-        $currentBrowser = (isset($_SERVER['HTTP_USER_AGENT'])
-            ? $_SERVER['HTTP_USER_AGENT'] : null);
+        $userAgent = isset($_SERVER['HTTP_USER_AGENT'])
+                   ? $_SERVER['HTTP_USER_AGENT'] 
+                   : null;
 
-        return $currentBrowser === $this->getValidData();
+        return $userAgent === $this->getData();
     }
 
+    /**
+     * Retrieve token for validating call
+     * 
+     * @return string
+     */
+    public function getData()
+    {
+        return $this->_data;
+    }
+
+    /**
+     * Return validator name
+     * 
+     * @return string
+     */
+    public function getName()
+    {
+        return __CLASS__;
+    }
 }

@@ -16,33 +16,40 @@
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: Standalone.php 23775 2011-03-01 17:25:24Z ralph $
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-/** Zend_View_Helper_Placeholder_Registry */
-require_once 'Zend/View/Helper/Placeholder/Registry.php';
-
-/** Zend_View_Helper_Abstract.php */
-require_once 'Zend/View/Helper/Abstract.php';
+/**
+ * @namespace
+ */
+namespace Zend\View\Helper\Placeholder\Container;
+use Zend\View\Helper\Placeholder\Registry;
 
 /**
  * Base class for targetted placeholder helpers
  *
+ * @uses       ArrayAccess
+ * @uses       Countable
+ * @uses       IteratorAggregate
+ * @uses       \Zend\View\Exception
+ * @uses       \Zend\View\Helper\AbstractHelper
+ * @uses       \Zend\View\Helper\Placeholder\Registry
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_View_Helper_Placeholder_Container_Standalone extends Zend_View_Helper_Abstract implements IteratorAggregate, Countable, ArrayAccess
+abstract class Standalone
+    extends \Zend\View\Helper\AbstractHelper
+    implements \IteratorAggregate, \Countable, \ArrayAccess
 {
     /**
-     * @var Zend_View_Helper_Placeholder_Container_Abstract
+     * @var \Zend\View\Helper\Placeholder\Container\AbstractContainer
      */
     protected $_container;
 
     /**
-     * @var Zend_View_Helper_Placeholder_Registry
+     * @var \Zend\View\Helper\Placeholder\Registry
      */
     protected $_registry;
 
@@ -66,14 +73,14 @@ abstract class Zend_View_Helper_Placeholder_Container_Standalone extends Zend_Vi
      */
     public function __construct()
     {
-        $this->setRegistry(Zend_View_Helper_Placeholder_Registry::getRegistry());
+        $this->setRegistry(Registry::getRegistry());
         $this->setContainer($this->getRegistry()->getContainer($this->_regKey));
     }
 
     /**
      * Retrieve registry
      *
-     * @return Zend_View_Helper_Placeholder_Registry
+     * @return \Zend\View\Helper\Placeholder\Registry
      */
     public function getRegistry()
     {
@@ -83,10 +90,10 @@ abstract class Zend_View_Helper_Placeholder_Container_Standalone extends Zend_Vi
     /**
      * Set registry object
      *
-     * @param  Zend_View_Helper_Placeholder_Registry $registry
-     * @return Zend_View_Helper_Placeholder_Container_Standalone
+     * @param  \Zend\View\Helper\Placeholder\Registry $registry
+     * @return \Zend\View\Helper\Placeholder\Container\Standalone
      */
-    public function setRegistry(Zend_View_Helper_Placeholder_Registry $registry)
+    public function setRegistry(Registry $registry)
     {
         $this->_registry = $registry;
         return $this;
@@ -96,7 +103,7 @@ abstract class Zend_View_Helper_Placeholder_Container_Standalone extends Zend_Vi
      * Set whether or not auto escaping should be used
      *
      * @param  bool $autoEscape whether or not to auto escape output
-     * @return Zend_View_Helper_Placeholder_Container_Standalone
+     * @return \Zend\View\Helper\Placeholder\Container\Standalone
      */
     public function setAutoEscape($autoEscape = true)
     {
@@ -123,7 +130,7 @@ abstract class Zend_View_Helper_Placeholder_Container_Standalone extends Zend_Vi
     protected function _escape($string)
     {
         $enc = 'UTF-8';
-        if ($this->view instanceof Zend_View_Interface
+        if ($this->view instanceof \Zend\View\Renderer
             && method_exists($this->view, 'getEncoding')
         ) {
             $enc = $this->view->getEncoding();
@@ -135,10 +142,10 @@ abstract class Zend_View_Helper_Placeholder_Container_Standalone extends Zend_Vi
     /**
      * Set container on which to operate
      *
-     * @param  Zend_View_Helper_Placeholder_Container_Abstract $container
-     * @return Zend_View_Helper_Placeholder_Container_Standalone
+     * @param  \Zend\View\Helper\Placeholder\Container\AbstractContainer $container
+     * @return \Zend\View\Helper\Placeholder\Container\Standalone
      */
-    public function setContainer(Zend_View_Helper_Placeholder_Container_Abstract $container)
+    public function setContainer(AbstractContainer $container)
     {
         $this->_container = $container;
         return $this;
@@ -147,7 +154,7 @@ abstract class Zend_View_Helper_Placeholder_Container_Standalone extends Zend_Vi
     /**
      * Retrieve placeholder container
      *
-     * @return Zend_View_Helper_Placeholder_Container_Abstract
+     * @return \Zend\View\Helper\Placeholder\Container\AbstractContainer
      */
     public function getContainer()
     {
@@ -230,8 +237,7 @@ abstract class Zend_View_Helper_Placeholder_Container_Standalone extends Zend_Vi
             return $return;
         }
 
-        require_once 'Zend/View/Exception.php';
-        $e = new Zend_View_Exception('Method "' . $method . '" does not exist');
+        $e = new \Zend\View\Exception('Method "' . $method . '" does not exist');
         $e->setView($this->view);
         throw $e;
     }

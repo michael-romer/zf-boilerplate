@@ -13,29 +13,28 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Feed_Reader
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Atom.php 23775 2011-03-01 17:25:24Z ralph $
- */
-
-/**
- * @see Zend_Feed_Reader_FeedAbstract
- */
-require_once 'Zend/Feed/Reader/FeedAbstract.php';
-
-/**
- * @see Zend_Feed_Reader_Extension_Atom_Feed
- */
-require_once 'Zend/Feed/Reader/Extension/Atom/Feed.php';
-
-/**
- * @category   Zend
- * @package    Zend_Feed_Reader
+ * @package    Reader
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Feed_Reader_Feed_Atom extends Zend_Feed_Reader_FeedAbstract
+
+/**
+* @namespace
+*/
+namespace Zend\Feed\Reader\Feed;
+use Zend\Feed\Reader;
+use Zend\Date;
+
+/**
+* @uses \Zend\Feed\Reader\Reader
+* @uses \Zend\Feed\Reader\Extension\Atom\Feed
+* @uses \Zend\Feed\Reader\Feed\AbstractFeed
+* @category Zend
+* @package Reader
+* @copyright Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+* @license http://framework.zend.com/license/new-bsd New BSD License
+*/
+class Atom extends AbstractFeed
 {
 
     /**
@@ -44,13 +43,13 @@ class Zend_Feed_Reader_Feed_Atom extends Zend_Feed_Reader_FeedAbstract
      * @param  DOMDocument $dom
      * @param  string $type
      */
-    public function __construct(DOMDocument $dom, $type = null)
+    public function __construct(\DOMDocument $dom, $type = null)
     {
         parent::__construct($dom, $type);
-        $atomClass = Zend_Feed_Reader::getPluginLoader()->getClassName('Atom_Feed');
-        $this->_extensions['Atom_Feed'] = new $atomClass($dom, $this->_data['type'], $this->_xpath);
-        $atomClass = Zend_Feed_Reader::getPluginLoader()->getClassName('DublinCore_Feed');
-        $this->_extensions['DublinCore_Feed'] = new $atomClass($dom, $this->_data['type'], $this->_xpath);
+        $atomClass = Reader\Reader::getPluginLoader()->getClassName('Atom\\Feed');
+        $this->_extensions['Atom\\Feed'] = new $atomClass($dom, $this->_data['type'], $this->_xpath);
+        $atomClass = Reader\Reader::getPluginLoader()->getClassName('DublinCore\\Feed');
+        $this->_extensions['DublinCore\\Feed'] = new $atomClass($dom, $this->_data['type'], $this->_xpath);
         foreach ($this->_extensions as $extension) {
             $extension->setXpathPrefix('/atom:feed');
         }
@@ -362,11 +361,11 @@ class Zend_Feed_Reader_Feed_Atom extends Zend_Feed_Reader_FeedAbstract
 
         return $this->_data['hubs'];
     }
-
+    
     /**
      * Get all categories
      *
-     * @return Zend_Feed_Reader_Collection_Category
+     * @return Reader_Collection_Category
      */
     public function getCategories()
     {
@@ -375,7 +374,7 @@ class Zend_Feed_Reader_Feed_Atom extends Zend_Feed_Reader_FeedAbstract
         }
 
         $categoryCollection = $this->getExtension('Atom')->getCategories();
-
+        
         if (count($categoryCollection) == 0) {
             $categoryCollection = $this->getExtension('DublinCore')->getCategories();
         }
@@ -392,8 +391,8 @@ class Zend_Feed_Reader_Feed_Atom extends Zend_Feed_Reader_FeedAbstract
      */
     protected function _indexEntries()
     {
-        if ($this->getType() == Zend_Feed_Reader::TYPE_ATOM_10 ||
-            $this->getType() == Zend_Feed_Reader::TYPE_ATOM_03) {
+        if ($this->getType() == Reader\Reader::TYPE_ATOM_10 ||
+            $this->getType() == Reader\Reader::TYPE_ATOM_03) {
             $entries = array();
             $entries = $this->_xpath->evaluate('//atom:entry');
 
@@ -410,12 +409,12 @@ class Zend_Feed_Reader_Feed_Atom extends Zend_Feed_Reader_FeedAbstract
     protected function _registerNamespaces()
     {
         switch ($this->_data['type']) {
-            case Zend_Feed_Reader::TYPE_ATOM_03:
-                $this->_xpath->registerNamespace('atom', Zend_Feed_Reader::NAMESPACE_ATOM_03);
+            case Reader\Reader::TYPE_ATOM_03:
+                $this->_xpath->registerNamespace('atom', Reader\Reader::NAMESPACE_ATOM_03);
                 break;
-            case Zend_Feed_Reader::TYPE_ATOM_10:
+            case Reader\Reader::TYPE_ATOM_10:
             default:
-                $this->_xpath->registerNamespace('atom', Zend_Feed_Reader::NAMESPACE_ATOM_10);
+                $this->_xpath->registerNamespace('atom', Reader\Reader::NAMESPACE_ATOM_10);
         }
     }
 }

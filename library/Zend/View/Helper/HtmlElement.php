@@ -17,22 +17,23 @@
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: HtmlElement.php 24399 2011-08-26 08:20:07Z padraic $
  */
 
 /**
- * @see Zend_View_Helper_Abstract
+ * @namespace
  */
-require_once 'Zend/View/Helper/Abstract.php';
+namespace Zend\View\Helper;
 
 /**
+ * @uses       \Zend\Json\Json
+ * @uses       \Zend\View\Helper\AbstractHelper
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_View_Helper_HtmlElement extends Zend_View_Helper_Abstract
+abstract class HtmlElement extends AbstractHelper
 {
     /**
      * EOL character
@@ -71,21 +72,10 @@ abstract class Zend_View_Helper_HtmlElement extends Zend_View_Helper_Abstract
      */
     protected function _isXhtml()
     {
-        $doctype = $this->view->doctype();
+        $doctype = $this->view->plugin('doctype');
         return $doctype->isXhtml();
     }
 
-    /**
-     * Is doctype strict?
-     *
-     * @return boolean
-     */
-    protected function _isStrictDoctype()
-    {
-        $doctype = $this->view->doctype();
-        return $doctype->isStrict();
-    }
-    
     /**
      * Converts an associative array to a string of tag attributes.
      *
@@ -100,14 +90,13 @@ abstract class Zend_View_Helper_HtmlElement extends Zend_View_Helper_Abstract
     {
         $xhtml = '';
         foreach ((array) $attribs as $key => $val) {
-            $key = $this->view->escape($key);
+            $key = $this->view->vars()->escape($key);
 
             if (('on' == substr($key, 0, 2)) || ('constraints' == $key)) {
                 // Don't escape event attributes; _do_ substitute double quotes with singles
                 if (!is_scalar($val)) {
                     // non-scalar data should be cast to JSON first
-                    require_once 'Zend/Json.php';
-                    $val = Zend_Json::encode($val);
+                    $val = \Zend\Json\Json::encode($val);
                 }
                 // Escape single quotes inside event attribute values.
                 // This will create html, where the attribute value has
@@ -118,7 +107,7 @@ abstract class Zend_View_Helper_HtmlElement extends Zend_View_Helper_Abstract
                 if (is_array($val)) {
                     $val = implode(' ', $val);
                 }
-                $val = $this->view->escape($val);
+                $val = $this->view->vars()->escape($val);
             }
 
             if ('id' == $key) {

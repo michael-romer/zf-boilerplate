@@ -14,35 +14,30 @@
  *
  * @category   Zend
  * @package    Zend_Config
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Yaml.php 23651 2011-01-21 21:51:00Z mikaelkael $
+ * @version    $Id$
  */
 
-/**
- * @see Zend_Config_Writer
- */
-require_once 'Zend/Config/Writer/FileAbstract.php';
+namespace Zend\Config\Writer;
 
-/**
- * @see Zend_Config_Yaml
- */
-require_once 'Zend/Config/Yaml.php';
+use Zend\Config\Yaml as YamlConfig,
+    Zend\Config\Exception;
 
 /**
  * @category   Zend
  * @package    Zend_Config
- * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Config_Writer_Yaml extends Zend_Config_Writer_FileAbstract
+class Yaml extends AbstractFileWriter
 {
     /**
      * What to call when we need to decode some YAML?
      *
      * @var callable
      */
-    protected $_yamlEncoder = array('Zend_Config_Writer_Yaml', 'encode');
+    protected $_yamlEncoder = array('Zend\Config\Writer\Yaml', 'encode');
 
     /**
      * Get callback for decoding YAML
@@ -63,8 +58,7 @@ class Zend_Config_Writer_Yaml extends Zend_Config_Writer_FileAbstract
     public function setYamlEncoder($yamlEncoder)
     {
         if (!is_callable($yamlEncoder)) {
-            require_once 'Zend/Config/Exception.php';
-            throw new Zend_Config_Exception('Invalid parameter to setYamlEncoder - must be callable');
+            throw new Exception\InvalidArgumentException('Invalid parameter to setYamlEncoder - must be callable');
         }
 
         $this->_yamlEncoder = $yamlEncoder;
@@ -88,16 +82,16 @@ class Zend_Config_Writer_Yaml extends Zend_Config_Writer_FileAbstract
         }
 
         foreach ($extends as $section => $parentSection) {
-            $data[$section][Zend_Config_Yaml::EXTENDS_NAME] = $parentSection;
+            $data[$section][YamlConfig::EXTENDS_NAME] = $parentSection;
         }
 
         // Ensure that each "extends" section actually exists
         foreach ($data as $section => $sectionData) {
-            if (is_array($sectionData) && isset($sectionData[Zend_Config_Yaml::EXTENDS_NAME])) {
-                $sectionExtends = $sectionData[Zend_Config_Yaml::EXTENDS_NAME];
+            if (is_array($sectionData) && isset($sectionData[YamlConfig::EXTENDS_NAME])) {
+                $sectionExtends = $sectionData[YamlConfig::EXTENDS_NAME];
                 if (!isset($data[$sectionExtends])) {
                     // Remove "extends" declaration if section does not exist
-                    unset($data[$section][Zend_Config_Yaml::EXTENDS_NAME]);
+                    unset($data[$section][YamlConfig::EXTENDS_NAME]);
                 }
             }
         }

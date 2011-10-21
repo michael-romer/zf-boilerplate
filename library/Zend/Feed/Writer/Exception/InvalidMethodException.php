@@ -17,9 +17,10 @@
  * @package    Zend_Feed
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: InvalidMethodException.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
+/* @namespace */
+namespace Zend\Feed\Writer\Exception;
 
 /**
  * @see Zend_Feed_Exception
@@ -37,5 +38,5 @@ require_once 'Zend/Feed/Exception.php';
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Feed_Writer_Exception_InvalidMethodException extends Zend_Exception
+class InvalidMethodException extends \Exception
 {}

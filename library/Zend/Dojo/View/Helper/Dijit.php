@@ -17,25 +17,32 @@
  * @subpackage View
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Dijit.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-/** Zend_View_Helper_HtmlElement */
-require_once 'Zend/View/Helper/HtmlElement.php';
+/**
+ * @namespace
+ */
+namespace Zend\Dojo\View\Helper;
+
+use Zend\Json\Json,
+    Zend\View\Renderer as View,
+    Zend\View\Helper\HtmlElement;
 
 /**
  * Dojo dijit base class
  *
- * @uses       Zend_View_Helper_Abstract
+ * @uses       \Zend\Dojo\View\Helper\Dojo
+ * @uses       \Zend\Json\Json
+ * @uses       \Zend\View\Helper\HtmlElement
  * @package    Zend_Dojo
  * @subpackage View
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
-  */
-abstract class Zend_Dojo_View_Helper_Dijit extends Zend_View_Helper_HtmlElement
+ */
+abstract class Dijit extends HtmlElement
 {
     /**
-     * @var Zend_Dojo_View_Helper_Dojo_Container
+     * @var \Zend\Dojo\View\Helper\Dojo\Container
      */
     public $dojo;
 
@@ -74,13 +81,13 @@ abstract class Zend_Dojo_View_Helper_Dijit extends Zend_View_Helper_HtmlElement
      *
      * Set view and enable dojo
      *
-     * @param  Zend_View_Interface $view
-     * @return Zend_Dojo_View_Helper_Dijit
+     * @param  \Zend\View\Renderer $view
+     * @return \Zend\Dojo\View\Helper\Dijit
      */
-    public function setView(Zend_View_Interface $view)
+    public function setView(View $view)
     {
         parent::setView($view);
-        $this->dojo = $this->view->dojo();
+        $this->dojo = $this->view->plugin('dojo');
         $this->dojo->enable();
         return $this;
     }
@@ -100,7 +107,7 @@ abstract class Zend_Dojo_View_Helper_Dijit extends Zend_View_Helper_HtmlElement
      * Set root node type
      *
      * @param  string $value
-     * @return Zend_Dojo_View_Helper_Dijit
+     * @return \Zend\Dojo\View\Helper\Dijit
      */
     public function setRootNode($value)
     {
@@ -115,7 +122,7 @@ abstract class Zend_Dojo_View_Helper_Dijit extends Zend_View_Helper_HtmlElement
      */
     protected function _useDeclarative()
     {
-        return Zend_Dojo_View_Helper_Dojo::useDeclarative();
+        return Dojo::useDeclarative();
     }
 
     /**
@@ -125,7 +132,7 @@ abstract class Zend_Dojo_View_Helper_Dijit extends Zend_View_Helper_HtmlElement
      */
     protected function _useProgrammatic()
     {
-        return Zend_Dojo_View_Helper_Dojo::useProgrammatic();
+        return Dojo::useProgrammatic();
     }
 
     /**
@@ -135,7 +142,7 @@ abstract class Zend_Dojo_View_Helper_Dijit extends Zend_View_Helper_HtmlElement
      */
     protected function _useProgrammaticNoScript()
     {
-        return Zend_Dojo_View_Helper_Dojo::useProgrammaticNoScript();
+        return Dojo::useProgrammaticNoScript();
     }
 
     /**
@@ -234,8 +241,6 @@ abstract class Zend_Dojo_View_Helper_Dijit extends Zend_View_Helper_HtmlElement
         // Normalize constraints, if present
         foreach ($this->_jsonParams as $param) {
             if (array_key_exists($param, $params)) {
-                require_once 'Zend/Json.php';
-
                 if (is_array($params[$param])) {
                     $values = array();
                     foreach ($params[$param] as $key => $value) {
@@ -249,7 +254,7 @@ abstract class Zend_Dojo_View_Helper_Dijit extends Zend_View_Helper_HtmlElement
                 } else {
                     $values = array();
                 }
-                $values = Zend_Json::encode($values);
+                $values = Json::encode($values);
                 if ($this->_useDeclarative()) {
                     $values = str_replace('"', "'", $values);
                 }

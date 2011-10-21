@@ -18,6 +18,11 @@
  */
 
 /**
+ * namespace
+ */
+namespace Zend\Cloud\DocumentService;
+
+/**
  * This interface describes the API that concrete query adapter should implement
  *
  * Common interface for document storage services in the cloud. This interface
@@ -37,7 +42,7 @@
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-interface Zend_Cloud_DocumentService_QueryAdapter
+interface QueryAdapter
 {
     /**
      * SELECT clause (fields to be selected)

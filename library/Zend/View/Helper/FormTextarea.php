@@ -17,26 +17,24 @@
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: FormTextarea.php 23775 2011-03-01 17:25:24Z ralph $
  */
-
 
 /**
- * Abstract class for extension
+ * @namespace
  */
-require_once 'Zend/View/Helper/FormElement.php';
-
+namespace Zend\View\Helper;
 
 /**
  * Helper to generate a "textarea" element
  *
+ * @uses       \Zend\View\Helper\FormElement
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_FormTextarea extends Zend_View_Helper_FormElement
+class FormTextarea extends FormElement
 {
     /**
      * The default number of rows for a textarea.
@@ -71,7 +69,7 @@ class Zend_View_Helper_FormTextarea extends Zend_View_Helper_FormElement
      *
      * @return string The element XHTML.
      */
-    public function formTextarea($name, $value = null, $attribs = null)
+    public function __invoke($name, $value = null, $attribs = null)
     {
         $info = $this->_getInfo($name, $value, $attribs);
         extract($info); // name, value, attribs, options, listsep, disable
@@ -93,11 +91,11 @@ class Zend_View_Helper_FormTextarea extends Zend_View_Helper_FormElement
         }
 
         // build the element
-        $xhtml = '<textarea name="' . $this->view->escape($name) . '"'
-                . ' id="' . $this->view->escape($id) . '"'
+        $xhtml = '<textarea name="' . $this->view->vars()->escape($name) . '"'
+                . ' id="' . $this->view->vars()->escape($id) . '"'
                 . $disabled
                 . $this->_htmlAttribs($attribs) . '>'
-                . $this->view->escape($value) . '</textarea>';
+                . $this->view->vars()->escape($value) . '</textarea>';
 
         return $xhtml;
     }

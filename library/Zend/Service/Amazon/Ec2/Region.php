@@ -17,24 +17,24 @@
  * @subpackage Ec2
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Region.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Service_Amazon_Ec2_Abstract
+ * @namespace
  */
-require_once 'Zend/Service/Amazon/Ec2/Abstract.php';
+namespace Zend\Service\Amazon\Ec2;
 
 /**
  * An Amazon EC2 interface to query which Regions your account has access to.
  *
+ * @uses       Zend_Service_Amazon_Ec2_Abstract
  * @category   Zend
  * @package    Zend_Service_Amazon
  * @subpackage Ec2
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Service_Amazon_Ec2_Region extends Zend_Service_Amazon_Ec2_Abstract
+class Region extends AbstractEc2
 {
 
     /**

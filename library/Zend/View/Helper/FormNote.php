@@ -17,26 +17,24 @@
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: FormNote.php 23775 2011-03-01 17:25:24Z ralph $
  */
-
 
 /**
- * Abstract class for extension
+ * @namespace
  */
-require_once 'Zend/View/Helper/FormElement.php';
-
+namespace Zend\View\Helper;
 
 /**
  * Helper to show an HTML note
  *
+ * @uses       \Zend\View\Helper\FormElement
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_FormNote extends Zend_View_Helper_FormElement
+class FormNote extends FormElement
 {
     /**
     * Helper to show a "note" based on a hidden value.
@@ -52,7 +50,7 @@ class Zend_View_Helper_FormNote extends Zend_View_Helper_FormElement
      *
      * @return string The element XHTML.
      */
-    public function formNote($name, $value = null)
+    public function __invoke($name, $value = null)
     {
         $info = $this->_getInfo($name, $value);
         extract($info); // name, value, attribs, options, listsep, disable

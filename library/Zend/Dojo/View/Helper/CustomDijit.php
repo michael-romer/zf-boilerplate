@@ -17,22 +17,26 @@
  * @subpackage View
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: CustomDijit.php 23953 2011-05-03 05:47:39Z ralph $
  */
 
-/** Zend_Dojo_View_Helper_DijitContainer */
-require_once 'Zend/Dojo/View/Helper/DijitContainer.php';
+/**
+ * @namespace
+ */
+namespace Zend\Dojo\View\Helper;
+
+use Zend\Dojo\View\Exception;
 
 /**
  * Arbitrary dijit support
  *
- * @uses       Zend_Dojo_View_Helper_DijitContainer
+ * @uses       \Zend\Dojo\View\Exception
+ * @uses       \Zend\Dojo\View\Helper\DijitContainer
  * @package    Zend_Dojo
  * @subpackage View
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
   */
-class Zend_Dojo_View_Helper_CustomDijit extends Zend_Dojo_View_Helper_DijitContainer
+class CustomDijit extends DijitContainer
 {
     /**
      * Default dojoType; set the value when extending
@@ -50,9 +54,9 @@ class Zend_Dojo_View_Helper_CustomDijit extends Zend_Dojo_View_Helper_DijitConta
      * @param  string $value
      * @param  array $params
      * @param  array $attribs
-     * @return string|Zend_Dojo_View_Helper_CustomDijit
+     * @return string|\Zend\Dojo\View\Helper\CustomDijit
      */
-    public function customDijit($id = null, $value = null, array $params = array(), array $attribs = array())
+    public function __invoke($id = null, $value = null, array $params = array(), array $attribs = array())
     {
         if (null === $id) {
             return $this;
@@ -61,8 +65,7 @@ class Zend_Dojo_View_Helper_CustomDijit extends Zend_Dojo_View_Helper_DijitConta
         if (!array_key_exists('dojoType', $params)
             && (null === $this->_defaultDojoType)
         ) {
-            require_once 'Zend/Dojo/View/Exception.php';
-            throw new Zend_Dojo_View_Exception('No dojoType specified; cannot create dijit');
+            throw new Exception\InvalidArgumentException('No dojoType specified; cannot create dijit');
         } elseif (array_key_exists('dojoType', $params)) {
             $this->_dijit  = $params['dojoType'];
             $this->_module = $params['dojoType'];
@@ -96,8 +99,7 @@ class Zend_Dojo_View_Helper_CustomDijit extends Zend_Dojo_View_Helper_DijitConta
         if (!array_key_exists('dojoType', $params)
             && (null === $this->_defaultDojoType)
         ) {
-            require_once 'Zend/Dojo/View/Exception.php';
-            throw new Zend_Dojo_View_Exception('No dojoType specified; cannot create dijit');
+            throw new Exception\InvalidArgumentException('No dojoType specified; cannot create dijit');
         } elseif (array_key_exists('dojoType', $params)) {
             $this->_dijit  = $params['dojoType'];
             $this->_module = $params['dojoType'];

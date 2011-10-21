@@ -17,24 +17,27 @@
  * @subpackage Ec2
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Image.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Service_Amazon_Ec2_Abstract
+ * @namespace
  */
-require_once 'Zend/Service/Amazon/Ec2/Abstract.php';
+namespace Zend\Service\Amazon\Ec2;
+use Zend\Service\Amazon,
+    Zend\Service\Amazon\Ec2\Exception;
 
 /**
  * An Amazon EC2 interface to register, describe and deregister Amamzon Machine Instances (AMI)
  *
+ * @uses       Zend\Service\Amazon\AbstractEc2
+ * @uses       Zend\Service\Amazon\Ec2\Exception
  * @category   Zend
  * @package    Zend_Service_Amazon
  * @subpackage Ec2
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Service_Amazon_Ec2_Image extends Zend_Service_Amazon_Ec2_Abstract
+class Image extends AbstractEc2
 {
     /**
      * Registers an AMI with Amazon EC2. Images must be registered before
@@ -247,8 +250,7 @@ class Zend_Service_Amazon_Ec2_Image extends Zend_Service_Amazon_Ec2_Abstract
                 $params['ProductCode.1'] = $productCode;
                 break;
             default:
-                require_once 'Zend/Service/Amazon/Ec2/Exception.php';
-                throw new Zend_Service_Amazon_Ec2_Exception('Invalid Attribute Passed In.  Valid Image Attributes are launchPermission and productCode.');
+                throw new Exception\InvalidArgumentException('Invalid attribute passed in. Valid image attributes are launchpermission and productcode.');
                 break;
         }
 

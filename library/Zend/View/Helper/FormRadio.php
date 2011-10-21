@@ -17,26 +17,25 @@
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: FormRadio.php 24160 2011-06-28 16:37:04Z adamlundrigan $
  */
-
 
 /**
- * Abstract class for extension
+ * @namespace
  */
-require_once 'Zend/View/Helper/FormElement.php';
-
+namespace Zend\View\Helper;
 
 /**
  * Helper to generate a set of radio button elements
  *
+ * @uses       \Zend\Filter\Alnum
+ * @uses       \Zend\View\Helper\FormElement
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_FormRadio extends Zend_View_Helper_FormElement
+class FormRadio extends FormElement
 {
     /**
      * Input type to use
@@ -68,10 +67,8 @@ class Zend_View_Helper_FormRadio extends Zend_View_Helper_FormElement
      *
      * @return string The radio buttons XHTML.
      */
-    public function formRadio($name, $value = null, $attribs = null,
-        $options = null, $listsep = "<br />\n")
+    public function __invoke($name, $value = null, $attribs = null, $options = null, $listsep = "<br />\n")
     {
-
         $info = $this->_getInfo($name, $value, $attribs, $options, $listsep);
         extract($info); // name, value, attribs, options, listsep, disable
 
@@ -115,7 +112,7 @@ class Zend_View_Helper_FormRadio extends Zend_View_Helper_FormElement
         $list  = array();
 
         // should the name affect an array collection?
-        $name = $this->view->escape($name);
+        $name = $this->view->vars()->escape($name);
         if ($this->_isArray && ('[]' != substr($name, -2))) {
             $name .= '[]';
         }
@@ -125,23 +122,17 @@ class Zend_View_Helper_FormRadio extends Zend_View_Helper_FormElement
 
         // XHTML or HTML end tag?
         $endTag = ' />';
-        if (($this->view instanceof Zend_View_Abstract) && !$this->view->doctype()->isXhtml()) {
+        if ($this->view instanceof \Zend\Loader\Pluggable && !$this->view->plugin('doctype')->isXhtml()) {
             $endTag= '>';
         }
 
-        // Set up the filter - Alnum + hyphen + underscore
-        require_once 'Zend/Filter/PregReplace.php';
-        $pattern = @preg_match('/\pL/u', 'a') 
-            ? '/[^\p{L}\p{N}\-\_]/u'    // Unicode
-            : '/[^a-zA-Z0-9\-\_]/';     // No Unicode
-        $filter = new Zend_Filter_PregReplace($pattern, "");
-        
         // add radio buttons to the list.
+        $filter = new \Zend\Filter\Alnum();
         foreach ($options as $opt_value => $opt_label) {
 
             // Should the label be escaped?
             if ($escape) {
-                $opt_label = $this->view->escape($opt_label);
+                $opt_label = $this->view->vars()->escape($opt_label);
             }
 
             // is it disabled?
@@ -168,7 +159,7 @@ class Zend_View_Helper_FormRadio extends Zend_View_Helper_FormElement
                     . '<input type="' . $this->_inputType . '"'
                     . ' name="' . $name . '"'
                     . ' id="' . $optId . '"'
-                    . ' value="' . $this->view->escape($opt_value) . '"'
+                    . ' value="' . $this->view->vars()->escape($opt_value) . '"'
                     . $checked
                     . $disabled
                     . $this->_htmlAttribs($attribs)

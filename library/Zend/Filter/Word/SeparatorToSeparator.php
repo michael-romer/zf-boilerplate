@@ -16,23 +16,23 @@
  * @package    Zend_Filter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: SeparatorToSeparator.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Filter_PregReplace
+ * @namespace
  */
-require_once 'Zend/Filter/PregReplace.php';
+namespace Zend\Filter\Word;
 
 /**
+ * @uses       \Zend\Filter\Exception
+ * @uses       \Zend\Filter\PregReplace
  * @category   Zend
  * @package    Zend_Filter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Filter_Word_SeparatorToSeparator extends Zend_Filter_PregReplace
+class SeparatorToSeparator extends \Zend\Filter\PregReplace
 {
-
     protected $_searchSeparator = null;
     protected $_replacementSeparator = null;
 
@@ -94,7 +94,7 @@ class Zend_Filter_Word_SeparatorToSeparator extends Zend_Filter_PregReplace
     }
 
     /**
-     * Defined by Zend_Filter_Interface
+     * Defined by Zend\Filter\Filter
      *
      * Returns the string $value, replacing the searched seperators with the defined ones
      *
@@ -117,8 +117,7 @@ class Zend_Filter_Word_SeparatorToSeparator extends Zend_Filter_PregReplace
     protected function _separatorToSeparatorFilter($value)
     {
         if ($this->_searchSeparator == null) {
-            require_once 'Zend/Filter/Exception.php';
-            throw new Zend_Filter_Exception('You must provide a search separator for this filter to work.');
+            throw new \Zend\Filter\Exception\RuntimeException('You must provide a search separator for this filter to work.');
         }
 
         $this->setMatchPattern('#' . preg_quote($this->_searchSeparator, '#') . '#');

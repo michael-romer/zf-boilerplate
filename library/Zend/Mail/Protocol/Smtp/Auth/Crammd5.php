@@ -17,26 +17,26 @@
  * @subpackage Protocol
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Crammd5.php 23775 2011-03-01 17:25:24Z ralph $
  */
-
 
 /**
- * @see Zend_Mail_Protocol_Smtp
+ * @namespace
  */
-require_once 'Zend/Mail/Protocol/Smtp.php';
+namespace Zend\Mail\Protocol\Smtp\Auth;
 
+use Zend\Mail\Protocol\Smtp;
 
 /**
  * Performs CRAM-MD5 authentication
  *
+ * @uses       \Zend\Mail\Protocol\Smtp
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Protocol
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Mail_Protocol_Smtp_Auth_Crammd5 extends Zend_Mail_Protocol_Smtp
+class Crammd5 extends Smtp
 {
     /**
      * Constructor.

@@ -17,26 +17,24 @@
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: FormCheckbox.php 23775 2011-03-01 17:25:24Z ralph $
  */
-
 
 /**
- * Abstract class for extension
+ * @namespace
  */
-require_once 'Zend/View/Helper/FormElement.php';
-
+namespace Zend\View\Helper;
 
 /**
  * Helper to generate a "checkbox" element
  *
+ * @uses       \Zend\View\Helper\FormElement
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_FormCheckbox extends Zend_View_Helper_FormElement
+class FormCheckbox extends FormElement
 {
     /**
      * Default checked/unchecked options
@@ -59,7 +57,7 @@ class Zend_View_Helper_FormCheckbox extends Zend_View_Helper_FormElement
      * @param array $attribs Attributes for the element tag.
      * @return string The element XHTML.
      */
-    public function formCheckbox($name, $value = null, $attribs = null, array $checkedOptions = null)
+    public function __invoke($name, $value = null, $attribs = null, array $checkedOptions = null)
     {
         $info = $this->_getInfo($name, $value, $attribs);
         extract($info); // name, id, value, attribs, options, listsep, disable
@@ -83,7 +81,7 @@ class Zend_View_Helper_FormCheckbox extends Zend_View_Helper_FormElement
 
         // XHTML or HTML end tag?
         $endTag = ' />';
-        if (($this->view instanceof Zend_View_Abstract) && !$this->view->doctype()->isXhtml()) {
+        if ($this->view instanceof \Zend\Loader\Pluggable && !$this->view->plugin('doctype')->isXhtml()) {
             $endTag= '>';
         }
 
@@ -93,9 +91,9 @@ class Zend_View_Helper_FormCheckbox extends Zend_View_Helper_FormElement
             $xhtml = $this->_hidden($name, $checkedOptions['uncheckedValue']);
         }
         $xhtml .= '<input type="checkbox"'
-                . ' name="' . $this->view->escape($name) . '"'
-                . ' id="' . $this->view->escape($id) . '"'
-                . ' value="' . $this->view->escape($checkedOptions['checkedValue']) . '"'
+                . ' name="' . $this->view->vars()->escape($name) . '"'
+                . ' id="' . $this->view->vars()->escape($id) . '"'
+                . ' value="' . $this->view->vars()->escape($checkedOptions['checkedValue']) . '"'
                 . $checkedOptions['checkedString']
                 . $disabled
                 . $this->_htmlAttribs($attribs)

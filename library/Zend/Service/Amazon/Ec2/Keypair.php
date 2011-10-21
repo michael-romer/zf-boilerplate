@@ -17,31 +17,34 @@
  * @subpackage Ec2
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Keypair.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Service_Amazon_Ec2_Abstract
+ * @namespace
  */
-require_once 'Zend/Service/Amazon/Ec2/Abstract.php';
+namespace Zend\Service\Amazon\Ec2;
+use Zend\Service\Amazon,
+    Zend\Service\Amazon\Ec2\Exception;
 
 /**
  * An Amazon EC2 interface to create, delete and describe Ec2 KeyPairs.
  *
+ * @uses       Zend\Service\Amazon\AbstractEc2
+ * @uses       Zend\Service\Amazon\Ec2\Exception
  * @category   Zend
  * @package    Zend_Service_Amazon
  * @subpackage Ec2
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Service_Amazon_Ec2_Keypair extends Zend_Service_Amazon_Ec2_Abstract
+class Keypair extends AbstractEc2
 {
     /**
      * Creates a new 2048 bit RSA key pair and returns a unique ID that can
      * be used to reference this key pair when launching new instances.
      *
      * @param string $keyName           A unique name for the key pair.
-     * @throws Zend_Service_Amazon_Ec2_Exception
+     * @throws Zend\Service\Amazon\Ec2\Exception
      * @return array
      */
     public function create($keyName)
@@ -51,8 +54,7 @@ class Zend_Service_Amazon_Ec2_Keypair extends Zend_Service_Amazon_Ec2_Abstract
         $params['Action'] = 'CreateKeyPair';
 
         if(!$keyName) {
-            require_once 'Zend/Service/Amazon/Ec2/Exception.php';
-            throw new Zend_Service_Amazon_Ec2_Exception('Invalid Key Name');
+            throw new Exception\InvalidArgumentException('Invalid Key Name');
         }
 
         $params['KeyName'] = $keyName;
@@ -111,7 +113,7 @@ class Zend_Service_Amazon_Ec2_Keypair extends Zend_Service_Amazon_Ec2_Abstract
      * Deletes a key pair
      *
      * @param string $keyName           Name of the key pair to delete.
-     * @throws Zend_Service_Amazon_Ec2_Exception
+     * @throws Zend\Service\Amazon\Ec2\Exception
      * @return boolean                  Return true or false from the deletion.
      */
     public function delete($keyName)
@@ -121,8 +123,7 @@ class Zend_Service_Amazon_Ec2_Keypair extends Zend_Service_Amazon_Ec2_Abstract
         $params['Action'] = 'DeleteKeyPair';
 
         if(!$keyName) {
-            require_once 'Zend/Service/Amazon/Ec2/Exception.php';
-            throw new Zend_Service_Amazon_Ec2_Exception('Invalid Key Name');
+            throw new Exception\InvalidArgumentException('Invalid Key Name');
         }
 
         $params['KeyName'] = $keyName;

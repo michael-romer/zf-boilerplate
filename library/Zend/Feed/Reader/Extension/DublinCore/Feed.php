@@ -13,35 +13,32 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Feed_Reader
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Feed.php 23953 2011-05-03 05:47:39Z ralph $
- */
-
-/**
- * @see Zend_Feed_Reader_Extension_FeedAbstract
- */
-require_once 'Zend/Feed/Reader/Extension/FeedAbstract.php';
-
-/**
- * @see Zend_Date
- */
-require_once 'Zend/Date.php';
-
-/**
- * @see Zend_Feed_Reader_Collection_Author
- */
-require_once 'Zend/Feed/Reader/Collection/Author.php';
-
-/**
- * @category   Zend
- * @package    Zend_Feed_Reader
+ * @package    Reader\Reader
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Feed_Reader_Extension_DublinCore_Feed
-    extends Zend_Feed_Reader_Extension_FeedAbstract
+
+/**
+* @namespace
+*/
+namespace Zend\Feed\Reader\Extension\DublinCore;
+use Zend\Feed\Reader;
+use Zend\Feed\Reader\Collection;
+use Zend\Feed\Reader\Extension;
+use Zend\Date;
+
+/**
+* @uses \Zend\Date\Date
+* @uses \Zend\Feed\Reader\Reader
+* @uses \Zend\Feed\Reader\Collection\Author
+* @uses \Zend\Feed\Reader\Collection\Category
+* @uses \Zend\Feed\Reader\Extension\AbstractEntry
+* @category Zend
+* @package Zend_Feed_Reader
+* @copyright Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+* @license http://framework.zend.com/license/new-bsd New BSD License
+*/
+class Feed extends Extension\AbstractFeed
 {
     /**
      * Get a single author
@@ -84,15 +81,15 @@ class Zend_Feed_Reader_Extension_DublinCore_Feed
                 $list = $this->_xpath->query('//dc10:publisher');
             }
         }
-
+        
         if ($list->length) {
             foreach ($list as $author) {
                 $authors[] = array(
                     'name' => $author->nodeValue
                 );
             }
-            $authors = new Zend_Feed_Reader_Collection_Author(
-                Zend_Feed_Reader::arrayUnique($authors)
+            $authors = new Collection\Author(
+                Reader\Reader::arrayUnique($authors)
             );
         } else {
             $authors = null;
@@ -237,7 +234,7 @@ class Zend_Feed_Reader_Extension_DublinCore_Feed
     /**
      *
      *
-     * @return Zend_Date|null
+     * @return Date\Date|null
      */
     public function getDate()
     {
@@ -253,34 +250,34 @@ class Zend_Feed_Reader_Extension_DublinCore_Feed
         }
 
         if ($date) {
-            $d = new Zend_Date;
-            $d->set($date, Zend_Date::ISO_8601);
+            $d = new Date\Date;
+            $d->set($date, Date\Date::ISO_8601);
         }
 
         $this->_data['date'] = $d;
 
         return $this->_data['date'];
     }
-
+    
     /**
      * Get categories (subjects under DC)
      *
-     * @return Zend_Feed_Reader_Collection_Category
+     * @return Reader\Reader_Collection_Category
      */
     public function getCategories()
     {
         if (array_key_exists('categories', $this->_data)) {
             return $this->_data['categories'];
         }
-
+        
         $list = $this->_xpath->evaluate($this->getXpathPrefix() . '//dc11:subject');
 
         if (!$list->length) {
             $list = $this->_xpath->evaluate($this->getXpathPrefix() . '//dc10:subject');
         }
-
+        
         if ($list->length) {
-            $categoryCollection = new Zend_Feed_Reader_Collection_Category;
+            $categoryCollection = new Collection\Category;
             foreach ($list as $category) {
                 $categoryCollection[] = array(
                     'term' => $category->nodeValue,
@@ -289,11 +286,11 @@ class Zend_Feed_Reader_Extension_DublinCore_Feed
                 );
             }
         } else {
-            $categoryCollection = new Zend_Feed_Reader_Collection_Category;
+            $categoryCollection = new Collection\Category;
         }
-
+        
         $this->_data['categories'] = $categoryCollection;
-        return $this->_data['categories'];
+        return $this->_data['categories'];  
     }
 
     /**

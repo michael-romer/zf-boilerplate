@@ -16,31 +16,40 @@
  * @package    Zend_Filter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: SeparatorToCamelCase.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Filter_PregReplace
+ * @namespace
  */
-require_once 'Zend/Filter/Word/Separator/Abstract.php';
+namespace Zend\Filter\Word;
 
 /**
+ * @uses       \Zend\Filter\Word\AbstractSeparator
  * @category   Zend
  * @package    Zend_Filter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Filter_Word_SeparatorToCamelCase extends Zend_Filter_Word_Separator_Abstract
+class SeparatorToCamelCase extends AbstractSeparator
 {
-
+    /**
+     * Defined by Zend\Filter\Filter
+     *
+     * @param  string $value
+     * @return string
+     */
     public function filter($value)
     {
         // a unicode safe way of converting characters to \x00\x00 notation
         $pregQuotedSeparator = preg_quote($this->_separator, '#');
 
         if (self::isUnicodeSupportEnabled()) {
-            parent::setMatchPattern(array('#('.$pregQuotedSeparator.')(\p{L}{1})#e','#(^\p{Ll}{1})#e'));
-            parent::setReplacement(array("strtoupper('\\2')","strtoupper('\\1')"));
+            parent::setMatchPattern(array('#('.$pregQuotedSeparator.')(\p{L}{1})#eu','#(^\p{Ll}{1})#eu'));
+            if (!extension_loaded('mbstring')) {
+                parent::setReplacement(array("strtoupper('\\2')","strtoupper('\\1')"));
+            } else {
+                parent::setReplacement(array("mb_strtoupper('\\2', 'UTF-8')","mb_strtoupper('\\1', 'UTF-8')"));
+            }
         } else {
             parent::setMatchPattern(array('#('.$pregQuotedSeparator.')([A-Za-z]{1})#e','#(^[A-Za-z]{1})#e'));
             parent::setReplacement(array("strtoupper('\\2')","strtoupper('\\1')"));
@@ -48,5 +57,4 @@ class Zend_Filter_Word_SeparatorToCamelCase extends Zend_Filter_Word_Separator_A
 
         return parent::filter($value);
     }
-
 }

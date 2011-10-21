@@ -16,9 +16,12 @@
  * @package    Zend_Locale
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Math.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
+/**
+ * @namespace
+ */
+namespace Zend\Locale;
 
 /**
  * Utility class for proxying math function to bcmath functions, if present,
@@ -26,25 +29,25 @@
  * Sampling of PHP environments and platforms suggests that at least 80% to 90% support bcmath.
  * Thus, this file should be as light as possible.
  *
+ * @uses       Zend\Locale\PhpMath
  * @category   Zend
  * @package    Zend_Locale
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-
-class Zend_Locale_Math
+class Math
 {
     // support unit testing without using bcmath functions
     public static $_bcmathDisabled = false;
 
-    public static $add   = array('Zend_Locale_Math', 'Add');
-    public static $sub   = array('Zend_Locale_Math', 'Sub');
-    public static $pow   = array('Zend_Locale_Math', 'Pow');
-    public static $mul   = array('Zend_Locale_Math', 'Mul');
-    public static $div   = array('Zend_Locale_Math', 'Div');
-    public static $comp  = array('Zend_Locale_Math', 'Comp');
-    public static $sqrt  = array('Zend_Locale_Math', 'Sqrt');
-    public static $mod   = array('Zend_Locale_Math', 'Mod');
+    public static $add   = '\\Zend\\Locale\\Math::Add';
+    public static $sub   = '\\Zend\\Locale\\Math::Sub';
+    public static $pow   = '\\Zend\\Locale\\Math::Pow';
+    public static $mul   = '\\Zend\\Locale\\Math::Mul';
+    public static $div   = '\\Zend\\Locale\\Math::Div';
+    public static $comp  = '\\Zend\\Locale\\Math::Comp';
+    public static $sqrt  = '\\Zend\\Locale\\Math::Sqrt';
+    public static $mod   = '\\Zend\\Locale\\Math::Mod';
     public static $scale = 'bcscale';
 
     public static function isBcmathDisabled()
@@ -86,7 +89,6 @@ class Zend_Locale_Math
             return '0';
         }
 
-        $digitsBeforeDot = $length - ($decPos + 1);
         if ($precision >= ($length - ($decPos + 1))) {
             return $op1;
         }
@@ -119,12 +121,12 @@ class Zend_Locale_Math
 
             if ($op1 > 0) {
                 if (self::$_bcmathDisabled) {
-                    return Zend_Locale_Math_PhpMath::Add($op1, $roundUp, $precision);
+                    return PhpMath::Add($op1, $roundUp, $precision);
                 }
                 return self::Add($op1, $roundUp, $precision);
             } else {
                 if (self::$_bcmathDisabled) {
-                    return Zend_Locale_Math_PhpMath::Sub($op1, $roundUp, $precision);
+                    return PhpMath::Sub($op1, $roundUp, $precision);
                 }
                 return self::Sub($op1, $roundUp, $precision);
             }
@@ -350,6 +352,5 @@ class Zend_Locale_Math
 if (!extension_loaded('bcmath')
     || (defined('TESTS_ZEND_LOCALE_BCMATH_ENABLED') && !TESTS_ZEND_LOCALE_BCMATH_ENABLED)
 ) {
-    require_once 'Zend/Locale/Math/PhpMath.php';
-    Zend_Locale_Math_PhpMath::disable();
+    PhpMath::disable();
 }

@@ -19,20 +19,21 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-/** Zend_Dojo_Form_Element_DijitMulti */
-require_once 'Zend/Dojo/Form/Element/DijitMulti.php';
+/**
+ * @namespace
+ */
+namespace Zend\Dojo\Form\Element;
 
 /**
  * ComboBox dijit
  *
- * @uses       Zend_Dojo_Form_Element_DijitMulti
+ * @uses       \Zend\Dojo\Form\Element\DijitMulti
  * @package    Zend_Dojo
  * @subpackage Form_Element
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: ComboBox.php 23775 2011-03-01 17:25:24Z ralph $
  */
-class Zend_Dojo_Form_Element_ComboBox extends Zend_Dojo_Form_Element_DijitMulti
+class ComboBox extends DijitMulti
 {
     /**
      * Use ComboBox dijit view helper
@@ -63,7 +64,7 @@ class Zend_Dojo_Form_Element_ComboBox extends Zend_Dojo_Form_Element_DijitMulti
      * Set datastore identifier
      *
      * @param  string $identifier
-     * @return Zend_Dojo_Form_Element_ComboBox
+     * @return \Zend\Dojo\Form\Element\ComboBox
      */
     public function setStoreId($identifier)
     {
@@ -91,7 +92,7 @@ class Zend_Dojo_Form_Element_ComboBox extends Zend_Dojo_Form_Element_DijitMulti
      * Set datastore dijit type
      *
      * @param  string $dojoType
-     * @return Zend_Dojo_Form_Element_ComboBox
+     * @return \Zend\Dojo\Form\Element\ComboBox
      */
     public function setStoreType($dojoType)
     {
@@ -119,7 +120,7 @@ class Zend_Dojo_Form_Element_ComboBox extends Zend_Dojo_Form_Element_DijitMulti
      * Set datastore parameters
      *
      * @param  array $params
-     * @return Zend_Dojo_Form_Element_ComboBox
+     * @return \Zend\Dojo\Form\Element\ComboBox
      */
     public function setStoreParams(array $params)
     {
@@ -147,7 +148,7 @@ class Zend_Dojo_Form_Element_ComboBox extends Zend_Dojo_Form_Element_DijitMulti
      * Set autocomplete flag
      *
      * @param  bool $flag
-     * @return Zend_Dojo_Form_Element_ComboBox
+     * @return \Zend\Dojo\Form\Element\ComboBox
      */
     public function setAutocomplete($flag)
     {

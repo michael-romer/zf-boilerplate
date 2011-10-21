@@ -17,35 +17,27 @@
  * @subpackage Storage
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Mbox.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
- * @see Zend_Loader
- * May be used in constructor, but commented out for now
+ * @namespace
  */
-// require_once 'Zend/Loader.php';
+namespace Zend\Mail\Storage;
+
+use Zend\Mail\AbstractStorage,
+    Zend\Mail\Storage\Exception;
 
 /**
- * @see Zend_Mail_Storage_Abstract
- */
-require_once 'Zend/Mail/Storage/Abstract.php';
-
-/**
- * @see Zend_Mail_Message_File
- */
-require_once 'Zend/Mail/Message/File.php';
-
-
-/**
+ * @uses       \Zend\Mail\Message\File
+ * @uses       \Zend\Mail\Storage\AbstractStorage
+ * @uses       \Zend\Mail\Storage\Exception
  * @category   Zend
  * @package    Zend_Mail
  * @subpackage Storage
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
+class Mbox extends AbstractStorage
 {
     /**
      * file handle to mbox file
@@ -75,13 +67,13 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
      * used message class, change it in an extened class to extend the returned message class
      * @var string
      */
-    protected $_messageClass = 'Zend_Mail_Message_File';
+    protected $_messageClass = '\Zend\Mail\Message\File';
 
     /**
      * Count messages all messages in current box
      *
      * @return int number of messages
-     * @throws Zend_Mail_Storage_Exception
+     * @throws \Zend\Mail\Storage\Exception
      */
     public function countMessages()
     {
@@ -116,16 +108,12 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
      *
      * @param int $id number of message
      * @return array positions as in _positions
-     * @throws Zend_Mail_Storage_Exception
+     * @throws \Zend\Mail\Storage\Exception
      */
     protected function _getPos($id)
     {
         if (!isset($this->_positions[$id - 1])) {
-            /**
-             * @see Zend_Mail_Storage_Exception
-             */
-            require_once 'Zend/Mail/Storage/Exception.php';
-            throw new Zend_Mail_Storage_Exception('id does not exist');
+            throw new Exception\InvalidArgumentException('id does not exist');
         }
 
         return $this->_positions[$id - 1];
@@ -136,13 +124,13 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
      * Fetch a message
      *
      * @param  int $id number of message
-     * @return Zend_Mail_Message_File
-     * @throws Zend_Mail_Storage_Exception
+     * @return \Zend\Mail\Message\File
+     * @throws \Zend\Mail\Storage\Exception
      */
     public function getMessage($id)
     {
         // TODO that's ugly, would be better to let the message class decide
-        if (strtolower($this->_messageClass) == 'zend_mail_message_file' || is_subclass_of($this->_messageClass, 'zend_mail_message_file')) {
+        if (strtolower($this->_messageClass) == '\zend\mail\message\file' || is_subclass_of($this->_messageClass, '\Zend\Mail\Message\File')) {
             // TODO top/body lines
             $messagePos = $this->_getPos($id);
             return new $this->_messageClass(array('file' => $this->_fh, 'startPos' => $messagePos['start'],
@@ -170,18 +158,14 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
      * @param  null|array|string $part     path to part or null for messsage header
      * @param  int               $topLines include this many lines with header (after an empty line)
      * @return string raw header
-     * @throws Zend_Mail_Protocol_Exception
-     * @throws Zend_Mail_Storage_Exception
+     * @throws \Zend\Mail\Protocol\Exception
+     * @throws \Zend\Mail\Storage\Exception
      */
     public function getRawHeader($id, $part = null, $topLines = 0)
     {
         if ($part !== null) {
             // TODO: implement
-            /**
-             * @see Zend_Mail_Storage_Exception
-             */
-            require_once 'Zend/Mail/Storage/Exception.php';
-            throw new Zend_Mail_Storage_Exception('not implemented');
+            throw new Exception\RuntimeException('not implemented');
         }
         $messagePos = $this->_getPos($id);
         // TODO: toplines
@@ -194,18 +178,14 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
      * @param  int               $id   number of message
      * @param  null|array|string $part path to part or null for messsage content
      * @return string raw content
-     * @throws Zend_Mail_Protocol_Exception
-     * @throws Zend_Mail_Storage_Exception
+     * @throws \Zend\Mail\Protocol\Exception
+     * @throws \Zend\Mail\Storage\Exception
      */
     public function getRawContent($id, $part = null)
     {
         if ($part !== null) {
             // TODO: implement
-            /**
-             * @see Zend_Mail_Storage_Exception
-             */
-            require_once 'Zend/Mail/Storage/Exception.php';
-            throw new Zend_Mail_Storage_Exception('not implemented');
+            throw new Exception\RuntimeException('not implemented');
         }
         $messagePos = $this->_getPos($id);
         return stream_get_contents($this->_fh, $messagePos['end'] - $messagePos['separator'], $messagePos['separator']);
@@ -216,8 +196,8 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
      * Supported parameters are:
      *   - filename filename of mbox file
      *
-     * @param array $params mail reader specific parameters
-     * @throws Zend_Mail_Storage_Exception
+     * @param  $params array mail reader specific parameters
+     * @throws \Zend\Mail\Storage\Exception
      */
     public function __construct($params)
     {
@@ -225,12 +205,8 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
             $params = (object)$params;
         }
 
-        if (!isset($params->filename) /* || Zend_Loader::isReadable($params['filename']) */) {
-            /**
-             * @see Zend_Mail_Storage_Exception
-             */
-            require_once 'Zend/Mail/Storage/Exception.php';
-            throw new Zend_Mail_Storage_Exception('no valid filename given in params');
+        if (!isset($params->filename)) {
+            throw new Exception\InvalidArgumentException('no valid filename given in params');
         }
 
         $this->_openMboxFile($params->filename);
@@ -277,7 +253,7 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
      *
      * @param  string $filename filename of mbox file
      * @return null
-     * @throws Zend_Mail_Storage_Exception
+     * @throws \Zend\Mail\Storage\Exception
      */
     protected function _openMboxFile($filename)
     {
@@ -287,22 +263,14 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
 
         $this->_fh = @fopen($filename, 'r');
         if (!$this->_fh) {
-            /**
-             * @see Zend_Mail_Storage_Exception
-             */
-            require_once 'Zend/Mail/Storage/Exception.php';
-            throw new Zend_Mail_Storage_Exception('cannot open mbox file');
+            throw new Exception\RuntimeException('cannot open mbox file');
         }
         $this->_filename = $filename;
         $this->_filemtime = filemtime($this->_filename);
 
         if (!$this->_isMboxFile($this->_fh, false)) {
             @fclose($this->_fh);
-            /**
-             * @see Zend_Mail_Storage_Exception
-             */
-            require_once 'Zend/Mail/Storage/Exception.php';
-            throw new Zend_Mail_Storage_Exception('file is not a valid mbox format');
+            throw new Exception\InvalidArgumentException('file is not a valid mbox format');
         }
 
         $messagePos = array('start' => ftell($this->_fh), 'separator' => 0, 'end' => 0);
@@ -355,15 +323,11 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
      * stub for not supported message deletion
      *
      * @return null
-     * @throws Zend_Mail_Storage_Exception
+     * @throws \Zend\Mail\Storage\Exception
      */
     public function removeMessage($id)
     {
-        /**
-         * @see Zend_Mail_Storage_Exception
-         */
-        require_once 'Zend/Mail/Storage/Exception.php';
-        throw new Zend_Mail_Storage_Exception('mbox is read-only');
+        throw new Exception\RuntimeException('mbox is read-only');
     }
 
     /**
@@ -375,7 +339,7 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
      *
      * @param int|null $id message number
      * @return array|string message number for given message or all messages as array
-     * @throws Zend_Mail_Storage_Exception
+     * @throws \Zend\Mail\Storage\Exception
      */
     public function getUniqueId($id = null)
     {
@@ -397,7 +361,7 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
      *
      * @param string $id unique id
      * @return int message number
-     * @throws Zend_Mail_Storage_Exception
+     * @throws \Zend\Mail\Storage\Exception
      */
     public function getNumberByUniqueId($id)
     {
@@ -425,7 +389,7 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
      * for cache validation the mtime of the mbox file is used
      *
      * @return null
-     * @throws Zend_Mail_Storage_Exception
+     * @throws \Zend\Mail\Storage\Exception
      */
     public function __wakeup()
     {
@@ -435,11 +399,7 @@ class Zend_Mail_Storage_Mbox extends Zend_Mail_Storage_Abstract
         } else {
             $this->_fh = @fopen($this->_filename, 'r');
             if (!$this->_fh) {
-                /**
-                 * @see Zend_Mail_Storage_Exception
-                 */
-                require_once 'Zend/Mail/Storage/Exception.php';
-                throw new Zend_Mail_Storage_Exception('cannot open mbox file');
+                throw new Exception\RuntimeException('cannot open mbox file');
             }
         }
     }

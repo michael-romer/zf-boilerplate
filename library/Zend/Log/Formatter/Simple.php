@@ -17,21 +17,24 @@
  * @subpackage Formatter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Simple.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-/** Zend_Log_Formatter_Abstract */
-require_once 'Zend/Log/Formatter/Abstract.php';
+/**
+ * @namespace
+ */
+namespace Zend\Log\Formatter;
+use \Zend\Log\Formatter;
 
 /**
+ * @uses       \Zend\Log\Exception\InvalidArgumentException
+ * @uses       \Zend\Log\Formatter\AbstractFormatter
  * @category   Zend
  * @package    Zend_Log
  * @subpackage Formatter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Simple.php 23775 2011-03-01 17:25:24Z ralph $
  */
-class Zend_Log_Formatter_Simple extends Zend_Log_Formatter_Abstract
+class Simple extends AbstractFormatter
 {
     /**
      * @var string
@@ -45,7 +48,7 @@ class Zend_Log_Formatter_Simple extends Zend_Log_Formatter_Abstract
      *
      * @param  null|string  $format  Format specifier for log messages
      * @return void
-     * @throws Zend_Log_Exception
+     * @throws \Zend\Log\Exception\InvalidArgumentException
      */
     public function __construct($format = null)
     {
@@ -54,8 +57,7 @@ class Zend_Log_Formatter_Simple extends Zend_Log_Formatter_Abstract
         }
 
         if (!is_string($format)) {
-            require_once 'Zend/Log/Exception.php';
-            throw new Zend_Log_Exception('Format must be a string');
+            throw new \Zend\Log\Exception\InvalidArgumentException('Format must be a string');
         }
 
         $this->_format = $format;
@@ -64,14 +66,14 @@ class Zend_Log_Formatter_Simple extends Zend_Log_Formatter_Abstract
     /**
 	 * Factory for Zend_Log_Formatter_Simple classe
 	 *
-	 * @param array|Zend_Config $options
-	 * @return Zend_Log_Formatter_Simple
+	 * @param array|\Zend\Config\Config $options
+	 * @return \Zend\Log\Formatter\Simple
      */
-    public static function factory($options)
+    public static function factory($options = array())
     {
         $format = null;
         if (null !== $options) {
-            if ($options instanceof Zend_Config) {
+            if ($options instanceof Zend\Config\Config) {
                 $options = $options->toArray();
             }
 

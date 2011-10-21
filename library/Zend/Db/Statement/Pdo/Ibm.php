@@ -17,27 +17,31 @@
  * @subpackage Statement
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Ibm.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Db_Statement_Pdo
+ * @namespace
  */
-require_once 'Zend/Db/Statement/Pdo.php';
+namespace Zend\Db\Statement\Pdo;
+
+use Zend\Db\Statement\Pdo,
+    Zend\Db\Statement\Exception as StatementException;
 
 /**
- * Proxy class to wrap a PDOStatement object for IBM Databases.
+ * Proxy class to wrap a PDOStatement object for Ibm Databases.
  * Matches the interface of PDOStatement.  All methods simply proxy to the
  * matching method in PDOStatement.  PDOExceptions thrown by PDOStatement
  * are re-thrown as Zend_Db_Statement_Exception.
  *
+ * @uses       \Zend\Db\Statement\Exception
+ * @uses       \Zend\Db\Statement\Pdo\Pdo
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Statement
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Db_Statement_Pdo_Ibm extends Zend_Db_Statement_Pdo
+class Ibm extends Pdo
 {
     /**
     * Returns an array containing all of the result set rows.
@@ -49,7 +53,7 @@ class Zend_Db_Statement_Pdo_Ibm extends Zend_Db_Statement_Pdo
     * @param int $style OPTIONAL Fetch mode.
     * @param int $col   OPTIONAL Column number, if fetch mode is by column.
     * @return array Collection of rows, each in a format by the fetch mode.
-    * @throws Zend_Db_Statement_Exception
+    * @throws \Zend\Db\Statement\Exception
     */
     public function fetchAll($style = null, $col = null)
     {
@@ -75,7 +79,7 @@ class Zend_Db_Statement_Pdo_Ibm extends Zend_Db_Statement_Pdo
      * @param mixed $length    OPTIONAL Length of SQL parameter.
      * @param mixed $options   OPTIONAL Other options.
      * @return bool
-     * @throws Zend_Db_Statement_Exception
+     * @throws \Zend\Db\Statement\Exception
      */
     public function _bindParam($parameter, &$variable, $type = null, $length = null, $options = null)
     {
@@ -85,10 +89,8 @@ class Zend_Db_Statement_Pdo_Ibm extends Zend_Db_Statement_Pdo
             } else {
                 return $this->_stmt->bindParam($parameter, $variable, $type, $length, $options);
             }
-        } catch (PDOException $e) {
-            require_once 'Zend/Db/Statement/Exception.php';
-            throw new Zend_Db_Statement_Exception($e->getMessage(), $e->getCode(), $e);
+        } catch (\PDOException $e) {
+            throw new StatementException($e->getMessage(), $e->getCode(), $e);
         }
     }
-
 }

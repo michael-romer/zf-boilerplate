@@ -17,30 +17,32 @@
  * @subpackage Adapter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Oci.php 23775 2011-03-01 17:25:24Z ralph $
  */
-
 
 /**
- * @see Zend_Db_Adapter_Pdo_Abstract
+ * @namespace
  */
-require_once 'Zend/Db/Adapter/Pdo/Abstract.php';
-
+namespace Zend\Db\Adapter\Pdo;
+use Zend\Db;
+use Zend\Db\Adapter;
 
 /**
  * Class for connecting to Oracle databases and performing common operations.
  *
+ * @uses       \Zend\Db\Db
+ * @uses       \Zend\Db\Adapter\Exception
+ * @uses       \Zend\Db\Adapter\Pdo\AbstractPdo
  * @category   Zend
  * @package    Zend_Db
  * @subpackage Adapter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Db_Adapter_Pdo_Oci extends Zend_Db_Adapter_Pdo_Abstract
+class Oci extends \Zend\Db\Adapter\AbstractPdoAdapter
 {
 
     /**
-     * PDO type.
+     * Pdo type.
      *
      * @var string
      */
@@ -51,7 +53,7 @@ class Zend_Db_Adapter_Pdo_Oci extends Zend_Db_Adapter_Pdo_Abstract
      *
      * @var string
      */
-    protected $_defaultStmtClass = 'Zend_Db_Statement_Pdo_Oci';
+    protected $_defaultStmtClass = 'Zend\Db\Statement\Pdo\Oci';
 
     /**
      * Keys are UPPERCASE SQL datatypes or the constants
@@ -65,16 +67,16 @@ class Zend_Db_Adapter_Pdo_Oci extends Zend_Db_Adapter_Pdo_Abstract
      * @var array Associative array of datatypes to values 0, 1, or 2.
      */
     protected $_numericDataTypes = array(
-        Zend_Db::INT_TYPE    => Zend_Db::INT_TYPE,
-        Zend_Db::BIGINT_TYPE => Zend_Db::BIGINT_TYPE,
-        Zend_Db::FLOAT_TYPE  => Zend_Db::FLOAT_TYPE,
-        'BINARY_DOUBLE'      => Zend_Db::FLOAT_TYPE,
-        'BINARY_FLOAT'       => Zend_Db::FLOAT_TYPE,
-        'NUMBER'             => Zend_Db::FLOAT_TYPE
+        Db\Db::INT_TYPE    => Db\Db::INT_TYPE,
+        Db\Db::BIGINT_TYPE => Db\Db::BIGINT_TYPE,
+        Db\Db::FLOAT_TYPE  => Db\Db::FLOAT_TYPE,
+        'BINARY_DOUBLE'      => Db\Db::FLOAT_TYPE,
+        'BINARY_FLOAT'       => Db\Db::FLOAT_TYPE,
+        'NUMBER'             => Db\Db::FLOAT_TYPE
     );
 
     /**
-     * Creates a PDO DSN for the adapter from $this->_config settings.
+     * Creates a Pdo DSN for the adapter from $this->_config settings.
      *
      * @return string
      */
@@ -107,8 +109,8 @@ class Zend_Db_Adapter_Pdo_Oci extends Zend_Db_Adapter_Pdo_Abstract
 
     /**
      * Quote a raw string.
-     * Most PDO drivers have an implementation for the quote() method,
-     * but the Oracle OCI driver must use the same implementation as the
+     * Most Pdo drivers have an implementation for the quote() method,
+     * but the Oracle Oci driver must use the same implementation as the
      * Zend_Db_Adapter_Abstract class.
      *
      * @param string $value     Raw string
@@ -126,7 +128,7 @@ class Zend_Db_Adapter_Pdo_Oci extends Zend_Db_Adapter_Pdo_Abstract
     /**
      * Quote a table identifier and alias.
      *
-     * @param string|array|Zend_Db_Expr $ident The identifier or expression.
+     * @param string|array|\Zend\Db\Expr $ident The identifier or expression.
      * @param string $alias An alias for the table.
      * @return string The quoted identifier and alias.
      */
@@ -223,9 +225,9 @@ class Zend_Db_Adapter_Pdo_Oci extends Zend_Db_Adapter_Pdo_Abstract
         $stmt = $this->query($sql, $bind);
 
         /**
-         * Use FETCH_NUM so we are not dependent on the CASE attribute of the PDO connection
+         * Use FETCH_NUM so we are not dependent on the CASE attribute of the Pdo connection
          */
-        $result = $stmt->fetchAll(Zend_Db::FETCH_NUM);
+        $result = $stmt->fetchAll(Db\Db::FETCH_NUM);
 
         $table_name      = 0;
         $owner           = 1;
@@ -274,7 +276,7 @@ class Zend_Db_Adapter_Pdo_Oci extends Zend_Db_Adapter_Pdo_Abstract
     /**
      * Return the most recent value from the specified sequence in the database.
      * This is supported only on RDBMS brands that support sequences
-     * (e.g. Oracle, PostgreSQL, DB2).  Other RDBMS brands return null.
+     * (e.g. Oracle, PostgreSQL, Db2).  Other RDBMS brands return null.
      *
      * @param string $sequenceName
      * @return integer
@@ -289,7 +291,7 @@ class Zend_Db_Adapter_Pdo_Oci extends Zend_Db_Adapter_Pdo_Abstract
     /**
      * Generate a new value from the specified sequence in the database, and return it.
      * This is supported only on RDBMS brands that support sequences
-     * (e.g. Oracle, PostgreSQL, DB2).  Other RDBMS brands return null.
+     * (e.g. Oracle, PostgreSQL, Db2).  Other RDBMS brands return null.
      *
      * @param string $sequenceName
      * @return integer
@@ -305,7 +307,7 @@ class Zend_Db_Adapter_Pdo_Oci extends Zend_Db_Adapter_Pdo_Abstract
      * Gets the last ID generated automatically by an IDENTITY/AUTOINCREMENT column.
      *
      * As a convention, on RDBMS brands that support sequences
-     * (e.g. Oracle, PostgreSQL, DB2), this method forms the name of a sequence
+     * (e.g. Oracle, PostgreSQL, Db2), this method forms the name of a sequence
      * from the arguments and returns the last id generated by that sequence.
      * On RDBMS brands that support IDENTITY/AUTOINCREMENT columns, this method
      * returns the last value generated for such a column, and the table name
@@ -317,7 +319,7 @@ class Zend_Db_Adapter_Pdo_Oci extends Zend_Db_Adapter_Pdo_Abstract
      * @param string $tableName   OPTIONAL Name of table.
      * @param string $primaryKey  OPTIONAL Name of primary key column.
      * @return string
-     * @throws Zend_Db_Adapter_Oracle_Exception
+     * @throws \Zend\Db\Adapter\Oracle\Exception
      */
     public function lastInsertId($tableName = null, $primaryKey = null)
     {
@@ -339,23 +341,19 @@ class Zend_Db_Adapter_Pdo_Oci extends Zend_Db_Adapter_Pdo_Abstract
      * @param string $sql
      * @param integer $count
      * @param integer $offset
-     * @throws Zend_Db_Adapter_Exception
+     * @throws \Zend\Db\Adapter\Exception
      * @return string
      */
     public function limit($sql, $count, $offset = 0)
     {
         $count = intval($count);
         if ($count <= 0) {
-            /** @see Zend_Db_Adapter_Exception */
-            require_once 'Zend/Db/Adapter/Exception.php';
-            throw new Zend_Db_Adapter_Exception("LIMIT argument count=$count is not valid");
+            throw new Adapter\Exception("LIMIT argument count=$count is not valid");
         }
 
         $offset = intval($offset);
         if ($offset < 0) {
-            /** @see Zend_Db_Adapter_Exception */
-            require_once 'Zend/Db/Adapter/Exception.php';
-            throw new Zend_Db_Adapter_Exception("LIMIT argument offset=$offset is not valid");
+            throw new Adapter\Exception("LIMIT argument offset=$offset is not valid");
         }
 
         /**

@@ -14,30 +14,23 @@
  *
  * @category  Zend
  * @package   Zend_Config
- * @copyright Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
- * @version   $Id: Json.php 23294 2010-11-05 00:27:34Z ramon $
  */
 
-/**
- * @see Zend_Config
- */
-require_once 'Zend/Config.php';
+namespace Zend\Config;
 
-/**
- * @see Zend_Json
- */
-require_once 'Zend/Json.php';
+use Zend\Json\Json as JsonUtil;
 
 /**
  * JSON Adapter for Zend_Config
  *
  * @category  Zend
  * @package   Zend_Config
- * @copyright Copyright (c) 2005-2009 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Config_Json extends Zend_Config
+class Json extends Config
 {
     /**
      * Name of object key indicating section current section extends
@@ -76,14 +69,13 @@ class Zend_Config_Json extends Zend_Config
      * @param  string  $json     JSON file or string to process
      * @param  mixed   $section Section to process
      * @param  boolean $options Whether modifiacations are allowed at runtime
-     * @throws Zend_Config_Exception When JSON text is not set or cannot be loaded
-     * @throws Zend_Config_Exception When section $sectionName cannot be found in $json
+     * @throws Exception\InvalidArgumentException When JSON text is not set or cannot be loaded
+     * @throws Exception\RuntimeException When section $sectionName cannot be found in $json
      */
     public function __construct($json, $section = null, $options = false)
     {
         if (empty($json)) {
-            require_once 'Zend/Config/Exception.php';
-            throw new Zend_Config_Exception('Filename is not set');
+            throw new Exception\InvalidArgumentException('Filename is not set');
         }
 
         $allowModifications = false;
@@ -110,16 +102,20 @@ class Zend_Config_Json extends Zend_Config
             }
         }
 
-        set_error_handler(array($this, '_loadFileErrorHandler')); // Warnings and errors are suppressed
         if ($json[0] != '{') {
-            $json = file_get_contents($json);
-        }
-        restore_error_handler();
-
-        // Check if there was a error while loading file
-        if ($this->_loadFileErrorStr !== null) {
-            require_once 'Zend/Config/Exception.php';
-            throw new Zend_Config_Exception($this->_loadFileErrorStr);
+            // read json file
+            $this->_setErrorHandler();
+            $content = file_get_contents($json, true);
+            $errorMessages = $this->_restoreErrorHandler();
+            if ($content === false) {
+                $e = null;
+                foreach ($errorMessages as $errMsg) {
+                    $e = new Exception\RuntimeException($errMsg, 0, $e);
+                }
+                $e = new Exception\RuntimeException("Can't read file '{$json}'", 0, $e);
+                throw $e;
+            }
+            $json = $content;
         }
 
         // Replace constants
@@ -128,13 +124,15 @@ class Zend_Config_Json extends Zend_Config
         }
 
         // Parse/decode
-        $config = Zend_Json::decode($json);
+        $config = JsonUtil::decode($json);
 
         if (null === $config) {
             // decode failed
-            require_once 'Zend/Config/Exception.php';
-            throw new Zend_Config_Exception("Error parsing JSON data");
+            throw new Exception\RuntimeException("Error parsing JSON data");
         }
+
+        // Flatten object structure into array
+        $config = $this->flattenObjects($config);
 
         if ($section === null) {
             $dataArray = array();
@@ -147,8 +145,7 @@ class Zend_Config_Json extends Zend_Config
             $dataArray = array();
             foreach ($section as $sectionName) {
                 if (!isset($config[$sectionName])) {
-                    require_once 'Zend/Config/Exception.php';
-                    throw new Zend_Config_Exception(sprintf('Section "%s" cannot be found', $sectionName));
+                    throw new Exception\RuntimeException(sprintf('Section "%s" cannot be found', $sectionName));
                 }
 
                 $dataArray = array_merge($this->_processExtends($config, $sectionName), $dataArray);
@@ -157,8 +154,7 @@ class Zend_Config_Json extends Zend_Config
             parent::__construct($dataArray, $allowModifications);
         } else {
             if (!isset($config[$section])) {
-                require_once 'Zend/Config/Exception.php';
-                throw new Zend_Config_Exception(sprintf('Section "%s" cannot be found', $section));
+                throw new Exception\RuntimeException(sprintf('Section "%s" cannot be found', $section));
             }
 
             $dataArray = $this->_processExtends($config, $section);
@@ -180,22 +176,20 @@ class Zend_Config_Json extends Zend_Config
      * @param  array            $data Data array to process
      * @param  string           $section Section to process
      * @param  array            $config  Configuration which was parsed yet
-     * @throws Zend_Config_Exception When $section cannot be found
+     * @throws Exception\RuntimeException When $section cannot be found
      * @return array
      */
     protected function _processExtends(array $data, $section, array $config = array())
     {
         if (!isset($data[$section])) {
-            require_once 'Zend/Config/Exception.php';
-            throw new Zend_Config_Exception(sprintf('Section "%s" cannot be found', $section));
+            throw new Exception\RuntimeException(sprintf('Section "%s" cannot be found', $section));
         }
 
         $thisSection  = $data[$section];
 
         if (is_array($thisSection) && isset($thisSection[self::EXTENDS_NAME])) {
             if (is_array($thisSection[self::EXTENDS_NAME])) {
-                require_once 'Zend/Config/Exception.php';
-                throw new Zend_Config_Exception('Invalid extends clause: must be a string; array received');
+                throw new Exception\RuntimeException('Invalid extends clause: must be a string; array received');
             }
             $this->_assertValidExtend($section, $thisSection[self::EXTENDS_NAME]);
 
@@ -236,5 +230,30 @@ class Zend_Config_Json extends Zend_Config
         $constants = array_keys(get_defined_constants());
         rsort($constants, SORT_STRING);
         return $constants;
+    }
+
+    /**
+     * Flatten JSON object structure to associative array
+     *
+     * @param  object|array $config
+     * @return array
+     */
+    protected function flattenObjects($config)
+    {
+        $flattened = array();
+        foreach ($config as $key => $value) {
+            if (is_object($value)) {
+                $value = $this->flattenObjects($value);
+            }
+            if (is_array($value)) {
+                foreach ($value as $k => $v) {
+                    if (is_object($v)) {
+                        $value[$k] = $this->flattenObjects($v);
+                    }
+                }
+            }
+            $flattened[$key] = $value;
+        }
+        return $flattened;
     }
 }

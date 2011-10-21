@@ -18,19 +18,26 @@
  */
 
 /**
+ * namespace
+ */
+namespace Zend\Cloud\DocumentService;
+use Zend\Cloud\Exception\InvalidArgumentException,
+    Zend\Cloud\Exception\OperationNotAvailableException;
+
+/**
  * Class encapsulating documents. Fields are stored in a name/value
  * array. Data are represented as strings.
  *
  * TODO Can fields be large enough to warrant support for streams?
  *
  * @category   Zend
- * @package    Zend_Cloud
+ * @package    Zend\Cloud
  * @subpackage DocumentService
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Cloud_DocumentService_Document
-    implements ArrayAccess, IteratorAggregate, Countable
+class Document
+    implements \ArrayAccess, \IteratorAggregate, \Countable
 {
     /** key in document denoting identifier */
     const KEY_FIELD = '_id';
@@ -59,9 +66,8 @@ class Zend_Cloud_DocumentService_Document
      */
     public function __construct($fields, $id = null)
     {
-        if (!is_array($fields) && !$fields instanceof ArrayAccess) {
-            require_once 'Zend/Cloud/DocumentService/Exception.php';
-            throw new Zend_Cloud_DocumentService_Exception('Fields must be an array or implement ArrayAccess');
+        if (!is_array($fields) && !$fields instanceof \ArrayAccess) {
+            throw new InvalidArgumentException('Fields must be an array or implement ArrayAccess');
         }
 
         if (isset($fields[self::KEY_FIELD])) {
@@ -222,8 +228,7 @@ class Zend_Cloud_DocumentService_Document
             return $this->setField($option, $args[0]);
         }
 
-        require_once 'Zend/Cloud/OperationNotAvailableException.php';
-        throw new Zend_Cloud_OperationNotAvailableException("Unknown operation $name");
+        throw new OperationNotAvailableException("Unknown operation $name");
     }
 
     /**
@@ -243,6 +248,6 @@ class Zend_Cloud_DocumentService_Document
      */
     public function getIterator()
     {
-        return new ArrayIterator($this->_fields);
+        return new \ArrayIterator($this->_fields);
     }
 }

@@ -17,22 +17,22 @@
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: HtmlObject.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_View_Helper_HtmlElement
+ * @namespace
  */
-require_once 'Zend/View/Helper/HtmlElement.php';
+namespace Zend\View\Helper;
 
 /**
+ * @uses       \Zend\View\Helper\HtmlElement
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_HtmlObject extends Zend_View_Helper_HtmlElement
+class HtmlObject extends HtmlElement
 {
     /**
      * Output an object set
@@ -44,8 +44,12 @@ class Zend_View_Helper_HtmlObject extends Zend_View_Helper_HtmlElement
      * @param string $content Alternative content for object
      * @return string
      */
-    public function htmlObject($data, $type, array $attribs = array(), array $params = array(), $content = null)
+    public function __invoke($data = null, $type = null, array $attribs = array(), array $params = array(), $content = null)
     {
+        if ($data == null || $type == null) {
+            throw new \InvalidArgumentException('HTMLObject: missing argument. $data and $type are required in htmlObject($data, $type, array $attribs = array(), array $params = array(), $content = null)');
+        }
+        
         // Merge data and type
         $attribs = array_merge(array('data' => $data,
                                      'type' => $type), $attribs);

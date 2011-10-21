@@ -16,18 +16,15 @@
  * @package    Zend_Feed_Pubsubhubbub
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Subscriber.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Feed_Pubsubhubbub
+ * @namespace
  */
-require_once 'Zend/Feed/Pubsubhubbub.php';
+namespace Zend\Feed\PubSubHubbub;
 
-/**
- * @see Zend_Date
- */
-require_once 'Zend/Date.php';
+use Zend\Date,
+    Zend\Uri;
 
 /**
  * @category   Zend
@@ -35,7 +32,7 @@ require_once 'Zend/Date.php';
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Feed_Pubsubhubbub_Subscriber
+class Subscriber
 {
     /**
      * An array of URLs for all Hub Servers to subscribe/unsubscribe.
@@ -82,17 +79,16 @@ class Zend_Feed_Pubsubhubbub_Subscriber
      * Subscriber prefers synchronous verification, but is considered
      * desireable to support asynchronous verification if possible.
      *
-     * Zend_Feed_Pubsubhubbub_Subscriber will always send both modes, whose
+     * Zend\Feed\Pubsubhubbub\Subscriber will always send both modes, whose
      * order of occurance in the parameter list determines this preference.
      *
      * @var string
      */
-    protected $_preferredVerificationMode
-        = Zend_Feed_Pubsubhubbub::VERIFICATION_MODE_SYNC;
+    protected $_preferredVerificationMode = PubSubHubbub::VERIFICATION_MODE_SYNC;
 
     /**
      * An array of any errors including keys for 'response', 'hubUrl'.
-     * The response is the actual Zend_Http_Response object.
+     * The response is the actual Zend\Http\Response object.
      *
      * @var array
      */
@@ -107,10 +103,10 @@ class Zend_Feed_Pubsubhubbub_Subscriber
     protected $_asyncHubs = array();
 
     /**
-     * An instance of Zend_Feed_Pubsubhubbub_Model_SubscriptionInterface used to background
+     * An instance of Zend\Feed\Pubsubhubbub\Model\SubscriptionPersistence used to background
      * save any verification tokens associated with a subscription or other.
      *
-     * @var Zend_Feed_Pubsubhubbub_Model_SubscriptionInterface
+     * @var \Zend\Feed\PubSubHubbub\Model\SubscriptionPersistence
      */
     protected $_storage = null;
 
@@ -122,7 +118,7 @@ class Zend_Feed_Pubsubhubbub_Subscriber
      * @var array
      */
     protected $_authentications = array();
-
+    
     /**
      * Tells the Subscriber to append any subscription identifier to the path
      * of the base Callback URL. E.g. an identifier "subkey1" would be added
@@ -131,9 +127,9 @@ class Zend_Feed_Pubsubhubbub_Subscriber
      *
      * This is required for all Hubs using the Pubsubhubbub 0.1 Specification.
      * It should be manually intercepted and passed to the Callback class using
-     * Zend_Feed_Pubsubhubbub_Subscriber_Callback::setSubscriptionKey(). Will
+     * Zend\Feed\Pubsubhubbub\Subscriber\Callback::setSubscriptionKey(). Will
      * require a route in the form "callback/:subkey" to allow the parameter be
-     * retrieved from an action using the Zend_Controller_Action::_getParam()
+     * retrieved from an action using the Zend\Controller\Action::\getParam()
      * method.
      *
      * @var string
@@ -141,11 +137,11 @@ class Zend_Feed_Pubsubhubbub_Subscriber
     protected $_usePathParameter = false;
 
     /**
-     * Constructor; accepts an array or Zend_Config instance to preset
+     * Constructor; accepts an array or Zend\Config instance to preset
      * options for the Subscriber without calling all supported setter
      * methods in turn.
      *
-     * @param  array|Zend_Config $options Options array or Zend_Config instance
+     * @param  array|\Zend\Config\Config $options Options array or \Zend\Config\Config instance
      * @return void
      */
     public function __construct($config = null)
@@ -158,16 +154,15 @@ class Zend_Feed_Pubsubhubbub_Subscriber
     /**
      * Process any injected configuration options
      *
-     * @param  array|Zend_Config $options Options array or Zend_Config instance
-     * @return Zend_Feed_Pubsubhubbub_Subscriber
+     * @param  array|\Zend\Config\Config $options Options array or \Zend\Config\Config instance
+     * @return \Zend\Feed\PubSubHubbub\Subscriber\Subscriber
      */
     public function setConfig($config)
     {
-        if ($config instanceof Zend_Config) {
+        if ($config instanceof \Zend\Config\Config) {
             $config = $config->toArray();
         } elseif (!is_array($config)) {
-            require_once 'Zend/Feed/Pubsubhubbub/Exception.php';
-            throw new Zend_Feed_Pubsubhubbub_Exception('Array or Zend_Config object'
+            throw new Exception('Array or Zend\Config object'
                 . ' expected, got ' . gettype($config));
         }
         if (array_key_exists('hubUrls', $config)) {
@@ -207,13 +202,12 @@ class Zend_Feed_Pubsubhubbub_Subscriber
      * event will relate
      *
      * @param  string $url
-     * @return Zend_Feed_Pubsubhubbub_Subscriber
+     * @return \Zend\Feed\PubSubHubbub\Subscriber\Subscriber
      */
     public function setTopicUrl($url)
     {
-        if (empty($url) || !is_string($url) || !Zend_Uri::check($url)) {
-            require_once 'Zend/Feed/Pubsubhubbub/Exception.php';
-            throw new Zend_Feed_Pubsubhubbub_Exception('Invalid parameter "url"'
+        if (empty($url) || !is_string($url) || !Uri\UriFactory::factory($url)->isValid()) {
+            throw new Exception('Invalid parameter "url"'
                 .' of "' . $url . '" must be a non-empty string and a valid'
                 .' URL');
         }
@@ -230,8 +224,7 @@ class Zend_Feed_Pubsubhubbub_Subscriber
     public function getTopicUrl()
     {
         if (empty($this->_topicUrl)) {
-            require_once 'Zend/Feed/Pubsubhubbub/Exception.php';
-            throw new Zend_Feed_Pubsubhubbub_Exception('A valid Topic (RSS or Atom'
+            throw new Exception('A valid Topic (RSS or Atom'
                 . ' feed) URL MUST be set before attempting any operation');
         }
         return $this->_topicUrl;
@@ -241,14 +234,13 @@ class Zend_Feed_Pubsubhubbub_Subscriber
      * Set the number of seconds for which any subscription will remain valid
      *
      * @param  int $seconds
-     * @return Zend_Feed_Pubsubhubbub_Subscriber
+     * @return \Zend\Feed\PubSubHubbub\Subscriber\Subscriber
      */
     public function setLeaseSeconds($seconds)
     {
         $seconds = intval($seconds);
         if ($seconds <= 0) {
-            require_once 'Zend/Feed/Pubsubhubbub/Exception.php';
-            throw new Zend_Feed_Pubsubhubbub_Exception('Expected lease seconds'
+            throw new Exception('Expected lease seconds'
                 . ' must be an integer greater than zero');
         }
         $this->_leaseSeconds = $seconds;
@@ -270,13 +262,12 @@ class Zend_Feed_Pubsubhubbub_Subscriber
      * this Subscriber
      *
      * @param  string $url
-     * @return Zend_Feed_Pubsubhubbub_Subscriber
+     * @return \Zend\Feed\PubSubHubbub\Subscriber\Subscriber
      */
     public function setCallbackUrl($url)
     {
-        if (empty($url) || !is_string($url) || !Zend_Uri::check($url)) {
-            require_once 'Zend/Feed/Pubsubhubbub/Exception.php';
-            throw new Zend_Feed_Pubsubhubbub_Exception('Invalid parameter "url"'
+        if (empty($url) || !is_string($url) || !Uri\UriFactory::factory($url)->isValid()) {
+            throw new Exception('Invalid parameter "url"'
                 . ' of "' . $url . '" must be a non-empty string and a valid'
                 . ' URL');
         }
@@ -293,8 +284,7 @@ class Zend_Feed_Pubsubhubbub_Subscriber
     public function getCallbackUrl()
     {
         if (empty($this->_callbackUrl)) {
-            require_once 'Zend/Feed/Pubsubhubbub/Exception.php';
-            throw new Zend_Feed_Pubsubhubbub_Exception('A valid Callback URL MUST be'
+            throw new Exception('A valid Callback URL MUST be'
                 . ' set before attempting any operation');
         }
         return $this->_callbackUrl;
@@ -305,21 +295,21 @@ class Zend_Feed_Pubsubhubbub_Subscriber
      * Subscriber prefers synchronous verification, but does support
      * asynchronous if that's the Hub Server's utilised mode.
      *
-     * Zend_Feed_Pubsubhubbub_Subscriber will always send both modes, whose
+     * Zend\Feed\Pubsubhubbub\Subscriber will always send both modes, whose
      * order of occurance in the parameter list determines this preference.
      *
      * @param  string $mode Should be 'sync' or 'async'
-     * @return Zend_Feed_Pubsubhubbub_Subscriber
+     * @return \Zend\Feed\PubSubHubbub\Subscriber\Subscriber
      */
     public function setPreferredVerificationMode($mode)
     {
-        if ($mode !== Zend_Feed_Pubsubhubbub::VERIFICATION_MODE_SYNC
-        && $mode !== Zend_Feed_Pubsubhubbub::VERIFICATION_MODE_ASYNC) {
-            require_once 'Zend/Feed/Pubsubhubbub/Exception.php';
-            throw new Zend_Feed_Pubsubhubbub_Exception('Invalid preferred'
+        if ($mode !== PubSubHubbub::VERIFICATION_MODE_SYNC
+            && $mode !== PubSubHubbub::VERIFICATION_MODE_ASYNC
+        ) {
+            throw new Exception('Invalid preferred'
                 . ' mode specified: "' . $mode . '" but should be one of'
-                . ' Zend_Feed_Pubsubhubbub::VERIFICATION_MODE_SYNC or'
-                . ' Zend_Feed_Pubsubhubbub::VERIFICATION_MODE_ASYNC');
+                . ' Zend\Feed\Pubsubhubbub::VERIFICATION_MODE_SYNC or'
+                . ' Zend\Feed\Pubsubhubbub::VERIFICATION_MODE_ASYNC');
         }
         $this->_preferredVerificationMode = $mode;
         return $this;
@@ -339,13 +329,12 @@ class Zend_Feed_Pubsubhubbub_Subscriber
      * Add a Hub Server URL supported by Publisher
      *
      * @param  string $url
-     * @return Zend_Feed_Pubsubhubbub_Subscriber
+     * @return \Zend\Feed\PubSubHubbub\Subscriber\Subscriber
      */
     public function addHubUrl($url)
     {
-        if (empty($url) || !is_string($url) || !Zend_Uri::check($url)) {
-            require_once 'Zend/Feed/Pubsubhubbub/Exception.php';
-            throw new Zend_Feed_Pubsubhubbub_Exception('Invalid parameter "url"'
+        if (empty($url) || !is_string($url) || !Uri\UriFactory::factory($url)->isValid()) {
+            throw new Exception('Invalid parameter "url"'
                 . ' of "' . $url . '" must be a non-empty string and a valid'
                 . ' URL');
         }
@@ -357,7 +346,7 @@ class Zend_Feed_Pubsubhubbub_Subscriber
      * Add an array of Hub Server URLs supported by Publisher
      *
      * @param  array $urls
-     * @return Zend_Feed_Pubsubhubbub_Subscriber
+     * @return \Zend\Feed\PubSubHubbub\Subscriber\Subscriber
      */
     public function addHubUrls(array $urls)
     {
@@ -371,7 +360,7 @@ class Zend_Feed_Pubsubhubbub_Subscriber
      * Remove a Hub Server URL
      *
      * @param  string $url
-     * @return Zend_Feed_Pubsubhubbub_Subscriber
+     * @return \Zend\Feed\PubSubHubbub\Subscriber\Subscriber
      */
     public function removeHubUrl($url)
     {
@@ -393,31 +382,30 @@ class Zend_Feed_Pubsubhubbub_Subscriber
         $this->_hubUrls = array_unique($this->_hubUrls);
         return $this->_hubUrls;
     }
-
+    
     /**
      * Add authentication credentials for a given URL
-     *
-     * @param  string $url
-     * @param  array $authentication
-     * @return Zend_Feed_Pubsubhubbub_Subscriber
+     * 
+     * @param  string $url 
+     * @param  array $authentication 
+     * @return \Zend\Feed\PubSubHubbub\Subscriber\Subscriber
      */
     public function addAuthentication($url, array $authentication)
     {
-        if (empty($url) || !is_string($url) || !Zend_Uri::check($url)) {
-            require_once 'Zend/Feed/Pubsubhubbub/Exception.php';
-            throw new Zend_Feed_Pubsubhubbub_Exception('Invalid parameter "url"'
+        if (empty($url) || !is_string($url) || !Uri\UriFactory::factory($url)->isValid()) {
+            throw new Exception('Invalid parameter "url"'
                 . ' of "' . $url . '" must be a non-empty string and a valid'
                 . ' URL');
         }
         $this->_authentications[$url] = $authentication;
         return $this;
     }
-
+    
     /**
      * Add authentication credentials for hub URLs
-     *
-     * @param  array $authentications
-     * @return Zend_Feed_Pubsubhubbub_Subscriber
+     * 
+     * @param  array $authentications 
+     * @return \Zend\Feed\PubSubHubbub\Subscriber\Subscriber
      */
     public function addAuthentications(array $authentications)
     {
@@ -426,22 +414,22 @@ class Zend_Feed_Pubsubhubbub_Subscriber
         }
         return $this;
     }
-
+    
     /**
      * Get all hub URL authentication credentials
-     *
+     * 
      * @return array
      */
     public function getAuthentications()
     {
         return $this->_authentications;
     }
-
+    
     /**
      * Set flag indicating whether or not to use a path parameter
-     *
-     * @param  bool $bool
-     * @return Zend_Feed_Pubsubhubbub_Subscriber
+     * 
+     * @param  bool $bool 
+     * @return \Zend\Feed\PubSubHubbub\Subscriber\Subscriber
      */
     public function usePathParameter($bool = true)
     {
@@ -454,7 +442,7 @@ class Zend_Feed_Pubsubhubbub_Subscriber
      *
      * @param  string $name
      * @param  string|null $value
-     * @return Zend_Feed_Pubsubhubbub_Subscriber
+     * @return \Zend\Feed\PubSubHubbub\Subscriber\Subscriber
      */
     public function setParameter($name, $value = null)
     {
@@ -463,8 +451,7 @@ class Zend_Feed_Pubsubhubbub_Subscriber
             return $this;
         }
         if (empty($name) || !is_string($name)) {
-            require_once 'Zend/Feed/Pubsubhubbub/Exception.php';
-            throw new Zend_Feed_Pubsubhubbub_Exception('Invalid parameter "name"'
+            throw new Exception('Invalid parameter "name"'
                 . ' of "' . $name . '" must be a non-empty string');
         }
         if ($value === null) {
@@ -472,8 +459,7 @@ class Zend_Feed_Pubsubhubbub_Subscriber
             return $this;
         }
         if (empty($value) || (!is_string($value) && $value !== null)) {
-            require_once 'Zend/Feed/Pubsubhubbub/Exception.php';
-            throw new Zend_Feed_Pubsubhubbub_Exception('Invalid parameter "value"'
+            throw new Exception('Invalid parameter "value"'
                 . ' of "' . $value . '" must be a non-empty string');
         }
         $this->_parameters[$name] = $value;
@@ -485,7 +471,7 @@ class Zend_Feed_Pubsubhubbub_Subscriber
      *
      * @param  string $name
      * @param  string|null $value
-     * @return Zend_Feed_Pubsubhubbub_Subscriber
+     * @return \Zend\Feed\PubSubHubbub\Subscriber\Subscriber
      */
     public function setParameters(array $parameters)
     {
@@ -499,13 +485,12 @@ class Zend_Feed_Pubsubhubbub_Subscriber
      * Remove an optional parameter for the (un)subscribe requests
      *
      * @param  string $name
-     * @return Zend_Feed_Pubsubhubbub_Subscriber
+     * @return \Zend\Feed\PubSubHubbub\Subscriber\Subscriber
      */
     public function removeParameter($name)
     {
         if (empty($name) || !is_string($name)) {
-            require_once 'Zend/Feed/Pubsubhubbub/Exception.php';
-            throw new Zend_Feed_Pubsubhubbub_Exception('Invalid parameter "name"'
+            throw new Exception('Invalid parameter "name"'
                 . ' of "' . $name . '" must be a non-empty string');
         }
         if (array_key_exists($name, $this->_parameters)) {
@@ -525,30 +510,29 @@ class Zend_Feed_Pubsubhubbub_Subscriber
     }
 
     /**
-     * Sets an instance of Zend_Feed_Pubsubhubbub_Model_SubscriptionInterface used to background
+     * Sets an instance of Zend\Feed\Pubsubhubbub\Model\SubscriptionPersistence used to background
      * save any verification tokens associated with a subscription or other.
      *
-     * @param  Zend_Feed_Pubsubhubbub_Model_SubscriptionInterface $storage
-     * @return Zend_Feed_Pubsubhubbub_Subscriber
+     * @param  \Zend\Feed\PubSubHubbub\Model\SubscriptionPersistence $storage
+     * @return \Zend\Feed\PubSubHubbub\Subscriber\Subscriber
      */
-    public function setStorage(Zend_Feed_Pubsubhubbub_Model_SubscriptionInterface $storage)
+    public function setStorage(Model\SubscriptionPersistence $storage)
     {
         $this->_storage = $storage;
         return $this;
     }
 
     /**
-     * Gets an instance of Zend_Feed_Pubsubhubbub_Storage_StorageInterface used
+     * Gets an instance of Zend\Feed\Pubsubhubbub\Storage\StoragePersistence used 
      * to background save any verification tokens associated with a subscription
      * or other.
      *
-     * @return Zend_Feed_Pubsubhubbub_Model_SubscriptionInterface
+     * @return \Zend\Feed\PubSubHubbub\Model\SubscriptionPersistence
      */
     public function getStorage()
     {
         if ($this->_storage === null) {
-            require_once 'Zend/Feed/Pubsubhubbub/Exception.php';
-            throw new Zend_Feed_Pubsubhubbub_Exception('No storage vehicle '
+            throw new Exception('No storage vehicle '
                 . 'has been set.');
         }
         return $this->_storage;
@@ -592,7 +576,7 @@ class Zend_Feed_Pubsubhubbub_Subscriber
 
     /**
      * Return an array of errors met from any failures, including keys:
-     * 'response' => the Zend_Http_Response object from the failure
+     * 'response' => the Zend\Http\Response object from the failure
      * 'hubUrl' => the URL of the Hub Server whose notification failed
      *
      * @return array
@@ -626,8 +610,7 @@ class Zend_Feed_Pubsubhubbub_Subscriber
         $client = $this->_getHttpClient();
         $hubs   = $this->getHubUrls();
         if (empty($hubs)) {
-            require_once 'Zend/Feed/Pubsubhubbub/Exception.php';
-            throw new Zend_Feed_Pubsubhubbub_Exception('No Hub Server URLs'
+            throw new Exception('No Hub Server URLs'
                 . ' have been set so no subscriptions can be attempted');
         }
         $this->_errors = array();
@@ -638,10 +621,7 @@ class Zend_Feed_Pubsubhubbub_Subscriber
                 $client->setAuth($auth[0], $auth[1]);
             }
             $client->setUri($url);
-            $client->setRawData(
-                $this->_getRequestParameters($url, $mode),
-                'application/x-www-form-urlencoded'
-            );
+            $client->setRawData($this->_getRequestParameters($url, $mode));
             $response = $client->request();
             if ($response->getStatus() !== 204
                 && $response->getStatus() !== 202
@@ -670,14 +650,14 @@ class Zend_Feed_Pubsubhubbub_Subscriber
      * Get a basic prepared HTTP client for use
      *
      * @param  string $mode Must be "subscribe" or "unsubscribe"
-     * @return Zend_Http_Client
+     * @return \Zend\Http\Client
      */
     protected function _getHttpClient()
     {
-        $client = Zend_Feed_Pubsubhubbub::getHttpClient();
-        $client->setMethod(Zend_Http_Client::POST);
+        $client = PubSubHubbub::getHttpClient();
+        $client->setMethod(\Zend\Http\Client::POST);
         $client->setConfig(array('useragent' => 'Zend_Feed_Pubsubhubbub_Subscriber/'
-            . Zend_Version::VERSION));
+            . \Zend\Version::VERSION));
         return $client;
     }
 
@@ -692,8 +672,7 @@ class Zend_Feed_Pubsubhubbub_Subscriber
     protected function _getRequestParameters($hubUrl, $mode)
     {
         if (!in_array($mode, array('subscribe', 'unsubscribe'))) {
-            require_once 'Zend/Feed/Pubsubhubbub/Exception.php';
-            throw new Zend_Feed_Pubsubhubbub_Exception('Invalid mode specified: "'
+            throw new Exception('Invalid mode specified: "'
                 . $mode . '" which should have been "subscribe" or "unsubscribe"');
         }
 
@@ -703,16 +682,16 @@ class Zend_Feed_Pubsubhubbub_Subscriber
         );
 
         if ($this->getPreferredVerificationMode()
-                == Zend_Feed_Pubsubhubbub::VERIFICATION_MODE_SYNC
+                == PubSubHubbub::VERIFICATION_MODE_SYNC
         ) {
             $vmodes = array(
-                Zend_Feed_Pubsubhubbub::VERIFICATION_MODE_SYNC,
-                Zend_Feed_Pubsubhubbub::VERIFICATION_MODE_ASYNC,
+                PubSubHubbub::VERIFICATION_MODE_SYNC,
+                PubSubHubbub::VERIFICATION_MODE_ASYNC,
             );
         } else {
             $vmodes = array(
-                Zend_Feed_Pubsubhubbub::VERIFICATION_MODE_ASYNC,
-                Zend_Feed_Pubsubhubbub::VERIFICATION_MODE_SYNC,
+                PubSubHubbub::VERIFICATION_MODE_ASYNC,
+                PubSubHubbub::VERIFICATION_MODE_SYNC,
             );
         }
         $params['hub.verify'] = array();
@@ -731,12 +710,12 @@ class Zend_Feed_Pubsubhubbub_Subscriber
         // Note: query string only usable with PuSH 0.2 Hubs
         if (!$this->_usePathParameter) {
             $params['hub.callback'] = $this->getCallbackUrl()
-                . '?xhub.subscription=' . Zend_Feed_Pubsubhubbub::urlencode($key);
+                . '?xhub.subscription=' . PubSubHubbub::urlencode($key);
         } else {
             $params['hub.callback'] = rtrim($this->getCallbackUrl(), '/')
-                . '/' . Zend_Feed_Pubsubhubbub::urlencode($key);
+                . '/' . PubSubHubbub::urlencode($key);
         }
-        if ($mode == 'subscribe' && $this->getLeaseSeconds() !== null) {
+        if ($mode == 'subscribe' && !is_null($this->getLeaseSeconds())) {
             $params['hub.lease_seconds'] = $this->getLeaseSeconds();
         }
 
@@ -745,12 +724,12 @@ class Zend_Feed_Pubsubhubbub_Subscriber
         foreach ($optParams as $name => $value) {
             $params[$name] = $value;
         }
-
+        
         // store subscription to storage
-        $now = new Zend_Date;
+        $now = new Date\Date;
         $expires = null;
         if (isset($params['hub.lease_seconds'])) {
-            $expires = $now->add($params['hub.lease_seconds'], Zend_Date::SECOND)
+            $expires = $now->add($params['hub.lease_seconds'], Date\Date::SECOND)
                 ->get('yyyy-MM-dd HH:mm:ss');
         }
         $data = array(
@@ -762,7 +741,7 @@ class Zend_Feed_Pubsubhubbub_Subscriber
             'verify_token'       => hash('sha256', $params['hub.verify_token']),
             'secret'             => null,
             'expiration_time'    => $expires,
-            'subscription_state' => Zend_Feed_Pubsubhubbub::SUBSCRIPTION_NOTVERIFIED,
+            'subscription_state' => PubSubHubbub::SUBSCRIPTION_NOTVERIFIED,
         );
         $this->getStorage()->setSubscription($data);
 
@@ -812,15 +791,15 @@ class Zend_Feed_Pubsubhubbub_Subscriber
         $encoded = array();
         foreach ($params as $key => $value) {
             if (is_array($value)) {
-                $ekey = Zend_Feed_Pubsubhubbub::urlencode($key);
+                $ekey = PubSubHubbub::urlencode($key);
                 $encoded[$ekey] = array();
                 foreach ($value as $duplicateKey) {
                     $encoded[$ekey][]
-                        = Zend_Feed_Pubsubhubbub::urlencode($duplicateKey);
+                        = PubSubHubbub::urlencode($duplicateKey);
                 }
             } else {
-                $encoded[Zend_Feed_Pubsubhubbub::urlencode($key)]
-                    = Zend_Feed_Pubsubhubbub::urlencode($value);
+                $encoded[PubSubHubbub::urlencode($key)]
+                    = PubSubHubbub::urlencode($value);
             }
         }
         return $encoded;

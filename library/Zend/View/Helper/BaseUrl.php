@@ -16,22 +16,25 @@
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: BaseUrl.php 23953 2011-05-03 05:47:39Z ralph $
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-/** @see Zend_View_Helper_Abstract */
-require_once 'Zend/View/Helper/Abstract.php';
+/**
+ * @namespace
+ */
+namespace Zend\View\Helper;
 
 /**
  * Helper for retrieving the BaseUrl
  *
+ * @uses       \Zend\Controller\Front
+ * @uses       \Zend\View\Helper\AbstractHelper
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_BaseUrl extends Zend_View_Helper_Abstract
+class BaseUrl extends AbstractHelper
 {
     /**
      * BaseUrl
@@ -48,7 +51,7 @@ class Zend_View_Helper_BaseUrl extends Zend_View_Helper_Abstract
      * @param  string|null $file
      * @return string
      */
-    public function baseUrl($file = null)
+    public function __invoke($file = null)
     {
         // Get baseUrl
         $baseUrl = $this->getBaseUrl();
@@ -65,7 +68,7 @@ class Zend_View_Helper_BaseUrl extends Zend_View_Helper_Abstract
      * Set BaseUrl
      *
      * @param  string $base
-     * @return Zend_View_Helper_BaseUrl
+     * @return \Zend\View\Helper\BaseUrl
      */
     public function setBaseUrl($base)
     {
@@ -81,9 +84,7 @@ class Zend_View_Helper_BaseUrl extends Zend_View_Helper_Abstract
     public function getBaseUrl()
     {
         if ($this->_baseUrl === null) {
-            /** @see Zend_Controller_Front */
-            require_once 'Zend/Controller/Front.php';
-            $baseUrl = Zend_Controller_Front::getInstance()->getBaseUrl();
+            $baseUrl = \Zend\Controller\Front::getInstance()->getBaseUrl();
 
             // Remove scriptname, eg. index.php from baseUrl
             $baseUrl = $this->_removeScriptName($baseUrl);

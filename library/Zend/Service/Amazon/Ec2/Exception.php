@@ -17,35 +17,21 @@
  * @subpackage Ec2
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Exception.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Service_Amazon_Exception
+ * @namespace
  */
-require_once 'Zend/Service/Amazon/Exception.php';
+namespace Zend\Service\Amazon\Ec2;
 
 /**
- * The Custom Exception class that allows you to have access to the AWS Error Code.
- *
+ * @uses       \Zend\Service\Amazon\Exception
  * @category   Zend
  * @package    Zend_Service_Amazon
  * @subpackage Ec2
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Service_Amazon_Ec2_Exception extends Zend_Service_Amazon_Exception
-{
-    private $awsErrorCode = '';
-
-    public function __construct($message, $code = 0, $awsErrorCode = '')
-    {
-        parent::__construct($message, $code);
-        $this->awsErrorCode = $awsErrorCode;
-    }
-
-    public function getErrorCode()
-    {
-        return $this->awsErrorCode;
-    }
-}
+interface Exception
+    extends \Zend\Service\Amazon\Exception
+{}

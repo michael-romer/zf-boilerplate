@@ -17,25 +17,27 @@
  * @subpackage Ec2
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Elasticip.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Service_Amazon_Ec2_Abstract
+ * @namespace
  */
-require_once 'Zend/Service/Amazon/Ec2/Abstract.php';
+namespace Zend\Service\Amazon\Ec2;
+use Zend\Service\Amazon,
+    Zend\Service\Amazon\Ec2\Exception;
 
 /**
  * An Amazon EC2 interface to allocate, associate, describe and release Elastic IP address
  * from your account.
  *
+ * @uses       Zend_Service_Amazon_Ec2_Abstract
  * @category   Zend
  * @package    Zend_Service_Amazon
  * @subpackage Ec2
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Service_Amazon_Ec2_Elasticip extends Zend_Service_Amazon_Ec2_Abstract
+class ElasticIp extends AbstractEc2
 {
     /**
      * Acquires an elastic IP address for use with your account

@@ -16,21 +16,23 @@
  * @package    Zend_Feed_Reader
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Feed.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Feed_Reader_Extension_FeedAbstract
- */
-require_once 'Zend/Feed/Reader/Extension/FeedAbstract.php';
+* @namespace
+*/
+namespace Zend\Feed\Reader\Extension\Podcast;
+use Zend\Feed\Reader\Extension;
 
 /**
- * @category   Zend
- * @package    Zend_Feed_Reader
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
- * @license    http://framework.zend.com/license/new-bsd     New BSD License
- */
-class Zend_Feed_Reader_Extension_Podcast_Feed extends Zend_Feed_Reader_Extension_FeedAbstract
+* @uses \Zend\Feed\Reader\Reader
+* @uses \Zend\Feed\Reader\Extension\EntryAbstract
+* @category Zend
+* @package Zend_Feed_Reader
+* @copyright Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+* @license http://framework.zend.com/license/new-bsd New BSD License
+*/
+class Feed extends Extension\AbstractFeed
 {
     /**
      * Get the entry author
@@ -81,7 +83,7 @@ class Zend_Feed_Reader_Extension_Podcast_Feed extends Zend_Feed_Reader_Extension
      *
      * @return string
      */
-    public function getCategories()
+    public function getItunesCategories()
     {
         if (isset($this->_data['categories'])) {
             return $this->_data['categories'];
@@ -99,7 +101,7 @@ class Zend_Feed_Reader_Extension_Podcast_Feed extends Zend_Feed_Reader_Extension
                     $children = array();
 
                     foreach ($node->childNodes as $childNode) {
-                        if (!($childNode instanceof DOMText)) {
+                        if (!($childNode instanceof \DOMText)) {
                             $children[$childNode->getAttribute('text')] = null;
                         }
                     }
@@ -146,7 +148,7 @@ class Zend_Feed_Reader_Extension_Podcast_Feed extends Zend_Feed_Reader_Extension
      *
      * @return string
      */
-    public function getImage()
+    public function getItunesImage()
     {
         if (isset($this->_data['image'])) {
             return $this->_data['image'];

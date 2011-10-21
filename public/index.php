@@ -1,37 +1,29 @@
 <?php
-// Define path to application directory
-defined('APPLICATION_PATH')
-    || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../application'));
-
 // Define application environment
 defined('APPLICATION_ENV')
-    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'development'));
+    || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
-// Ensure library/ is on include_path
+// Ensure ZF is on the include path
 set_include_path(implode(PATH_SEPARATOR, array(
-    realpath(APPLICATION_PATH . '/../library'),
+    realpath(__DIR__ . '/../library'),
     get_include_path(),
 )));
 
-// Activate PSR-0 Autoloading; pseudo-namespaces defined in application.ini
-include "Zend/Loader/Autoloader.php";
-Zend_Loader_Autoloader::getInstance();
+require_once 'Zend/Loader/AutoloaderFactory.php';
+Zend\Loader\AutoloaderFactory::factory(array('Zend\Loader\StandardAutoloader' => array()));
 
-// Making XDebug more chatty in Development Environment
-if (APPLICATION_ENV == 'development')
-{
-    ini_set('xdebug.collect_vars', 'on');
-    ini_set('xdebug.collect_params', '4');
-    ini_set('xdebug.dump_globals', 'on');
-    ini_set('xdebug.dump.SERVER', 'REQUEST_URI');
-    ini_set('xdebug.show_local_vars', 'on');
-}
+$appConfig = include __DIR__ . '/../configs/application.config.php';
 
-// Create application, bootstrap, and run
-$application = new Zend_Application(
-    APPLICATION_ENV,
-    APPLICATION_PATH . '/configs/application.ini'
+$moduleLoader = new Zend\Loader\ModuleAutoloader($appConfig['module_paths']);
+$moduleLoader->register();
+
+$moduleManager = new Zend\Module\Manager(
+    $appConfig['modules'],
+    new Zend\Module\ManagerOptions($appConfig['module_manager_options'])
 );
 
-$application->bootstrap()
-            ->run();
+// Create application, bootstrap, and run
+$bootstrap      = new Zend\Mvc\Bootstrap($moduleManager);
+$application    = new Zend\Mvc\Application;
+$bootstrap->bootstrap($application);
+$application->run()->send();

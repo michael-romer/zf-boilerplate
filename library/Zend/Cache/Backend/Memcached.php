@@ -17,28 +17,24 @@
  * @subpackage Zend_Cache_Backend
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Memcached.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
- * @see Zend_Cache_Backend_Interface
+ * @namespace
  */
-require_once 'Zend/Cache/Backend/ExtendedInterface.php';
+namespace Zend\Cache\Backend;
+use Zend\Cache;
 
 /**
- * @see Zend_Cache_Backend
- */
-require_once 'Zend/Cache/Backend.php';
-
-
-/**
+ * @uses       \Zend\Cache\Cache
+ * @uses       \Zend\Cache\Backend\AbstractBackend
+ * @uses       \Zend\Cache\Backend\ExtendedBackend
  * @package    Zend_Cache
  * @subpackage Zend_Cache_Backend
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Cache_Backend_ExtendedInterface
+class Memcached extends AbstractBackend implements ExtendedBackend
 {
     /**
      * Default Values
@@ -114,13 +110,13 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
      * Constructor
      *
      * @param array $options associative array of options
-     * @throws Zend_Cache_Exception
+     * @throws \Zend\Cache\Exception
      * @return void
      */
     public function __construct(array $options = array())
     {
         if (!extension_loaded('memcache')) {
-            Zend_Cache::throwException('The memcache extension must be loaded for using this backend !');
+            Cache\Cache::throwException('The memcache extension must be loaded for using this backend !');
         }
         parent::__construct($options);
         if (isset($this->_options['servers'])) {
@@ -131,7 +127,7 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
             }
             $this->setOption('servers', $value);
         }
-        $this->_memcache = new Memcache;
+        $this->_memcache = new \Memcache;
         foreach ($this->_options['servers'] as $server) {
             if (!array_key_exists('port', $server)) {
                 $server['port'] = self::DEFAULT_PORT;
@@ -253,25 +249,25 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
      *
      * @param  string $mode Clean mode
      * @param  array  $tags Array of tags
-     * @throws Zend_Cache_Exception
+     * @throws \Zend\Cache\Exception
      * @return boolean True if no problem
      */
-    public function clean($mode = Zend_Cache::CLEANING_MODE_ALL, $tags = array())
+    public function clean($mode = Cache\CacheCache\Cache::CLEANING_MODE_ALL, $tags = array())
     {
         switch ($mode) {
-            case Zend_Cache::CLEANING_MODE_ALL:
+            case Cache\Cache::CLEANING_MODE_ALL:
                 return $this->_memcache->flush();
                 break;
-            case Zend_Cache::CLEANING_MODE_OLD:
+            case Cache\Cache::CLEANING_MODE_OLD:
                 $this->_log("Zend_Cache_Backend_Memcached::clean() : CLEANING_MODE_OLD is unsupported by the Memcached backend");
                 break;
-            case Zend_Cache::CLEANING_MODE_MATCHING_TAG:
-            case Zend_Cache::CLEANING_MODE_NOT_MATCHING_TAG:
-            case Zend_Cache::CLEANING_MODE_MATCHING_ANY_TAG:
+            case Cache\Cache::CLEANING_MODE_MATCHING_TAG:
+            case Cache\Cache::CLEANING_MODE_NOT_MATCHING_TAG:
+            case Cache\Cache::CLEANING_MODE_MATCHING_ANY_TAG:
                 $this->_log(self::TAGS_UNSUPPORTED_BY_CLEAN_OF_MEMCACHED_BACKEND);
                 break;
                default:
-                Zend_Cache::throwException('Invalid mode for clean() method');
+                Cache\Cache::throwException('Invalid mode for clean() method');
                    break;
         }
     }
@@ -290,7 +286,7 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
      * Set the frontend directives
      *
      * @param  array $directives Assoc of directives
-     * @throws Zend_Cache_Exception
+     * @throws \Zend\Cache\Exception
      * @return void
      */
     public function setDirectives($directives)
@@ -374,7 +370,7 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
     /**
      * Return the filling percentage of the backend storage
      *
-     * @throws Zend_Cache_Exception
+     * @throws \Zend\Cache\Exception
      * @return int integer between 0 and 100
      */
     public function getFillingPercentage()
@@ -400,7 +396,7 @@ class Zend_Cache_Backend_Memcached extends Zend_Cache_Backend implements Zend_Ca
         }
 
         if ($memSize === null || $memUsed === null) {
-            Zend_Cache::throwException('Can\'t get filling percentage');
+            Cache\Cache::throwException('Can\'t get filling percentage');
         }
 
         return ((int) (100. * ($memUsed / $memSize)));

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -17,23 +16,21 @@
  * @package    Zend_Filter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Digits.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
 /**
- * @see Zend_Filter_Interface
+ * @namespace
  */
-require_once 'Zend/Filter/Interface.php';
-
+namespace Zend\Filter;
 
 /**
+ * @uses       Zend\Filter\AbstractFilter
  * @category   Zend
  * @package    Zend_Filter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Filter_Digits implements Zend_Filter_Interface
+class Digits extends AbstractFilter
 {
     /**
      * Is PCRE is compiled with UTF-8 and Unicode support

@@ -17,26 +17,24 @@
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: FormReset.php 23775 2011-03-01 17:25:24Z ralph $
  */
-
 
 /**
- * Abstract class for extension
+ * @namespace
  */
-require_once 'Zend/View/Helper/FormElement.php';
-
+namespace Zend\View\Helper;
 
 /**
  * Helper to generate a "reset" button
  *
+ * @uses       \Zend\View\Helper\FormElement
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_FormReset extends Zend_View_Helper_FormElement
+class FormReset extends FormElement
 {
     /**
      * Generates a 'reset' button.
@@ -53,7 +51,7 @@ class Zend_View_Helper_FormReset extends Zend_View_Helper_FormElement
      *
      * @return string The element XHTML.
      */
-    public function formReset($name = '', $value = 'Reset', $attribs = null)
+    public function __invoke($name = '', $value = 'Reset', $attribs = null)
     {
         $info = $this->_getInfo($name, $value, $attribs);
         extract($info); // name, value, attribs, options, listsep, disable
@@ -66,19 +64,19 @@ class Zend_View_Helper_FormReset extends Zend_View_Helper_FormElement
 
         // get closing tag
         $endTag = '>';
-        if ($this->view->doctype()->isXhtml()) {
+        if ($this->view->plugin('doctype')->isXhtml()) {
             $endTag = ' />';
         }
 
         // Render button
         $xhtml = '<input type="reset"'
-               . ' name="' . $this->view->escape($name) . '"'
-               . ' id="' . $this->view->escape($id) . '"'
+               . ' name="' . $this->view->vars()->escape($name) . '"'
+               . ' id="' . $this->view->vars()->escape($id) . '"'
                . $disabled;
 
         // add a value if one is given
         if (! empty($value)) {
-            $xhtml .= ' value="' . $this->view->escape($value) . '"';
+            $xhtml .= ' value="' . $this->view->vars()->escape($value) . '"';
         }
 
         // add attributes, close, and return

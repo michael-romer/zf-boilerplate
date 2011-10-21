@@ -17,24 +17,24 @@
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: FormMultiCheckbox.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
-
-/** Zend_View_Helper_FormRadio */
-require_once 'Zend/View/Helper/FormRadio.php';
-
+/**
+ * @namespace
+ */
+namespace Zend\View\Helper;
 
 /**
  * Helper to generate a set of checkbox button elements
  *
+ * @uses       \Zend\View\Helper\FormRadio
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_FormMultiCheckbox extends Zend_View_Helper_FormRadio
+class FormMultiCheckbox extends FormRadio
 {
     /**
      * Input type to use
@@ -66,9 +66,8 @@ class Zend_View_Helper_FormMultiCheckbox extends Zend_View_Helper_FormRadio
      *
      * @return string The radio buttons XHTML.
      */
-    public function formMultiCheckbox($name, $value = null, $attribs = null,
-        $options = null, $listsep = "<br />\n")
+    public function __invoke($name, $value = null, $attribs = null, $options = null, $listsep = "<br />\n")
     {
-        return $this->formRadio($name, $value, $attribs, $options, $listsep);
+        return parent::__invoke($name, $value, $attribs, $options, $listsep);
     }
 }

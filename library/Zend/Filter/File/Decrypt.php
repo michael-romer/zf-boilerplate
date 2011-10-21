@@ -16,23 +16,26 @@
  * @package    Zend_Filter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Decrypt.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Filter_Decrypt
+ * @namespace
  */
-require_once 'Zend/Filter/Decrypt.php';
+namespace Zend\Filter\File;
+use Zend\Filter,
+    Zend\Filter\Exception;
 
 /**
  * Decrypts a given file and stores the decrypted file content
  *
+ * @uses       \Zend\Filter\Decrypt
+ * @uses       \Zend\Filter\Exception
  * @category   Zend
  * @package    Zend_Filter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Filter_File_Decrypt extends Zend_Filter_Decrypt
+class Decrypt extends Filter\Decrypt
 {
     /**
      * New filename to set
@@ -71,11 +74,10 @@ class Zend_Filter_File_Decrypt extends Zend_Filter_Decrypt
      * @param  string $value Full path of file to change
      * @return string The filename which has been set, or false when there were errors
      */
-    public function filter($value)
+    public function __invoke($value)
     {
         if (!file_exists($value)) {
-            require_once 'Zend/Filter/Exception.php';
-            throw new Zend_Filter_Exception("File '$value' not found");
+            throw new Exception\InvalidArgumentException("File '$value' not found");
         }
 
         if (!isset($this->_filename)) {
@@ -83,22 +85,19 @@ class Zend_Filter_File_Decrypt extends Zend_Filter_Decrypt
         }
 
         if (file_exists($this->_filename) and !is_writable($this->_filename)) {
-            require_once 'Zend/Filter/Exception.php';
-            throw new Zend_Filter_Exception("File '{$this->_filename}' is not writable");
+            throw new Exception\RuntimeException("File '{$this->_filename}' is not writable");
         }
 
         $content = file_get_contents($value);
         if (!$content) {
-            require_once 'Zend/Filter/Exception.php';
-            throw new Zend_Filter_Exception("Problem while reading file '$value'");
+            throw new Exception\RuntimeException("Problem while reading file '$value'");
         }
 
-        $decrypted = parent::filter($content);
+        $decrypted = parent::__invoke($content);
         $result    = file_put_contents($this->_filename, $decrypted);
 
         if (!$result) {
-            require_once 'Zend/Filter/Exception.php';
-            throw new Zend_Filter_Exception("Problem while writing file '{$this->_filename}'");
+            throw new Exception\RuntimeException("Problem while writing file '{$this->_filename}'");
         }
 
         return $this->_filename;

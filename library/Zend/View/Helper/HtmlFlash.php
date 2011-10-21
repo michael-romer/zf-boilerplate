@@ -17,22 +17,22 @@
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: HtmlFlash.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_View_Helper_HtmlObject
+ * @namespace
  */
-require_once 'Zend/View/Helper/HtmlObject.php';
+namespace Zend\View\Helper;
 
 /**
+ * @uses       \Zend\View\Helper\HtmlObject
  * @category   Zend
  * @package    Zend_View
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_View_Helper_HtmlFlash extends Zend_View_Helper_HtmlObject
+class HtmlFlash extends HtmlElement
 {
     /**
      * Default file type for a flash applet
@@ -49,12 +49,13 @@ class Zend_View_Helper_HtmlFlash extends Zend_View_Helper_HtmlObject
      * @param string $content Alternative content
      * @return string
      */
-    public function htmlFlash($data, array $attribs = array(), array $params = array(), $content = null)
+    public function __invoke($data, array $attribs = array(), array $params = array(), $content = null)
     {
         // Params
         $params = array_merge(array('movie'   => $data,
                                     'quality' => 'high'), $params);
 
-        return $this->htmlObject($data, self::TYPE, $attribs, $params, $content);
+        $htmlObject = $this->getView()->plugin('htmlObject');
+        return $htmlObject($data, self::TYPE, $attribs, $params, $content);
     }
 }

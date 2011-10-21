@@ -16,40 +16,26 @@
  * @package    Zend_Filter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: StripTags.php 24278 2011-07-28 18:32:21Z adamlundrigan $
  */
 
-
 /**
- * @see Zend_Filter_Interface
+ * @namespace
  */
-require_once 'Zend/Filter/Interface.php';
-
+namespace Zend\Filter;
 
 /**
+ * @uses       Zend\Filter\AbstractFilter
  * @category   Zend
  * @package    Zend_Filter
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Filter_StripTags implements Zend_Filter_Interface
+class StripTags extends AbstractFilter
 {
     /**
      * Unique ID prefix used for allowing comments
      */
     const UNIQUE_ID_PREFIX = '__Zend_Filter_StripTags__';
-
-    /**
-     * Whether comments are allowed
-     *
-     * If false (the default), then comments are removed from the input string.
-     *
-     * This setting is now deprecated, and ignored internally.
-     *
-     * @deprecated
-     * @var boolean
-     */
-    public $commentsAllowed = false;
 
     /**
      * Array of allowed tags and allowed attributes for each allowed tag
@@ -59,7 +45,7 @@ class Zend_Filter_StripTags implements Zend_Filter_Interface
      *
      * @var array
      */
-    protected $_tagsAllowed = array();
+    protected $tagsAllowed = array();
 
     /**
      * Array of allowed attributes for all allowed tags
@@ -68,7 +54,7 @@ class Zend_Filter_StripTags implements Zend_Filter_Interface
      *
      * @var array
      */
-    protected $_attributesAllowed = array();
+    protected $attributesAllowed = array();
 
     /**
      * Sets the filter options
@@ -77,12 +63,12 @@ class Zend_Filter_StripTags implements Zend_Filter_Interface
      *     'allowAttribs'  => Attributes which are allowed
      *     'allowComments' => Are comments allowed ?
      *
-     * @param  string|array|Zend_Config $options
+     * @param  string|array|\Zend\Config\Config $options
      * @return void
      */
     public function __construct($options = null)
     {
-        if ($options instanceof Zend_Config) {
+        if ($options instanceof \Zend\Config\Config) {
             $options = $options->toArray();
         } else if ((!is_array($options)) || (is_array($options) && !array_key_exists('allowTags', $options) &&
             !array_key_exists('allowAttribs', $options) && !array_key_exists('allowComments', $options))) {
@@ -106,38 +92,6 @@ class Zend_Filter_StripTags implements Zend_Filter_Interface
         if (array_key_exists('allowAttribs', $options)) {
             $this->setAttributesAllowed($options['allowAttribs']);
         }
-
-        if (array_key_exists('allowComments', $options)) {
-            $this->setCommentsAllowed($options['allowComments']);
-        }
-    }
-
-    /**
-     * Returns the commentsAllowed option
-     *
-     * This setting is now deprecated and ignored internally.
-     *
-     * @deprecated
-     * @return bool
-     */
-    public function getCommentsAllowed()
-    {
-        return $this->commentsAllowed;
-    }
-
-    /**
-     * Sets the commentsAllowed option
-     *
-     * This setting is now deprecated and ignored internally.
-     *
-     * @deprecated
-     * @param  boolean $commentsAllowed
-     * @return Zend_Filter_StripTags Provides a fluent interface
-     */
-    public function setCommentsAllowed($commentsAllowed)
-    {
-       $this->commentsAllowed = (boolean) $commentsAllowed;
-       return $this;
     }
 
     /**
@@ -147,14 +101,14 @@ class Zend_Filter_StripTags implements Zend_Filter_Interface
      */
     public function getTagsAllowed()
     {
-        return $this->_tagsAllowed;
+        return $this->tagsAllowed;
     }
 
     /**
      * Sets the tagsAllowed option
      *
      * @param  array|string $tagsAllowed
-     * @return Zend_Filter_StripTags Provides a fluent interface
+     * @return \Zend\Filter\StripTags Provides a fluent interface
      */
     public function setTagsAllowed($tagsAllowed)
     {
@@ -168,7 +122,7 @@ class Zend_Filter_StripTags implements Zend_Filter_Interface
                 // Canonicalize the tag name
                 $tagName = strtolower($element);
                 // Store the tag as allowed with no attributes
-                $this->_tagsAllowed[$tagName] = array();
+                $this->tagsAllowed[$tagName] = array();
             }
             // Otherwise, if a tag was provided with attributes
             else if (is_string($index) && (is_array($element) || is_string($element))) {
@@ -179,12 +133,12 @@ class Zend_Filter_StripTags implements Zend_Filter_Interface
                     $element = array($element);
                 }
                 // Store the tag as allowed with the provided attributes
-                $this->_tagsAllowed[$tagName] = array();
+                $this->tagsAllowed[$tagName] = array();
                 foreach ($element as $attribute) {
                     if (is_string($attribute)) {
                         // Canonicalize the attribute name
                         $attributeName = strtolower($attribute);
-                        $this->_tagsAllowed[$tagName][$attributeName] = null;
+                        $this->tagsAllowed[$tagName][$attributeName] = null;
                     }
                 }
             }
@@ -200,14 +154,14 @@ class Zend_Filter_StripTags implements Zend_Filter_Interface
      */
     public function getAttributesAllowed()
     {
-        return $this->_attributesAllowed;
+        return $this->attributesAllowed;
     }
 
     /**
      * Sets the attributesAllowed option
      *
      * @param  array|string $attributesAllowed
-     * @return Zend_Filter_StripTags Provides a fluent interface
+     * @return \Zend\Filter\StripTags Provides a fluent interface
      */
     public function setAttributesAllowed($attributesAllowed)
     {
@@ -220,7 +174,7 @@ class Zend_Filter_StripTags implements Zend_Filter_Interface
             if (is_string($attribute)) {
                 // Canonicalize the attribute name
                 $attributeName = strtolower($attribute);
-                $this->_attributesAllowed[$attributeName] = null;
+                $this->attributesAllowed[$attributeName] = null;
             }
         }
 
@@ -309,7 +263,7 @@ class Zend_Filter_StripTags implements Zend_Filter_Interface
         $tagEnd        = $matches[5];
 
         // If the tag is not an allowed tag, then remove the tag entirely
-        if (!isset($this->_tagsAllowed[$tagName])) {
+        if (!isset($this->tagsAllowed[$tagName])) {
             return '';
         }
 
@@ -331,8 +285,8 @@ class Zend_Filter_StripTags implements Zend_Filter_Interface
                 $attributeValue     = empty($matches[3][$index]) ? $matches[5][$index] : $matches[3][$index];
 
                 // If the attribute is not allowed, then remove it entirely
-                if (!array_key_exists($attributeName, $this->_tagsAllowed[$tagName])
-                    && !array_key_exists($attributeName, $this->_attributesAllowed)) {
+                if (!array_key_exists($attributeName, $this->tagsAllowed[$tagName])
+                    && !array_key_exists($attributeName, $this->attributesAllowed)) {
                     continue;
                 }
                 // Add the attribute to the accumulator

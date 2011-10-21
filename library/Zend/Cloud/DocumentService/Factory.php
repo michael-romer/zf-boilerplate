@@ -19,7 +19,13 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-require_once 'Zend/Cloud/AbstractFactory.php';
+/**
+ * namespace
+ */
+namespace Zend\Cloud\DocumentService;
+
+use Zend\Cloud\AbstractFactory,
+    Zend\Cloud\Exception\InvalidArgumentException;
 
 /**
  * Class implementing working with Azure queries in a structured way
@@ -27,19 +33,19 @@ require_once 'Zend/Cloud/AbstractFactory.php';
  * TODO Look into preventing a query injection attack.
  *
  * @category   Zend
- * @package    Zend_Cloud
+ * @package    Zend\Cloud
  * @subpackage DocumentService
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Cloud_DocumentService_Factory extends Zend_Cloud_AbstractFactory
+class Factory extends AbstractFactory
 {
     const DOCUMENT_ADAPTER_KEY = 'document_adapter';
 
     /**
      * @var string Interface which adapter must implement to be considered valid
      */
-    protected static $_adapterInterface = 'Zend_Cloud_DocumentService_Adapter';
+    protected static $_adapterInterface = 'Zend\Cloud\DocumentService\Adapter';
 
     /**
      * Constructor
@@ -61,14 +67,12 @@ class Zend_Cloud_DocumentService_Factory extends Zend_Cloud_AbstractFactory
     {
         $adapter = parent::_getAdapter(self::DOCUMENT_ADAPTER_KEY, $options);
         if (!$adapter) {
-            require_once 'Zend/Cloud/DocumentService/Exception.php';
-            throw new Zend_Cloud_DocumentService_Exception(
+            throw new InvalidArgumentException(
                 'Class must be specified using the \''
                 . self::DOCUMENT_ADAPTER_KEY . '\' key'
             );
         } elseif (!$adapter instanceof self::$_adapterInterface) {
-            require_once 'Zend/Cloud/DocumentService/Exception.php';
-            throw new Zend_Cloud_DocumentService_Exception(
+            throw new InvalidArgumentException(
                 'Adapter must implement \'' . self::$_adapterInterface . '\''
             );
         }

@@ -16,21 +16,23 @@
  * @package    Zend_Config
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Ini.php 23775 2011-03-01 17:25:24Z ralph $
  */
 
 /**
- * @see Zend_Config_Writer
+ * @namespace
  */
-require_once 'Zend/Config/Writer/FileAbstract.php';
+namespace Zend\Config\Writer;
+use Zend\Config;
 
 /**
+ * @uses       \Zend\Config\Exception
+ * @uses       \Zend\Config\Writer\FileAbstract
  * @category   Zend
  * @package    Zend_Config
  * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Config_Writer_Ini extends Zend_Config_Writer_FileAbstract
+class Ini extends AbstractFileWriter
 {
     /**
      * String that separates nesting levels of configuration data identifiers
@@ -50,7 +52,7 @@ class Zend_Config_Writer_Ini extends Zend_Config_Writer_FileAbstract
      * Set the nest separator
      *
      * @param  string $filename
-     * @return Zend_Config_Writer_Ini
+     * @return \Zend\Config\Writer\Ini
      */
     public function setNestSeparator($separator)
     {
@@ -66,7 +68,7 @@ class Zend_Config_Writer_Ini extends Zend_Config_Writer_FileAbstract
      * into the global namespace of the INI file.
      *
      * @param  bool $withoutSections
-     * @return Zend_Config_Writer_Ini
+     * @return \Zend\Config\Writer\Ini
      */
     public function setRenderWithoutSections($withoutSections=true)
     {
@@ -75,7 +77,7 @@ class Zend_Config_Writer_Ini extends Zend_Config_Writer_FileAbstract
     }
 
     /**
-     * Render a Zend_Config into a INI config string.
+     * Render a Zend\Config into a INI config string.
      *
      * @since 1.10
      * @return string
@@ -95,7 +97,7 @@ class Zend_Config_Writer_Ini extends Zend_Config_Writer_FileAbstract
         } else {
             $config = $this->_sortRootElements($this->_config);
             foreach ($config as $sectionName => $data) {
-                if (!($data instanceof Zend_Config)) {
+                if (!($data instanceof Config\Config)) {
                     $iniString .= $sectionName
                                .  ' = '
                                .  $this->_prepareValue($data)
@@ -118,17 +120,17 @@ class Zend_Config_Writer_Ini extends Zend_Config_Writer_FileAbstract
     /**
      * Add a branch to an INI string recursively
      *
-     * @param  Zend_Config $config
+     * @param  \Zend\Config\Config $config
      * @return void
      */
-    protected function _addBranch(Zend_Config $config, $parents = array())
+    protected function _addBranch(Config\Config $config, $parents = array())
     {
         $iniString = '';
 
         foreach ($config as $key => $value) {
             $group = array_merge($parents, array($key));
 
-            if ($value instanceof Zend_Config) {
+            if ($value instanceof Config\Config) {
                 $iniString .= $this->_addBranch($value, $group);
             } else {
                 $iniString .= implode($this->_nestSeparator, $group)
@@ -156,25 +158,23 @@ class Zend_Config_Writer_Ini extends Zend_Config_Writer_FileAbstract
         } elseif (strpos($value, '"') === false) {
             return '"' . $value .  '"';
         } else {
-            /** @see Zend_Config_Exception */
-            require_once 'Zend/Config/Exception.php';
-            throw new Zend_Config_Exception('Value can not contain double quotes "');
+            throw new Config\Exception\RuntimeException('Value can not contain double quotes "');
         }
     }
-
+    
     /**
      * Root elements that are not assigned to any section needs to be
      * on the top of config.
-     *
+     * 
      * @see    http://framework.zend.com/issues/browse/ZF-6289
-     * @param  Zend_Config
-     * @return Zend_Config
+     * @param  Zend\Config
+     * @return Zend\Config
      */
-    protected function _sortRootElements(Zend_Config $config)
+    protected function _sortRootElements(\Zend\Config\Config $config)
     {
         $configArray = $config->toArray();
         $sections = array();
-
+        
         // remove sections from config array
         foreach ($configArray as $key => $value) {
             if (is_array($value)) {
@@ -182,12 +182,12 @@ class Zend_Config_Writer_Ini extends Zend_Config_Writer_FileAbstract
                 unset($configArray[$key]);
             }
         }
-
+        
         // readd sections to the end
         foreach ($sections as $key => $value) {
             $configArray[$key] = $value;
         }
-
-        return new Zend_Config($configArray);
+        
+        return new \Zend\Config\Config($configArray);
     }
 }
