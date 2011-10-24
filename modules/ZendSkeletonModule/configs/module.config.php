@@ -16,4 +16,16 @@ return array(
             ),
         ),
     ),
+    'routes' => array(
+        'home' => array(
+            'type' => 'Zend\Mvc\Router\Http\Literal',
+            'options' => array(
+                'route'    => '/huhus',
+                'defaults' => array(
+                    'controller' => 'skeleton',
+                    'action'     => 'index',
+                ),
+            ),
+        ),
+    ),
 );

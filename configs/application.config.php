@@ -5,6 +5,7 @@ return new Zend\Config\Config(array(
     ),
     'modules' => array(
         'Application',
+        'ZendSkeletonModule'
     ),
     'module_manager_options' => array( 
         'enable_config_cache'      => false,
