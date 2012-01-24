@@ -20,7 +20,7 @@ return array(
         'home' => array(
             'type' => 'Zend\Mvc\Router\Http\Literal',
             'options' => array(
-                'route'    => '/huhus',
+                'route'    => '/',
                 'defaults' => array(
                     'controller' => 'skeleton',
                     'action'     => 'index',
