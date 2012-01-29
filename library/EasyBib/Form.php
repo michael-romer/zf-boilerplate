@@ -64,6 +64,21 @@ class EasyBib_Form extends Zend_Form
     {
         $this->model = $model;
     }
+    /**
+     * Proxie to Zend_Form::isValid()
+     * calls buildBootstrapErrorDecorators for parent::isValid() returning false
+     *
+     * @param  array $data
+     * @return boolean
+     */
+    public function isValid($values)
+    {
+        $validCheck = parent::isValid($values);
+        if ($validCheck === false) {
+            $this->buildBootstrapErrorDecorators();
+        }
+        return $validCheck;
+    }
 
     /**
      * Build Bootstrap Error Decorators
