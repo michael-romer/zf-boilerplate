@@ -15,7 +15,7 @@ class AddQuote extends \EasyBib_Form
     {
         // $this->setDefaultTranslator(\Zend_Registry::get('Zend_Translate')); ???
         $this->setMethod('POST');
-        $this->setAction('/index/add-custom');
+        $this->setAction($this->getView()->baseUrl('/index/add-custom'));
         $this->setAttrib('id', 'addQuote');
 
         $quote = new \Zend_Form_Element_Textarea('quote');
