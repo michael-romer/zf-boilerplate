@@ -3,7 +3,7 @@
     <div class="container">
       <a class="brand" href="/">ZF-Boilerplate</a>
       <?php echo $this->navigation()->menu(); ?>
-        <form action="/index/search" class="pull-right">
+        <form action="<?=$this->baseUrl('/index/search')?>" class="pull-right">
             <input class="input" name="query" type="text" placeholder="Cherralea Morgen">
             <button class="btn" type="submit"><?php echo $this->translate("Find Quote"); ?></button>
         </form>
