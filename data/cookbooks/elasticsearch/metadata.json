@@ -1,0 +1,44 @@
+{
+  "version": "0.1.0",
+  "recipes": {
+
+  },
+  "replacing": {
+
+  },
+  "description": "Installs/Configures elasticsearch",
+  "groupings": {
+
+  },
+  "long_description": "= DESCRIPTION:\n\n= REQUIREMENTS:\n\n= ATTRIBUTES: \n\n= USAGE:\n\n",
+  "recommendations": {
+
+  },
+  "attributes": {
+
+  },
+  "maintainer": "GoTime",
+  "suggestions": {
+
+  },
+  "dependencies": {
+    "java": [
+
+    ],
+    "bluepill": [
+
+    ]
+  },
+  "platforms": {
+
+  },
+  "maintainer_email": "ops@gotime.com",
+  "conflicting": {
+
+  },
+  "license": "Apache 2.0",
+  "name": "elasticsearch",
+  "providing": {
+
+  }
+}
