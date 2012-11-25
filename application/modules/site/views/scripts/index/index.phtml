@@ -1,36 +1,46 @@
-<?php if ($this->databaseError) { ?>
-<div class="alert-message warning">
-  <a class="close" href="#">×</a>
-  <p><strong>Sample Database:</strong> If you want see some persistence action, you will first need to <a href="http://zf-boilerplate.com/documentation/managing-the-virtual-machine/#ssh" target="blank">SSH into your VM</a> and run the <a href="http://zf-boilerplate.com/documentation/persistence-the-database/#fixtures" target="blank">database and fixtures setup script</a>.</p>
-</div>
-<?php } ?>
+<?php if ($this->databaseError): ?>
+    <div class="alert-message warning">
+        <a class="close" href="#">×</a>
+        <p><strong>Sample Database:</strong> If you want see some persistence action, you will first need to <a href="http://zf-boilerplate.com/documentation/managing-the-virtual-machine/#ssh" target="blank">SSH into your VM</a> and run the <a href="http://zf-boilerplate.com/documentation/persistence-the-database/#fixtures" target="blank">database and fixtures setup script</a>.</p>
+    </div>
+<?php endif; ?>
 
-<?php if ($this->searchindexError) { ?>
-<div class="alert-message warning">
-  <a class="close" href="#">×</a>
-  <p><strong>Fulltext Search:</strong> If you want query the fulltext search index, you will first need to <a href="http://zf-boilerplate.com/documentation/managing-the-virtual-machine/#ssh" target="blank">SSH into your VM</a> and run the searchindex and fixtures setup script.</p>
-</div>
-<?php } ?>
+<?php if ($this->searchindexError): ?>
+    <div class="alert-message warning">
+        <a class="close" href="#">×</a>
+        <p><strong>Fulltext Search:</strong> If you want query the fulltext search index, you will first need to <a href="http://zf-boilerplate.com/documentation/managing-the-virtual-machine/#ssh" target="blank">SSH into your VM</a> and run the searchindex and fixtures setup script.</p>
+    </div>
+<?php endif; ?>
 
 <div class="hero-unit">
-<h1><?php echo $this->translate("Hello from ZF-Boilerplate!");?></h1>
-<p><?php echo $this->translate("Well done, ZF-Boilerplate is up and running. You may want to modify or remove this example page.");?></p>
-<p><a class="btn primary large"><?php echo $this->translate("Learn more");?> &raquo;</a></p>
+    <h1><?php echo $this->translate("Hello from ZF-Boilerplate!");?></h1>
+    <p><?php echo $this->translate("Well done, ZF-Boilerplate is up and running. You may want to modify or remove this example page.");?></p>
+    <p><a class="btn primary large"><?php echo $this->translate("Learn more");?> &raquo;</a></p>
 </div>
 
-<?php if (!$this->databaseError) { ?>
-<div class="row" style="padding-left:148px">
-    <div class="span10">
-        <h3 style="margin-bottom:10px;"><? if (!$this->search) { ?> <?php echo $this->translate("Random Quotes"); ?> <a href="/index/add-random" class="btn small success"><?php echo $this->translate("Add another"); ?></a><?php } else { ?><?php echo $this->translate("Quotes found"); ?> <a href="/" class="btn small success"><?php echo $this->translate("Back"); ?></a><?php } ?></h3>
-        <?php foreach($this->data as $quote) { ?>
-        <blockquote>
-            <p><?php echo $quote; ?></p>
-            <small><?php echo $quote->getAuthor(); ?></small>
-        </blockquote>
-        <?php } ?>
+<?php if (!$this->databaseError): ?>
+    <div class="row" style="padding-left:148px">
+        <div class="span10">
+            <h3 style="margin-bottom:10px;">
+                <?php if (!$this->search): ?> 
+                    <?php echo $this->translate("Random Quotes"); ?><a href="/index/add-random" class="btn small success">
+                    <?php echo $this->translate("Add another"); ?></a>
+                <?php else: ?>
+                    <?php echo $this->translate("Quotes found"); ?> <a href="/" class="btn small success">
+                    <?php echo $this->translate("Back"); ?></a>
+                <?php endif; ?>
+            </h3>
+
+            <?php foreach($this->data as $quote): ?>
+                <blockquote>
+                    <p><?php echo $quote; ?></p>
+                    <small><?php echo $quote->getAuthor(); ?></small>
+                </blockquote>
+            <?php endforeach; ?>
+        </div>
     </div>
-</div>
-<div>
-    <?php echo $this->form; ?>
-</div>
-<?php } ?>
+
+    <div>
+        <?php echo $this->form; ?>
+    </div>
+<?php endif; ?>
